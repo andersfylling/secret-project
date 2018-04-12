@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ballgame</string>
+    <string name="play_game_button">start game</string>
 </resources>

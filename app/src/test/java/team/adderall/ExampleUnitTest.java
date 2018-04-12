@@ -1,4 +1,4 @@
-package team.adderall.cimanders.ballgame;
+package team.adderall;
 
 import org.junit.Test;
 

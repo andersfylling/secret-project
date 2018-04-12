@@ -1,4 +1,4 @@
-package team.adderall.cimanders.ballgame;
+package team.adderall;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
