@@ -25,23 +25,37 @@ public class Configuration
         setter.setInstance("Game", new Game(logic, painter));
     }
 
+    // ########################################################################################
+    // ###
+    // ### Game logic / physics
+    // ###
+    // ########################################################################################
+    @GameComponent("gameLogicFirstWave")
+    public GameLogicInterface[] firstLogicWave(
+            @Inject("gravity") Gravity gravity
+    ) {
+        return new GameLogicInterface[]{
+                gravity
+        };
+    }
+
     @GameComponent(GameContext.LOGIC)
-    public GameLogicInterface[][] setLogicWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
+    public GameLogicInterface[][] setLogicWaves(
+            @Inject("gameLogicFirstWave") GameLogicInterface[] first
+    ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
-        GameLogicInterface[] firstWave = new GameLogicInterface[]{
-            new LogicManager()
-        };
-
         // group waves
         return new GameLogicInterface[][]{
-                firstWave
+                first
         };
     }
 
     @GameComponent(GameContext.PAINT)
-    public GamePainter[][] setPaintWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
+    public GamePainter[][] setPaintWaves(
+            @Inject(GameContext.NAME) GameContextGetterAssured ctx
+    ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
@@ -53,5 +67,17 @@ public class Configuration
         return new GamePainter[][]{
                 firstWave
         };
+    }
+
+    @GameComponent("gravity")
+    public Gravity gravity(
+            @Inject("players") Players players
+    ) {
+        return new Gravity(players);
+    }
+
+    @GameComponent("players")
+    public Players players() {
+        return new Players();
     }
 }
