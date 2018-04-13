@@ -187,16 +187,16 @@ public class GameComponentData
 
     @Override
     public int compareTo(@NonNull GameComponentData gameComponentData) {
-        System.out.print("comparing " + this.getName() + this.getParamsAsString() + " to " + gameComponentData.getName() + gameComponentData.getParamsAsString() + ": ");
+        //System.out.print("comparing " + this.getName() + this.getParamsAsString() + " to " + gameComponentData.getName() + gameComponentData.getParamsAsString() + ": ");
         // always put independent components at top
         if (this.params.length == 0) {
-            System.out.println("UP");
+            //System.out.println("UP");
             return -1;
         }
 
         // if this already is an instance it can go on top
         if (this.instance != null) {
-            System.out.println("UP");
+            //System.out.println("UP");
             return -1;
         }
 
@@ -216,18 +216,18 @@ public class GameComponentData
 
         // if the other component depends on this, move up
         if (gameComponentData.dependsOnComponent(this.getName())) {
-            System.out.println("UP");
+            //System.out.println("UP");
             return -1;
         }
 
         // if this depends on other, move down
         if(this.dependsOnComponent(gameComponentData.getName())) {
-            System.out.println("DOWN");
+            //System.out.println("DOWN");
             return 1;
         }
 
         // otherwise our order / priority doesn't need to change
-        System.out.println("-");
+        //System.out.println("-");
         return 0;
     }
 }

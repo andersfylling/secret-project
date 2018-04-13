@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import team.adderall.game.framework.component.GameComponent;
@@ -131,8 +132,30 @@ public class GameConfigurationLoader
         // add GameContext
         this.components.add(new GameComponentData(GameContext.NAME, this.ctx));
 
+        // sort based on number of dependencies
+        Collections.sort(this.components, (left, right) -> {
+            int a = left.getParamsName().length;
+            int b = right.getParamsName().length;
+
+            if (a < b) {
+                return -1;
+            } else if (a > b) {
+                return 1;
+            }
+
+            return 0;
+        });
+//        for (GameComponentData component : this.components) {
+//            System.out.print(component.getName() + ": " + Integer.toString(component.getParamsName().length) + "\n");
+//        }
+//        System.out.flush();
+
         // sort based on dependencies
         Collections.sort(this.components);
+//        for (GameComponentData component : this.components) {
+//            System.out.print(component.getName() + ": " + Integer.toString(component.getParamsName().length) + "\n");
+//        }
+//        System.out.flush();
 
         // instantiate components
         for (GameComponentData component : this.components) {

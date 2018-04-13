@@ -6,6 +6,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import team.adderall.game.framework.component.GameComponent;
+import team.adderall.game.framework.component.GameDepWire;
+import team.adderall.game.framework.component.Inject;
+import team.adderall.game.framework.context.GameContext;
+
+@GameComponent
 public class GameLoop
         implements Runnable
 {
@@ -16,14 +22,18 @@ public class GameLoop
 
     private final ExecutorService logicerThreadPool;
     private final GameLogicInterface[][] logics;
-    private final GamePainter[][] painters;
+    private final GamePaintWrapper painter;
 
     private boolean running;
     private long nextRun;
 
-    public GameLoop(final GameLogicInterface[][] logics, final GamePainter[][] painters) {
+    @GameDepWire
+    public GameLoop(
+            @Inject(GameContext.LOGIC) final GameLogicInterface[][] logics,
+            @Inject("gamePaintWrapper") final GamePaintWrapper gamePaintWrapper
+    ) {
         this.logics = logics;
-        this.painters = painters;
+        this.painter = gamePaintWrapper;
 
         int requiredThreads = 0;
         for (GameLogicInterface[] wave : logics) {
@@ -77,8 +87,7 @@ public class GameLoop
             }
 
             nextRun += TIMEOUT_MS;
-            //this.paintListener.executeGamePaint();
-            System.out.println("painting");
+            this.painter.redraw();
         }
     }
 

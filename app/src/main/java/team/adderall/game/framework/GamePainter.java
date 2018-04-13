@@ -1,5 +1,8 @@
 package team.adderall.game.framework;
 
+import android.graphics.Canvas;
+
 public interface GamePainter
-    extends Runnable
-{}
+{
+    void paint(final Canvas canvas);
+}
