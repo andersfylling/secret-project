@@ -15,18 +15,18 @@ public class GameLoop
 
 
     private final ExecutorService logicerThreadPool;
-    private final Logicer[][] logics;
-    private final Painter[][] painters;
+    private final GameLogicInterface[][] logics;
+    private final GamePainter[][] painters;
 
     private boolean running;
     private long nextRun;
 
-    public GameLoop(final Logicer[][] logics, final Painter[][] painters) {
+    public GameLoop(final GameLogicInterface[][] logics, final GamePainter[][] painters) {
         this.logics = logics;
         this.painters = painters;
 
         int requiredThreads = 0;
-        for (Logicer[] wave : logics) {
+        for (GameLogicInterface[] wave : logics) {
             if (wave.length > requiredThreads) {
                 requiredThreads = wave.length;
             }
@@ -45,10 +45,10 @@ public class GameLoop
     private void executeLogicInWaves(long remainingMilliSeconds)
             throws InterruptedException
     {
-        for (Logicer[] wave : this.logics) {
+        for (GameLogicInterface[] wave : this.logics) {
             final long start = System.currentTimeMillis();
             // run jobs in parallel
-            for (Logicer job : wave) {
+            for (GameLogicInterface job : wave) {
                 this.logicerThreadPool.execute(job);
             }
 

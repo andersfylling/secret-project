@@ -1,6 +1,6 @@
 package team.adderall.game.framework.gameconfigs;
 
-import team.adderall.game.framework.GameConfiguration;
+import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.Inject;
 

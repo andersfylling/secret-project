@@ -1,5 +1,5 @@
 package team.adderall.game.framework;
 
-public interface Manager
+public interface GamePainter
     extends Runnable
 {}

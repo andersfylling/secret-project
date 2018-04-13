@@ -1,10 +1,9 @@
 package team.adderall.game;
 
-import team.adderall.game.framework.Manager;
-import team.adderall.game.framework.Painter;
+import team.adderall.game.framework.GamePainter;
 
 public class PaintManager
-    implements Painter
+    implements GamePainter
 {
     @Override
     public void run() {

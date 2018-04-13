@@ -7,7 +7,7 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import team.adderall.game.Configuration;
-import team.adderall.game.framework.GameConfiguration;
+import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.GameInitializer;
 import team.adderall.game.framework.component.GameComponent;
 

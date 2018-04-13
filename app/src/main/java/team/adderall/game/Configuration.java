@@ -1,12 +1,12 @@
 package team.adderall.game;
 
-import team.adderall.game.framework.Painter;
+import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.GameConfiguration;
-import team.adderall.game.framework.GameContext;
-import team.adderall.game.framework.GameContextGetterAssured;
-import team.adderall.game.framework.GameContextSetter;
-import team.adderall.game.framework.Logicer;
+import team.adderall.game.framework.configuration.GameConfiguration;
+import team.adderall.game.framework.context.GameContext;
+import team.adderall.game.framework.context.GameContextGetterAssured;
+import team.adderall.game.framework.context.GameContextSetter;
+import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponentRegister;
 import team.adderall.game.framework.component.Inject;
 
@@ -26,31 +26,31 @@ public class Configuration
     }
 
     @GameComponent(GameContext.LOGIC)
-    public Logicer[][] setLogicWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
+    public GameLogicInterface[][] setLogicWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
-        Logicer[] firstWave = new Logicer[]{
+        GameLogicInterface[] firstWave = new GameLogicInterface[]{
             new LogicManager()
         };
 
         // group waves
-        return new Logicer[][]{
+        return new GameLogicInterface[][]{
                 firstWave
         };
     }
 
     @GameComponent(GameContext.PAINT)
-    public Painter[][] setPaintWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
+    public GamePainter[][] setPaintWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
-        Painter[] firstWave = new Painter[]{
+        GamePainter[] firstWave = new GamePainter[]{
             new PaintManager()
         };
 
         // group waves
-        return new Painter[][]{
+        return new GamePainter[][]{
                 firstWave
         };
     }

@@ -1,4 +1,4 @@
-package team.adderall.game.framework;
+package team.adderall.game.framework.context;
 
 /**
  * Use this when creating new objects in the game configuration class.

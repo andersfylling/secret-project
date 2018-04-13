@@ -7,6 +7,6 @@ package team.adderall.game.framework;
  * Let the logic instance extract data from a source, process it, and update an object.
  * Once complete painting will execute.
  */
-public interface Logicer
+public interface GameLogicInterface
     extends Runnable
 {}

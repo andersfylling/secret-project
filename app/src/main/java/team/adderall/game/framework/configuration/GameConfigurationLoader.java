@@ -1,9 +1,8 @@
-package team.adderall.game.framework;
+package team.adderall.game.framework.configuration;
 
 import android.app.Activity;
 import android.util.Log;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +11,8 @@ import java.util.List;
 
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameComponentData;
+import team.adderall.game.framework.context.GameContext;
+import team.adderall.game.framework.context.GameContextSetter;
 
 public class GameConfigurationLoader
 {

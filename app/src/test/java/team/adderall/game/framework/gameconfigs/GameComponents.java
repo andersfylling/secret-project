@@ -1,7 +1,7 @@
 package team.adderall.game.framework.gameconfigs;
 
-import team.adderall.game.framework.GameConfiguration;
-import team.adderall.game.framework.Logicer;
+import team.adderall.game.framework.configuration.GameConfiguration;
+import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.Inject;
 
@@ -26,18 +26,18 @@ public class GameComponents {
         return "anders";
     }
     @GameComponent
-    public Logicer randomGameLogic(){
+    public GameLogicInterface randomGameLogic(){
         return () -> randomGameLogicExecuted = true;
     }
     @GameComponent
-    public Logicer gameLogicWithParams(@Inject("getASixer") final int v, @Inject("getAnders") final String n){
+    public GameLogicInterface gameLogicWithParams(@Inject("getASixer") final int v, @Inject("getAnders") final String n){
         return () -> {
             gameLogicWithParamExecuted1 = v;
             gameLogicWithParamExecuted2 = n;
         };
     }
     @GameComponent
-    public Object testPlease(@Inject("gameLogicWithParams") Logicer t) {
+    public Object testPlease(@Inject("gameLogicWithParams") GameLogicInterface t) {
         assertEquals(this.gameLogicWithParamExecuted2, "");
         t.run();
         assertEquals(this.gameLogicWithParamExecuted2, this.getAnders());

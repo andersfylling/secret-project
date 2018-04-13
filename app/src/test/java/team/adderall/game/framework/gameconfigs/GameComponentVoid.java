@@ -1,7 +1,7 @@
 package team.adderall.game.framework.gameconfigs;
 
-import team.adderall.game.framework.GameConfiguration;
-import team.adderall.game.framework.Logicer;
+import team.adderall.game.framework.configuration.GameConfiguration;
+import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameComponentRegister;
 import team.adderall.game.framework.component.Inject;
@@ -27,7 +27,7 @@ public class GameComponentVoid {
         return "anders";
     }
     @GameComponent
-    public Logicer randomGameLogic(){
+    public GameLogicInterface randomGameLogic(){
         return () -> randomGameLogicExecuted = true;
     }
     @GameComponentRegister

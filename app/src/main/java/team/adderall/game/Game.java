@@ -1,7 +1,5 @@
 package team.adderall.game;
 
-import team.adderall.game.framework.GameContext;
-
 public class Game {
 
     private final LogicManager logic;

@@ -1,9 +1,9 @@
 package team.adderall.game;
 
-import team.adderall.game.framework.Logicer;
+import team.adderall.game.framework.GameLogicInterface;
 
 public class LogicManager
-        implements Logicer
+        implements GameLogicInterface
 {
     public LogicManager() {
     }

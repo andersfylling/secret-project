@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import team.adderall.game.framework.configuration.EssentialGameConfigurationDependencies;
+import team.adderall.game.framework.configuration.GameConfigurationLoader;
+import team.adderall.game.framework.context.GameContext;
+
 public class GameInitializer {
 
     private final GameContext ctx;

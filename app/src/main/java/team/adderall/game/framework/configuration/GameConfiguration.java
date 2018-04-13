@@ -1,4 +1,4 @@
-package team.adderall.game.framework;
+package team.adderall.game.framework.configuration;
 
 
 import java.lang.annotation.ElementType;

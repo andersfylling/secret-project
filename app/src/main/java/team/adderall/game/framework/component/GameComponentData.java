@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import team.adderall.game.framework.GameContext;
-import team.adderall.game.framework.GameContextSetter;
+import team.adderall.game.framework.context.GameContext;
+import team.adderall.game.framework.context.GameContextSetter;
 
 public class GameComponentData
         implements Comparable<GameComponentData>
