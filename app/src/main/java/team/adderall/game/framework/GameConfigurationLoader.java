@@ -38,22 +38,7 @@ public class GameConfigurationLoader
         this.failOnNullInstance = false;
     }
 
-    private void loadGameComponentRegisters(final Class<?> config) {
-
-        Object instance = null;
-        try {
-            instance = Class.forName(config.getName()).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (instance == null) {
-            return;
-        }
-
+    private void loadGameComponentRegisters(final Class<?> config, final Object instance) {
         for (Method method : config.getDeclaredMethods()) {
             // ensure method is a GameComponent
             GameComponent component = method.getAnnotation(GameComponent.class);
@@ -84,6 +69,25 @@ public class GameConfigurationLoader
         }
     }
 
+    private void loadGameComponentRegisters(final Class<?> config) {
+
+        Object instance = null;
+        try {
+            instance = Class.forName(config.getName()).newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (instance == null) {
+            return;
+        }
+
+        this.loadGameComponentRegisters(config, instance);
+    }
+
     /**
      * Crash the program if a null instance is detected.
      * Otherwise a warning is given.
@@ -93,6 +97,9 @@ public class GameConfigurationLoader
     }
 
     public void load() {
+        // TODO: use Object and check if instance or .class type
+        Object t = this.getClass();
+
         for (final Class<?> config : this.configs) {
             // ignore classes that aren't marked GameConfiguration
             Annotation valid = config.getAnnotation(GameConfiguration.class);

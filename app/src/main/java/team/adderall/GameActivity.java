@@ -1,11 +1,17 @@
 package team.adderall;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.WindowManager;
 
 import team.adderall.game.Configuration;
+import team.adderall.game.framework.GameConfiguration;
 import team.adderall.game.framework.GameInitializer;
+import team.adderall.game.framework.component.GameComponent;
 
+@GameConfiguration
 public class GameActivity
         extends Activity
 {
@@ -21,6 +27,7 @@ public class GameActivity
                 Configuration.class
         );
         this.gameInitializer.loadEssentials(); // add GameContext
+        this.gameInitializer.addGameConfigurationInstances(this);
     }
 
     @Override
@@ -30,5 +37,20 @@ public class GameActivity
             System.out.println("######### finished loading game");
         });
         System.out.println("######### loading game objects");
+    }
+
+    @GameComponent("activity")
+    public Activity activity() {
+        return this;
+    }
+
+    @GameComponent("display")
+    public Display display() {
+        final WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) {
+            return null;
+        }
+
+        return wm.getDefaultDisplay();
     }
 }

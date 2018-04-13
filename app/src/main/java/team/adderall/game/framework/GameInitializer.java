@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import team.adderall.GameActivity;
+
 public class GameInitializer {
 
     private final GameContext ctx;
@@ -66,5 +68,9 @@ public class GameInitializer {
 
     public void loadEssentials() {
         this.configClasses.add(EssentialGameConfigurationDependencies.class);
+    }
+
+    public void addGameConfigurationInstances(Object... instances) {
+
     }
 }
