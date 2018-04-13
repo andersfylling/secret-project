@@ -66,6 +66,9 @@ public class GameInitializer {
      * Start the game loop in a new thread
      */
     public void start() {
+        Runnable gameLoop = (Runnable) this.ctx.getAssuredInstance("GameLoop");
+        (new Thread(gameLoop)).start();
+
         System.out.println("\nRUNNING\n");
     }
 

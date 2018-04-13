@@ -6,7 +6,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class GameLoop implements Runnable {
+public class GameLoop
+        implements Runnable
+{
     public final static int MAX_FRAMESKIP = 100;
     public final static int FPS = 60;
     public final static int TIMEOUT_MS = 1000 / FPS;
@@ -76,6 +78,7 @@ public class GameLoop implements Runnable {
 
             nextRun += TIMEOUT_MS;
             //this.paintListener.executeGamePaint();
+            System.out.println("painting");
         }
     }
 

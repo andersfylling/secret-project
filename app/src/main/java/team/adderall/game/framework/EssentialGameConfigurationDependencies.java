@@ -9,6 +9,9 @@ public class EssentialGameConfigurationDependencies
 {
     private final static String GAME_CONTEXT = GameContext.NAME;
 
-
+    @GameComponent("GameLoop")
+    public GameLoop gameLoop(@Name(GameContext.LOGIC) Logicer[][] logics, @Name(GameContext.PAINT) Painter[][] painters) {
+        return new GameLoop(logics, painters);
+    }
 
 }

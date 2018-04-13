@@ -10,8 +10,8 @@ public class GameContext
         GameContextSetter
 {
     public final static String NAME = "MAIN_GAME_CONTEXT";
-    public final static String LOGIC = "logic manager";
-    public final static String PAINT = "paint manager";
+    public final static String LOGIC = "game logic";
+    public final static String PAINT = "game painters";
     public final static String SENSOR_EVENT = "sensor event manager";
 
     private final Map<String, Object> instances;

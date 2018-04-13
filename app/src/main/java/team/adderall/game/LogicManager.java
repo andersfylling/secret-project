@@ -10,6 +10,6 @@ public class LogicManager
 
     @Override
     public void run() {
-        System.out.print("logic run");
+        System.out.println("logic run");
     }
 }

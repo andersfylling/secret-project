@@ -1,5 +1,6 @@
 package team.adderall.game;
 
+import team.adderall.game.framework.Painter;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.GameConfiguration;
 import team.adderall.game.framework.GameContext;
@@ -24,7 +25,7 @@ public class Configuration
         setter.setInstance("Game", new Game(logic, painter));
     }
 
-    @GameComponent
+    @GameComponent(GameContext.LOGIC)
     public Logicer[][] setLogicWaves(@Name(GameContext.NAME) GameContextGetterAssured ctx) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
@@ -35,6 +36,21 @@ public class Configuration
 
         // group waves
         return new Logicer[][]{
+                firstWave
+        };
+    }
+
+    @GameComponent(GameContext.PAINT)
+    public Painter[][] setPaintWaves(@Name(GameContext.NAME) GameContextGetterAssured ctx) {
+        // same as GPU logic, a wave can hold N task which can run in parallel
+        // but each wave is sequential
+
+        Painter[] firstWave = new Painter[]{
+            new PaintManager()
+        };
+
+        // group waves
+        return new Painter[][]{
                 firstWave
         };
     }
