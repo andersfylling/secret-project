@@ -15,11 +15,6 @@ The game functionality works something like this: https://www.youtube.com/watch?
 The objective is to survive for as long as possible and if you touch the bottom of your
 mobile screen you die.
 
-## Pictures
-
-![Just implemented floors/levels](https://scontent-arn2-1.xx.fbcdn.net/v/t35.0-0/p480x480/30174167_910105972527414_1764145299_o.jpg)
-
-
 ## Features
 
 - [x] Auto generation of level using a seed
@@ -27,3 +22,7 @@ mobile screen you die.
 - [x] Gravity
 - [x] Jumping
 - [ ] Aids to help you level while in game
+
+## Pictures
+
+![Just implemented floors/levels](https://i.imgur.com/ElGWEom.jpg)
