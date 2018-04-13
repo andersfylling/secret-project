@@ -1,20 +1,25 @@
 package team.adderall.game.framework;
 
-import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GameInitializer {
 
     private final GameContext ctx;
-    private final Class<?> configClass;
+    private final List<Class<?>> configClasses;
+    private GameConfigurationLoader configLoader;
 
     /**
      * A package to be scanned for classes with the annotation @GameConfiguration
      *
-     * @param configurationPackageName example: "team.adderall.game"
+     * @param configClasses example: team.adderall.game.Configuration.class
      */
-    public GameInitializer(final Class<?> configClass) {
+    public GameInitializer(final Class<?>... configClasses) {
         this.ctx = new GameContext();
-        this.configClass = configClass;
+
+        this.configClasses = new ArrayList<>();
+        this.configClasses.addAll(Arrays.asList(configClasses));
     }
 
     /**
@@ -30,43 +35,11 @@ public class GameInitializer {
      * Load all instances to memory
      */
     private void load() {
-//        // register all methods with @Bean annotation
-//        for (Method method : this.configClass.getDeclaredMethods()) {
-//            String name = method.getName();
-//
-//            MyAnnotation a = m.getAnnotation(MyAnnotation.class);
-//            MyValueType value1 = a.attribute1();
-//        }
-//
-//        // register logic manager to be run in game loop
-//        Object logic = config.setLogicManager();
-//        if (logic == null) {
-//            logic = config.setLogicManager(this.ctx);
-//            if (logic == null) {
-//                this.missingRequiredInstance(GameContext.LOGIC);
-//            }
-//        }
-//        this.ctx.setInstance(GameContext.LOGIC, logic);
-//
-//        // register paint manager to be run every N time per second
-//        Object painter = config.setPaintManager();
-//        if (painter == null) {
-//            painter = config.setPaintManager(this.ctx);
-//            if (painter == null) {
-//                this.missingRequiredInstance(GameContext.PAINT);
-//            }
-//        }
-//        this.ctx.setInstance(GameContext.PAINT, painter);
-//
-//        // register sensor event handler, this is optional
-//        if (this.ctx.getInstance(GameContext.SENSOR_EVENT) == null) {
-//            return;
-//        }
-//        Object sensors = config.setSensorEventManager();
-//        if (sensors == null) {
-//            sensors = config.setSensorEventManager(this.ctx);
-//        }
-//        this.ctx.setInstance(GameContext.SENSOR_EVENT, sensors);
+        this.configLoader = new GameConfigurationLoader(this.ctx, this.configClasses);
+
+        // load all @GameComponents from @GameConfiguration classes
+        this.configLoader.activateFailOnNullInstance();
+        this.configLoader.load();
     }
 
     /**
@@ -85,6 +58,10 @@ public class GameInitializer {
      * Start the game loop in a new thread
      */
     public void start() {
+        System.out.print("OK");
+    }
 
+    public void loadEssentials() {
+        this.configClasses.add(EssentialGameConfigurationDependencies.class);
     }
 }

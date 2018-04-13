@@ -9,6 +9,7 @@ public class GameContext
         GameContextGetter,
         GameContextSetter
 {
+    public final static String NAME = "MAIN_GAME_CONTEXT";
     public final static String LOGIC = "logic manager";
     public final static String PAINT = "paint manager";
     public final static String SENSOR_EVENT = "sensor event manager";
@@ -55,5 +56,10 @@ public class GameContext
 
     public int size() {
         return this.instances.size();
+    }
+
+    public int sizeWithoutGameContext() {
+        int size = this.instances.size();
+        return size == 0 ? 0 : size - 1; // kek
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,14 +16,23 @@ public class GameConfigurationLoader
 {
     private static final String TAG = "GameConfigurationLoader";
 
-    private final Class<?>[] configs;
+    private final List<Class<?>> configs;
     private final List<GameComponentData> components;
     private final GameContextSetter ctx;
 
     private boolean failOnNullInstance;
 
-    public GameConfigurationLoader(final GameContextSetter ctx, final Class<?>... configs) {
-        this.configs = configs;
+    public GameConfigurationLoader(final GameContextSetter ctx, final List<Class<?>> configs) {
+        this.configs = new ArrayList<>(configs);
+        this.components = new ArrayList<>();
+        this.ctx = ctx;
+        this.failOnNullInstance = false;
+    }
+
+    public GameConfigurationLoader(GameContext ctx, Class<?>... configs) {
+        this.configs = new ArrayList<>();
+        this.configs.addAll(Arrays.asList(configs));
+
         this.components = new ArrayList<>();
         this.ctx = ctx;
         this.failOnNullInstance = false;
@@ -53,12 +63,22 @@ public class GameConfigurationLoader
 
             // configure component
             // if the name attribute is not set, use the method name as fallback
+            String name = "";
             String componentName = component.name();
-            if (componentName.isEmpty()) {
-                componentName = method.getName();
+            String componentVal = component.value();
+            if (componentVal.isEmpty() && componentName.isEmpty()) {
+                name = method.getName();
+            } else if (componentVal.isEmpty() && !componentName.isEmpty()) {
+                name = componentName;
+            } else if (!componentVal.isEmpty() && componentName.isEmpty()) {
+                name = componentVal;
+            } else if (!componentVal.isEmpty() && !componentName.isEmpty() && componentName.equals(componentVal)) {
+                name = componentName;
+            } else if (!componentVal.isEmpty() && !componentName.isEmpty() && !componentName.equals(componentVal)) {
+                throw new InstantiationError("different names suggested for game component when only one or zero is expected: " + componentName + ", " + componentVal);
             }
 
-            GameComponentData data = new GameComponentData(componentName, method, instance);
+            GameComponentData data = new GameComponentData(name, method, instance);
             data.checkForSelfDependencyCyclingIssues();
             components.add(data);
         }
@@ -82,6 +102,9 @@ public class GameConfigurationLoader
 
             this.loadGameComponentRegisters(config);
         }
+
+        // add GameContext
+        this.components.add(new GameComponentData(GameContext.NAME, this.ctx));
 
         // sort based on dependencies
         Collections.sort(this.components);

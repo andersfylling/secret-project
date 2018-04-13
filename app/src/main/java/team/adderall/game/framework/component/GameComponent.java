@@ -13,4 +13,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GameComponent {
     String name() default "";
+    String value() default "";
 }

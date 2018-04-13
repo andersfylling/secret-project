@@ -21,7 +21,7 @@ public class GameConfigurationLoaderTest {
         loader.load();
 
         // make sure all the methods were found, processed and instantiated
-        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS, ctx.size());
+        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS, ctx.sizeWithoutGameContext());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class GameConfigurationLoaderTest {
         loader.load();
 
         // make sure all the methods were found, processed and instantiated
-        assertEquals(0, ctx.size());
+        assertEquals(0, ctx.sizeWithoutGameContext());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class GameConfigurationLoaderTest {
         loader.load();
 
         // make sure all the methods were found, processed and instantiated
-        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS + GameComponentsExtra.NUM_OF_GAME_COMPONENTS, ctx.size());
+        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS + GameComponentsExtra.NUM_OF_GAME_COMPONENTS, ctx.sizeWithoutGameContext());
     }
 
     @Test(expected = InstantiationError.class)

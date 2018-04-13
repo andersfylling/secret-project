@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team.adderall.game.Configuration;
+import team.adderall.game.framework.GameContext;
+import team.adderall.game.framework.GameContextSetter;
 
 public class GameComponentData
         implements Comparable<GameComponentData>
@@ -43,6 +45,16 @@ public class GameComponentData
         }
 
         this.instance = null;
+    }
+
+    public GameComponentData(String name, GameContextSetter ctx) {
+        this.name = name;
+        this.instance = ctx;
+        this.params = new Annotation[][]{};
+        this.paramsName = new String[]{};
+        this.type = GameContext.class;
+        this.method = null;
+        this.classInstance = null;
     }
 
     public Annotation[][] getParams() {
@@ -115,6 +127,9 @@ public class GameComponentData
     }
 
     public void initiate(List<GameComponentData> components) {
+        if (this.instance != null) {
+            return;
+        }
         components = new ArrayList<>(components);
 
         Object[] dependencies = new Object[this.params.length];
@@ -139,7 +154,12 @@ public class GameComponentData
 
         // check if any dependencies are missing
         if (dependencies.length > 0 && dependencies[dependencies.length - 1] == null) {
-            throw new InstantiationError("missing dependencies for game component: " + this.getName());
+            String err = "missing dependencies for game component: " + this.getName();
+
+
+            err += ": params" + this.getParamsAsString();
+
+            throw new InstantiationError(err);
         }
 
         // assumption: everything ok
@@ -156,10 +176,29 @@ public class GameComponentData
         }
     }
 
+
+    public String getParamsAsString() {
+        String params = "{";
+        for (String param : this.paramsName) {
+            params += param + ",";
+        }
+        params += "}";
+
+        return params;
+    }
+
     @Override
     public int compareTo(@NonNull GameComponentData gameComponentData) {
+        System.out.print("comparing " + this.getName() + this.getParamsAsString() + " to " + gameComponentData.getName() + gameComponentData.getParamsAsString() + ": ");
         // always put independent components at top
         if (this.params.length == 0) {
+            System.out.println("UP");
+            return -1;
+        }
+
+        // if this already is an instance it can go on top
+        if (this.instance != null) {
+            System.out.println("UP");
             return -1;
         }
 
@@ -179,15 +218,18 @@ public class GameComponentData
 
         // if the other component depends on this, move up
         if (gameComponentData.dependsOnComponent(this.getName())) {
+            System.out.println("UP");
             return -1;
         }
 
         // if this depends on other, move down
-        if( this.dependsOnComponent(gameComponentData.getName())) {
+        if(this.dependsOnComponent(gameComponentData.getName())) {
+            System.out.println("DOWN");
             return 1;
         }
 
         // otherwise our order / priority doesn't need to change
+        System.out.println("-");
         return 0;
     }
 }
