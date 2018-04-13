@@ -52,4 +52,8 @@ public class GameContext
 
         return instance;
     }
+
+    public int size() {
+        return this.instances.size();
+    }
 }
