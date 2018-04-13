@@ -27,8 +27,8 @@ public class GameActivity
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
         this.gameInitializer.load(()-> {
-            System.out.print("finished loading game");
+            System.out.println("######### finished loading game");
         });
-        System.out.print("loading game objects");
+        System.out.println("######### loading game objects");
     }
 }

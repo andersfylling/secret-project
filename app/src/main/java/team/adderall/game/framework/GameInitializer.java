@@ -46,12 +46,15 @@ public class GameInitializer {
      * Load all instances to memory and notify listener
      */
     public void load(final GameFinishedLoading callback) {
-        this.load();
+        final GameInitializer self = this;
+        (new Thread(() -> {
+            self.load();
 
-        if (callback == null) {
-            return;
-        }
-        callback.trigger();
+            if (callback == null) {
+                return;
+            }
+            callback.trigger();
+        })).start();
     }
 
     /**
