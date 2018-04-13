@@ -7,6 +7,8 @@ public class GameActivity
         extends Activity
 {
 
+    //private
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
