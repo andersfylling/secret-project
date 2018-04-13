@@ -5,6 +5,8 @@ import team.adderall.game.framework.Logicer;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.Name;
 
+import static org.junit.Assert.assertEquals;
+
 @GameConfiguration
 public class GameComponentsExtra {
     public final static int NUM_OF_GAME_COMPONENTS = 2;
@@ -19,9 +21,9 @@ public class GameComponentsExtra {
     }
     @GameComponent
     public Object ensurePrivacyBetweenConfigs(@Name("gameLogicWithParams") Logicer t) {
-        assert(this.gameLogicWithParamExecuted2.equals(""));
+        assertEquals(this.gameLogicWithParamExecuted2, "");
         t.run();
-        assert(this.gameLogicWithParamExecuted2.equals(""));
+        assertEquals(this.gameLogicWithParamExecuted2, "");
 
         return "test";
     }
