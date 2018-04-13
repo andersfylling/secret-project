@@ -3,7 +3,7 @@ package team.adderall.game.framework.gameconfigs;
 import team.adderall.game.framework.GameConfiguration;
 import team.adderall.game.framework.Logicer;
 import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.Name;
+import team.adderall.game.framework.component.Inject;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,14 +30,14 @@ public class GameComponents {
         return () -> randomGameLogicExecuted = true;
     }
     @GameComponent
-    public Logicer gameLogicWithParams(@Name("getASixer") final int v, @Name("getAnders") final String n){
+    public Logicer gameLogicWithParams(@Inject("getASixer") final int v, @Inject("getAnders") final String n){
         return () -> {
             gameLogicWithParamExecuted1 = v;
             gameLogicWithParamExecuted2 = n;
         };
     }
     @GameComponent
-    public Object testPlease(@Name("gameLogicWithParams") Logicer t) {
+    public Object testPlease(@Inject("gameLogicWithParams") Logicer t) {
         assertEquals(this.gameLogicWithParamExecuted2, "");
         t.run();
         assertEquals(this.gameLogicWithParamExecuted2, this.getAnders());

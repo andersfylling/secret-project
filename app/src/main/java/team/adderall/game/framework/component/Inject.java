@@ -12,6 +12,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Name {
+public @interface Inject {
     String value() default "";
 }

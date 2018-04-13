@@ -8,7 +8,7 @@ import team.adderall.game.framework.GameContextGetterAssured;
 import team.adderall.game.framework.GameContextSetter;
 import team.adderall.game.framework.Logicer;
 import team.adderall.game.framework.component.GameComponentRegister;
-import team.adderall.game.framework.component.Name;
+import team.adderall.game.framework.component.Inject;
 
 /**
  * Reference this class in the GameActivity when initializing the game.
@@ -17,7 +17,7 @@ import team.adderall.game.framework.component.Name;
 public class Configuration
 {
     @GameComponentRegister // TODO: implement logic. not currently working.
-    public void registerInstances(@Name(GameContext.NAME) GameContextGetterAssured ctx, @Name("GameContextSetter") GameContextSetter setter) {
+    public void registerInstances(@Inject(GameContext.NAME) GameContextGetterAssured ctx, @Inject("GameContextSetter") GameContextSetter setter) {
         LogicManager logic = (LogicManager) ctx.getAssuredInstance(GameContext.LOGIC);
         PaintManager painter = (PaintManager) ctx.getAssuredInstance(GameContext.PAINT);
 
@@ -26,7 +26,7 @@ public class Configuration
     }
 
     @GameComponent(GameContext.LOGIC)
-    public Logicer[][] setLogicWaves(@Name(GameContext.NAME) GameContextGetterAssured ctx) {
+    public Logicer[][] setLogicWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
@@ -41,7 +41,7 @@ public class Configuration
     }
 
     @GameComponent(GameContext.PAINT)
-    public Painter[][] setPaintWaves(@Name(GameContext.NAME) GameContextGetterAssured ctx) {
+    public Painter[][] setPaintWaves(@Inject(GameContext.NAME) GameContextGetterAssured ctx) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 

@@ -4,7 +4,7 @@ import team.adderall.game.framework.GameConfiguration;
 import team.adderall.game.framework.Logicer;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameComponentRegister;
-import team.adderall.game.framework.component.Name;
+import team.adderall.game.framework.component.Inject;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,7 +31,7 @@ public class GameComponentVoid {
         return () -> randomGameLogicExecuted = true;
     }
     @GameComponentRegister
-    public void gameLogicWithParams(@Name("getASixer") final int v, @Name("getAnders") final String n){
+    public void gameLogicWithParams(@Inject("getASixer") final int v, @Inject("getAnders") final String n){
         return;
     }
 }

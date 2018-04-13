@@ -5,11 +5,9 @@ import android.support.annotation.NonNull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
-import team.adderall.game.Configuration;
 import team.adderall.game.framework.GameContext;
 import team.adderall.game.framework.GameContextSetter;
 
@@ -83,7 +81,7 @@ public class GameComponentData
 
     private String getNameAnnotationValue(Annotation a) {
         String val = "";
-        if (a.annotationType() == Name.class) {
+        if (a.annotationType() == Inject.class) {
             Class<? extends Annotation> type = a.annotationType();
 
             for (Method m : type.getDeclaredMethods()) {
