@@ -2,6 +2,7 @@ package team.adderall.game.framework;
 
 import android.util.Log;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,6 +74,12 @@ public class GameConfigurationLoader
 
     public void load() {
         for (final Class<?> config : this.configs) {
+            // ignore classes that aren't marked GameConfiguration
+            Annotation valid = config.getAnnotation(GameConfiguration.class);
+            if (valid == null) {
+                continue;
+            }
+
             this.loadGameComponentRegisters(config);
         }
 

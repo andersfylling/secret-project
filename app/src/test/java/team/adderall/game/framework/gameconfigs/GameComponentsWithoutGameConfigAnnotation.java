@@ -5,8 +5,7 @@ import team.adderall.game.framework.Logicer;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.Name;
 
-@GameConfiguration
-public class GameComponentsExtra {
+public class GameComponentsWithoutGameConfigAnnotation {
     public final static int NUM_OF_GAME_COMPONENTS = 2;
 
     private String gameLogicWithParamExecuted2 = "";
@@ -14,11 +13,11 @@ public class GameComponentsExtra {
     public void testingReflection() {}
 
     @GameComponent
-    public int getASeven() {
+    public int getASevenaa() {
         return 7;
     }
     @GameComponent
-    public Object ensurePrivacyBetweenConfigs(@Name("gameLogicWithParams") Logicer t) {
+    public Object ensurePrivacyBetweenConfigsaa(@Name("gameLogicWithParams") Logicer t) {
         assert(this.gameLogicWithParamExecuted2.equals(""));
         t.run();
         assert(this.gameLogicWithParamExecuted2.equals(""));

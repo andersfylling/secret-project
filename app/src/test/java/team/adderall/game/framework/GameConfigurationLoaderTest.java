@@ -5,7 +5,11 @@ import org.junit.Test;
 import team.adderall.game.framework.gameconfigs.GameComponents;
 import team.adderall.game.framework.gameconfigs.GameComponentsExtra;
 import team.adderall.game.framework.gameconfigs.GameComponentsWithDepCycling;
+import team.adderall.game.framework.gameconfigs.GameComponentsWithUnknownDep;
+import team.adderall.game.framework.gameconfigs.GameComponentsWithoutGameConfigAnnotation;
 import team.adderall.game.framework.gameconfigs.GameComponentsWithSelfDepCycling;
+
+import static org.junit.Assert.assertEquals;
 
 public class GameConfigurationLoaderTest {
     @Test
@@ -17,7 +21,19 @@ public class GameConfigurationLoaderTest {
         loader.load();
 
         // make sure all the methods were found, processed and instantiated
-        assert(ctx.size() == c.getMethods().length);
+        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS, ctx.size());
+    }
+
+    @Test
+    public void testLoadingClassWithoutGameConfiguration() {
+        Class<?> c = GameComponentsWithoutGameConfigAnnotation.class;
+        GameContext ctx = new GameContext();
+        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c);
+        loader.activateFailOnNullInstance();
+        loader.load();
+
+        // make sure all the methods were found, processed and instantiated
+        assertEquals(0, ctx.size());
     }
 
     @Test
@@ -30,7 +46,18 @@ public class GameConfigurationLoaderTest {
         loader.load();
 
         // make sure all the methods were found, processed and instantiated
-        assert(ctx.size() == c1.getMethods().length + c2.getMethods().length);
+        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS + GameComponentsExtra.NUM_OF_GAME_COMPONENTS, ctx.size());
+    }
+
+    @Test(expected = InstantiationError.class)
+    public void testGameComponentWithUnknownDependency() {
+        Class<?> c = GameComponentsWithUnknownDep.class;
+        GameContext ctx = new GameContext();
+        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c);
+        loader.activateFailOnNullInstance();
+        loader.load();
+
+        assertEquals(0, ctx.size());
     }
 
     @Test(expected = InstantiationError.class)
