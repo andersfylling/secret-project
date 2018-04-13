@@ -1,15 +1,16 @@
 package team.adderall.game.framework;
 
+import android.app.Activity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import team.adderall.GameActivity;
 
 public class GameInitializer {
 
     private final GameContext ctx;
     private final List<Class<?>> configClasses;
+    private final List<Activity> configClassInstances;
     private GameConfigurationLoader configLoader;
 
     /**
@@ -20,6 +21,7 @@ public class GameInitializer {
     public GameInitializer(final Class<?>... configClasses) {
         this.ctx = new GameContext();
 
+        this.configClassInstances = new ArrayList<>();
         this.configClasses = new ArrayList<>();
         this.configClasses.addAll(Arrays.asList(configClasses));
     }
@@ -38,6 +40,7 @@ public class GameInitializer {
      */
     private void load() {
         this.configLoader = new GameConfigurationLoader(this.ctx, this.configClasses);
+        this.configLoader.addGameConfigurationInstances(this.configClassInstances);
 
         // load all @GameComponents from @GameConfiguration classes
         this.configLoader.activateFailOnNullInstance();
@@ -63,14 +66,19 @@ public class GameInitializer {
      * Start the game loop in a new thread
      */
     public void start() {
-        System.out.print("OK");
+        System.out.println("\nRUNNING\n");
     }
 
     public void loadEssentials() {
         this.configClasses.add(EssentialGameConfigurationDependencies.class);
     }
 
-    public void addGameConfigurationInstances(Object... instances) {
-
+    /**
+     * Must be added before this.load is called.
+     *
+     * @param instances
+     */
+    public void addGameConfigurationActivities(Activity... instances) {
+        this.configClassInstances.addAll(Arrays.asList(instances));
     }
 }

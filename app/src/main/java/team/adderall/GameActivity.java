@@ -27,7 +27,7 @@ public class GameActivity
                 Configuration.class
         );
         this.gameInitializer.loadEssentials(); // add GameContext
-        this.gameInitializer.addGameConfigurationInstances(this);
+        this.gameInitializer.addGameConfigurationActivities(this); // link this instance
     }
 
     @Override
@@ -35,6 +35,7 @@ public class GameActivity
         super.onAttachedToWindow();
         this.gameInitializer.load(()-> {
             System.out.println("######### finished loading game");
+            this.gameInitializer.start();
         });
         System.out.println("######### loading game objects");
     }

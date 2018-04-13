@@ -1,5 +1,6 @@
 package team.adderall.game.framework;
 
+import android.app.Activity;
 import android.util.Log;
 
 import java.lang.annotation.Annotation;
@@ -19,12 +20,14 @@ public class GameConfigurationLoader
     private final List<Class<?>> configs;
     private final List<GameComponentData> components;
     private final GameContextSetter ctx;
+    private final List<Activity> instances;
 
     private boolean failOnNullInstance;
 
     public GameConfigurationLoader(final GameContextSetter ctx, final List<Class<?>> configs) {
         this.configs = new ArrayList<>(configs);
         this.components = new ArrayList<>();
+        this.instances = new ArrayList<>();
         this.ctx = ctx;
         this.failOnNullInstance = false;
     }
@@ -33,9 +36,14 @@ public class GameConfigurationLoader
         this.configs = new ArrayList<>();
         this.configs.addAll(Arrays.asList(configs));
 
+        this.instances = new ArrayList<>();
         this.components = new ArrayList<>();
         this.ctx = ctx;
         this.failOnNullInstance = false;
+    }
+
+    public void addGameConfigurationInstances(final List<Activity> instances) {
+        this.instances.addAll(instances);
     }
 
     private void loadGameComponentRegisters(final Class<?> config, final Object instance) {
@@ -96,18 +104,27 @@ public class GameConfigurationLoader
         this.failOnNullInstance = true;
     }
 
-    public void load() {
-        // TODO: use Object and check if instance or .class type
-        Object t = this.getClass();
+    public boolean isGameConfiguration(final Class<?> config) {
+        return config.getAnnotation(GameConfiguration.class) != null;
+    }
 
+    public void load() {
         for (final Class<?> config : this.configs) {
-            // ignore classes that aren't marked GameConfiguration
-            Annotation valid = config.getAnnotation(GameConfiguration.class);
-            if (valid == null) {
+            if (!this.isGameConfiguration(config)) {
                 continue;
             }
 
             this.loadGameComponentRegisters(config);
+        }
+
+        // also check live instances if injected
+        for (Activity instance : this.instances) {
+            Class<?> c = instance.getClass();
+            if (!this.isGameConfiguration(c)) {
+                continue;
+            }
+
+            this.loadGameComponentRegisters(instance.getClass(), instance);
         }
 
         // add GameContext
