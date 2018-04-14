@@ -240,7 +240,25 @@ public class GameComponentData
     public void updateDependencies(final List<GameComponentData> components) {
         for (GameComponentData component : components) {
             if (this.dependsOnComponent(component.getName())) {
-                this.dependencies.addAll(component.getDependencies());
+                component.updateDependencies(components);
+
+                List<String> requiredDependencies = component.getDependencies();
+                List<String> missingDependencies = new ArrayList<>();
+                for (String want : requiredDependencies) {
+                    boolean alreadyGotIt = false;
+                    for (String got : this.dependencies) {
+                        if (want.equals(got)) {
+                            alreadyGotIt = true;
+                            break;
+                        }
+                    }
+
+                    if (!alreadyGotIt) {
+                        missingDependencies.add(want);
+                    }
+                }
+
+                this.dependencies.addAll(missingDependencies);
             }
         }
     }

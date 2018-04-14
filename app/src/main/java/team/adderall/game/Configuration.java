@@ -1,6 +1,8 @@
 package team.adderall.game;
 
 import android.app.Activity;
+import android.graphics.Point;
+import android.view.Display;
 
 import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.GamePaintWrapper;
@@ -117,12 +119,34 @@ public class Configuration
         return new Players();
     }
 
+    @GameComponent("canvasSize")
+    public Point getCanvasSize(
+            @Inject("activity") Activity activity,
+            @Inject("display") Display display
+    ) {
+        Point canvasSize = new Point();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            // we swap these since we use landscape mode
+            display.getRealSize(canvasSize);
+            //this.physicalWidth = ;
+            //this.physicalHeight = d.getMode().getPhysicalWidth();
+        } else {
+            // shit solution. doesn't really work.
+            canvasSize.set(activity.getResources().getDisplayMetrics().widthPixels, activity.getResources().getDisplayMetrics().heightPixels);
+        }
+
+        return canvasSize;
+    }
+
 
     @GameComponent("level")
     public LevelManager level(
-            @Inject("players") Players players
+            @Inject("players") Players players,
+            @Inject("canvasSize") Point canvasSize
     ) {
-        return new LevelManager(900,900,10,10,10,1);
+
+
+        return new LevelManager(canvasSize.x,canvasSize.y,10,10,10,1);
     }
 
     // FPS counter / draws per second
