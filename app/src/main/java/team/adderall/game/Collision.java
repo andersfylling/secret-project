@@ -53,18 +53,18 @@ public class Collision
 
     @Override
     public void run() {
-        int thinkness = level.getThickness();
+        int thickness = level.getThickness();
         int height = level.getHeight();
         int y = 0;
 
         for(BallManager player: players.toList()) {
             Point pos = player.getPos();
             for (Floor floor : level.getFloors()) {
-                Rect colide = floor.checkColition(height - (y * thinkness), pos, thinkness);
+                Rect collide = floor.checkColition(height - (y * thickness), pos, thickness);
 
-                if (colide != null) {
-                    player.setPos(getNoneIntercetCord(getRect(pos),colide));
-                    player.setVelocity(0);
+                if (collide != null) {
+                    player.setPos(getNoneIntercetCord(getRect(pos), collide));
+                    //player.setVelocity(0);
                 }
             }
         }

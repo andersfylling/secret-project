@@ -18,8 +18,9 @@ public class Gravity
     private double verticalSpeed;
     private double GRAVITY = 9.8;
     private double TERMINALVEL = 30;
-    static int FPS = 60;
     private long lastRun;
+
+
     @GameDepWire
     public Gravity(@Inject("players") Players p) {
         this.players = p;
@@ -42,7 +43,7 @@ public class Gravity
             b.setVelocity(velocity);
 
             Point pos = b.getPos();
-            pos.set(pos.x, pos.y + (int)(velocity * diff));
+            pos.set(pos.x, pos.y + (int)(velocity));
             b.setPos(pos);
 
 
