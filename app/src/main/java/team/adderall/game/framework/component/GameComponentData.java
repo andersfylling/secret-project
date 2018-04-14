@@ -6,6 +6,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import team.adderall.game.framework.context.GameContext;
@@ -20,6 +22,7 @@ public class GameComponentData
     private final Class<?> type;
     private final Method method;
     private final Object classInstance;
+    private final List<String> dependencies;
 
     private Object instance;
 
@@ -42,6 +45,8 @@ public class GameComponentData
             }
         }
 
+        this.dependencies = new ArrayList<>();
+        this.dependencies.addAll(Arrays.asList(this.paramsName));
         this.instance = null;
     }
 
@@ -53,6 +58,7 @@ public class GameComponentData
         this.type = GameContext.class;
         this.method = null;
         this.classInstance = null;
+        this.dependencies = new ArrayList<>();
     }
 
     public Annotation[][] getParams() {
@@ -115,8 +121,8 @@ public class GameComponentData
     }
 
     public boolean dependsOnComponent(String component) {
-        for (String param : this.paramsName) {
-            if (param.equals(component)) {
+        for (String dependency : this.dependencies) {
+            if (dependency.equals(component)) {
                 return true;
             }
         }
@@ -187,16 +193,16 @@ public class GameComponentData
 
     @Override
     public int compareTo(@NonNull GameComponentData gameComponentData) {
-        //System.out.print("comparing " + this.getName() + this.getParamsAsString() + " to " + gameComponentData.getName() + gameComponentData.getParamsAsString() + ": ");
+        System.out.print("comparing " + this.getName() + this.getParamsAsString() + " to " + gameComponentData.getName() + gameComponentData.getParamsAsString() + ": ");
         // always put independent components at top
         if (this.params.length == 0) {
-            //System.out.println("UP");
+            System.out.println("UP");
             return -1;
         }
 
         // if this already is an instance it can go on top
         if (this.instance != null) {
-            //System.out.println("UP");
+            System.out.println("UP");
             return -1;
         }
 
@@ -216,18 +222,48 @@ public class GameComponentData
 
         // if the other component depends on this, move up
         if (gameComponentData.dependsOnComponent(this.getName())) {
-            //System.out.println("UP");
+            System.out.println("UP");
             return -1;
         }
 
         // if this depends on other, move down
         if(this.dependsOnComponent(gameComponentData.getName())) {
-            //System.out.println("DOWN");
+            System.out.println("DOWN");
             return 1;
         }
 
         // otherwise our order / priority doesn't need to change
-        //System.out.println("-");
+        System.out.println("-");
         return 0;
+    }
+
+    public void updateDependencies(final List<GameComponentData> components) {
+        for (GameComponentData component : components) {
+            if (this.dependsOnComponent(component.getName())) {
+                component.updateDependencies(components);
+
+                List<String> requiredDependencies = component.getDependencies();
+                List<String> missingDependencies = new ArrayList<>();
+                for (String want : requiredDependencies) {
+                    boolean alreadyGotIt = false;
+                    for (String got : this.dependencies) {
+                        if (want.equals(got)) {
+                            alreadyGotIt = true;
+                            break;
+                        }
+                    }
+
+                    if (!alreadyGotIt) {
+                        missingDependencies.add(want);
+                    }
+                }
+
+                this.dependencies.addAll(missingDependencies);
+            }
+        }
+    }
+
+    public List<String> getDependencies() {
+        return this.dependencies;
     }
 }

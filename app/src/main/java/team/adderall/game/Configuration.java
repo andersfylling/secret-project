@@ -1,7 +1,11 @@
 package team.adderall.game;
 
 import android.app.Activity;
+import android.graphics.Point;
+import android.view.Display;
 
+import team.adderall.game.ball.BallManager;
+import team.adderall.game.ball.DrawBall;
 import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.GamePaintWrapper;
 import team.adderall.game.framework.GamePainter;
@@ -14,6 +18,7 @@ import team.adderall.game.framework.context.GameContextSetter;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponentRegister;
 import team.adderall.game.framework.component.Inject;
+import team.adderall.game.level.LevelManager;
 
 /**
  * Reference this class in the GameActivity when initializing the game.
@@ -35,25 +40,38 @@ public class Configuration
     // ### Game logic setup
     // ###
     // ########################################################################################
+
     @GameComponent("gameLogicFirstWave")
     public GameLogicInterface[] firstLogicWave(
             @Inject("gravity") Gravity gravity
+
     ) {
         return new GameLogicInterface[]{
                 gravity
         };
     }
+    @GameComponent("gameLogicSecondWave")
+    public GameLogicInterface[] secondLogicWave(
+            @Inject("collision") Collision collision
+
+    ) {
+        return new GameLogicInterface[]{
+                collision
+        };
+    }
 
     @GameComponent(GameContext.LOGIC)
     public GameLogicInterface[][] setLogicWaves(
-            @Inject("gameLogicFirstWave") GameLogicInterface[] first
+            @Inject("gameLogicFirstWave") GameLogicInterface[] first,
+            @Inject("gameLogicSecondWave") GameLogicInterface[] second
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
         // group waves
         return new GameLogicInterface[][]{
-                first
+                first,
+                second
         };
     }
 
@@ -65,12 +83,16 @@ public class Configuration
     @GameComponent(GameContext.PAINT)
     public GamePainter[][] setPaintWaves(
             @Inject("FPSPainter") GamePainter fps,
-            @Inject("LPSPainter") GamePainter lps
-    ) {
+            @Inject("LPSPainter") GamePainter lps,
+            @Inject("level") LevelManager level,
+            @Inject("drawball") DrawBall drawball
+
+            ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
         GamePainter[] firstWave = new GamePainter[]{
+                level,drawball
         };
 
         GamePainter[] updateRatePainters = new GamePainter[] {
@@ -108,9 +130,59 @@ public class Configuration
         return new Gravity(players);
     }
 
+    @GameComponent("collision")
+    public Collision collision(
+            @Inject("players") Players players,
+            @Inject("level") LevelManager level
+    ) {
+        return new Collision(players,level);
+    }
+
     @GameComponent("players")
-    public Players players() {
-        return new Players();
+    public Players players(
+            @Inject("SensorChangedWorker") SensorChangedWorker handler
+    ) {
+        final Players players = new Players();
+        handler.addListener(players::onSensorEvt);
+
+        return players;
+    }
+
+    @GameComponent("canvasSize")
+    public Point getCanvasSize(
+            @Inject("activity") Activity activity,
+            @Inject("display") Display display
+    ) {
+        Point canvasSize = new Point();
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            // we swap these since we use landscape mode
+            display.getRealSize(canvasSize);
+            //this.physicalWidth = ;
+            //this.physicalHeight = d.getMode().getPhysicalWidth();
+        } else {
+            // shit solution. doesn't really work.
+            canvasSize.set(activity.getResources().getDisplayMetrics().widthPixels, activity.getResources().getDisplayMetrics().heightPixels);
+        }
+
+        return canvasSize;
+    }
+
+
+    @GameComponent("level")
+    public LevelManager level(
+            @Inject("players") Players players,
+            @Inject("canvasSize") Point canvasSize
+    ) {
+
+
+        return new LevelManager(canvasSize.x,canvasSize.y,10,10,100,1);
+    }
+
+    @GameComponent("drawball")
+    public DrawBall ball(
+            @Inject("players") Players players
+    ) {
+        return new DrawBall(players);
     }
 
     // FPS counter / draws per second
@@ -149,6 +221,8 @@ public class Configuration
 
         return painter;
     }
+
+
 
     // configure GameLoop counters
     @GameComponent("_register_GameLoop_rateUpdaters")
