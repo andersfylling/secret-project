@@ -6,6 +6,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import team.adderall.game.framework.component.GameComponent;
+import team.adderall.game.framework.component.GameDepWire;
+import team.adderall.game.framework.component.Inject;
+import team.adderall.game.framework.context.GameContext;
+
+@GameComponent
 public class GameLoop
         implements Runnable
 {
@@ -16,14 +22,22 @@ public class GameLoop
 
     private final ExecutorService logicerThreadPool;
     private final GameLogicInterface[][] logics;
-    private final GamePainter[][] painters;
+    private final GamePaintWrapper painter;
+
+    private UpdateRateCounter lps;
+    private UpdateRateCounter fps;
+
 
     private boolean running;
     private long nextRun;
 
-    public GameLoop(final GameLogicInterface[][] logics, final GamePainter[][] painters) {
+    @GameDepWire
+    public GameLoop(
+            @Inject(GameContext.LOGIC) final GameLogicInterface[][] logics,
+            @Inject("gamePaintWrapper") final GamePaintWrapper gamePaintWrapper
+    ) {
         this.logics = logics;
-        this.painters = painters;
+        this.painter = gamePaintWrapper;
 
         int requiredThreads = 0;
         for (GameLogicInterface[] wave : logics) {
@@ -35,6 +49,9 @@ public class GameLoop
 
         this.running = true;
         this.nextRun = System.currentTimeMillis();
+
+        this.lps = null;
+        this.fps = null;
     }
 
     /**
@@ -68,7 +85,10 @@ public class GameLoop
             int loops = 0;
             while (System.currentTimeMillis() < nextRun && loops < MAX_FRAMESKIP) {
                 try {
-                    this.executeLogicInWaves(nextRun - System.currentTimeMillis());
+                    this.executeLogicInWaves(nextRun - System.currentTimeMillis() + 1);
+                    if (this.lps != null) {
+                        this.lps.update();
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     // TODO: improve? somehow? help
@@ -77,12 +97,22 @@ public class GameLoop
             }
 
             nextRun += TIMEOUT_MS;
-            //this.paintListener.executeGamePaint();
-            System.out.println("painting");
+            this.painter.redraw(); // threaded, might need to synchronize
+            if (this.fps != null) {
+                this.fps.update();
+            }
         }
     }
 
     public void stopGameLoop() {
         this.running = false;
+    }
+
+    public void setLps(UpdateRateCounter lps) {
+        this.lps = lps;
+    }
+
+    public void setFps(UpdateRateCounter fps) {
+        this.fps = fps;
     }
 }
