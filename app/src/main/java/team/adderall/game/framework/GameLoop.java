@@ -27,7 +27,6 @@ public class GameLoop
     private UpdateRateCounter lps;
     private UpdateRateCounter fps;
 
-
     private boolean running;
     private long nextRun;
 

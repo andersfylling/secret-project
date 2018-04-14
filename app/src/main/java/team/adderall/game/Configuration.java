@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.view.Display;
 
+import team.adderall.game.ball.BallManager;
+import team.adderall.game.ball.DrawBall;
 import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.GamePaintWrapper;
 import team.adderall.game.framework.GamePainter;
@@ -69,14 +71,15 @@ public class Configuration
     public GamePainter[][] setPaintWaves(
             @Inject("FPSPainter") GamePainter fps,
             @Inject("LPSPainter") GamePainter lps,
-            @Inject("level") LevelManager level
+            @Inject("level") LevelManager level,
+            @Inject("drawball") DrawBall drawball
 
-    ) {
+            ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
         GamePainter[] firstWave = new GamePainter[]{
-                level
+                level,drawball
         };
 
         GamePainter[] updateRatePainters = new GamePainter[] {
@@ -146,7 +149,14 @@ public class Configuration
     ) {
 
 
-        return new LevelManager(canvasSize.x,canvasSize.y,10,10,10,1);
+        return new LevelManager(canvasSize.x,canvasSize.y,10,10,100,1);
+    }
+
+    @GameComponent("drawball")
+    public DrawBall ball(
+            @Inject("players") Players players
+    ) {
+        return new DrawBall(players);
     }
 
     // FPS counter / draws per second

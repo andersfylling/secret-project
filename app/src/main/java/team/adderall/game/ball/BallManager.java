@@ -1,0 +1,187 @@
+package team.adderall.game.ball;
+
+/**
+ * Created by Cim on 14/4/18.
+ */
+
+
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
+
+
+import team.adderall.game.PositionTracker;
+import team.adderall.game.SensorEvt;
+import team.adderall.game.SensorEvtListener;
+import team.adderall.game.framework.component.GameComponent;
+
+import java.util.ArrayList;
+
+/**
+ * Handles rendering of the ball.
+ *
+ * TODO: how do we deal with collision detection? perhaps use a class to bind BallManager
+ * TODO: and LevelManager somehow.. beans + DI?
+ */
+@GameComponent("ballManager")
+public class BallManager
+        implements
+        SensorEvtListener
+{
+    // defaults
+    // |
+    // +- movement speed / sensitivity
+    private final static double SPEED = 1.75;
+    // |
+    // +- ball radius
+    private final static int RADIUS = 45;
+    // |
+    // +- movement threshold
+    private final static int MOVEMENT_THRESHOLD = 0;
+    // |
+    // +- dead or alive state
+    public final static int STATE_ALIVE = 1;
+    public final static int STATE_DEAD = 2;
+
+
+    // behavior
+    private double speed;
+
+    // Ball details
+    private Ball ball;
+
+    // track ball position
+    private PositionTracker tracker;
+
+    // details for paining the ball
+    private Paint painter;
+    private Paint deathPainter;
+    //private DeathZone deathZone;
+    private int state;
+    private final boolean activePlayer;
+
+    /**
+     * Constructor
+     */
+
+    public BallManager(final boolean activePlayer) {
+
+        this.ball = new Ball(RADIUS);
+
+        this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
+
+        this.painter = new Paint();
+        this.painter.setColor(Color.parseColor(ball.getColour()));
+        this.painter.setStyle(Paint.Style.FILL);
+
+        this.deathPainter = new Paint();
+        this.deathPainter.setColor(Color.RED);
+        this.deathPainter.setTextSize(75);
+        this.deathPainter.setTextAlign(Paint.Align.CENTER);
+
+        this.speed = SPEED;
+        this.state = STATE_ALIVE;
+        this.activePlayer = activePlayer;
+    }
+
+
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public void moveBallTo(int x, int y) {
+        this.tracker.updatePosition(x, y);
+    }
+
+    /**
+     * Move the ball a little without knowing the end position.
+     *
+     * @deprecated Let the ball manager deal with ball movements on it's own
+     * @param xDiff
+     * @param yDiff
+     */
+    public void moveBall(int xDiff, int yDiff) {
+
+        this.tracker.addToPosition(xDiff, yDiff);
+    }
+
+    /**
+     * Add a new velocity
+     */
+    public void ballJump(){
+        this.tracker.addVelocity(-30);
+    }
+    /**
+     * Paint / draw the ball
+     * @param canvas
+     */
+    public void paint(Canvas canvas) {
+        // draw the ball
+        canvas.drawCircle(this.tracker.getX(), this.tracker.getY(), this.ball.getRadius(), this.painter);
+        // update the tracker
+        this.tracker.updateOldPosition();
+
+        if (this.state == STATE_DEAD) {
+            this.painter.setColor(Color.BLACK);
+            this.painter.setAlpha(200);
+            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), this.painter);
+            canvas.drawText("YOU ARE DEAD", canvas.getWidth() / 2, canvas.getHeight() / 2, this.deathPainter);
+        }
+    }
+
+    /**
+     * Listen for tilt and what not
+     */
+    @Override
+    public void onSensorEvt(SensorEvt evt) {
+        if (this.state == STATE_DEAD) {
+            return;
+        }
+
+        int xChange = (int) ((-evt.getX()) * this.speed);
+        int yChange = (int) ((evt.getY()) * this.speed);
+
+
+        // update ball position
+        // yDiff is 0 as we currently are only moving along one axis.
+        this.tracker.addToPosition(xChange, 0);
+
+    }
+
+    //public void setDeathZone(DeathZone deathZone) {
+    //    this.deathZone = deathZone;
+    //}
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public Point getPos() {
+        Point point = new Point(this.tracker.getX(),this.tracker.getY());
+        return point;
+    }
+    public void setPos(Point point){
+        this.tracker.setposition(point);
+    }
+
+    public void colided(Rect squere) {
+        this.tracker.colided(squere);
+
+    }
+
+    public void doGravity() {
+        this.tracker.fallToTheGround();
+    }
+    public void updatePlayerPos(){
+        this.tracker.updatePlayerPos();
+    }
+
+
+}
