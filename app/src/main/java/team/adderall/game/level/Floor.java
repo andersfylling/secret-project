@@ -7,6 +7,7 @@ package team.adderall.game.level;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 
 import java.util.ArrayList;
@@ -43,11 +44,11 @@ public class Floor
         }
     }
 
-    public Rect checkColition(int y, ArrayList<Integer> pos, int thickness){
+    public Rect checkColition(int y, Point pos, int thickness){
         for (Line line : this.lines) {
             if(line.getFloorType() == 0) continue;
             Rect squere = new Rect(line.getX1(), this.y, line.getX2(), this.y +thickness);
-            Rect ball = new Rect(pos.get(0) -45, pos.get(1)-45, pos.get(0) + 45, pos.get(1)+45);
+            Rect ball = new Rect(pos.x -45, pos.y-45, pos.x + 45, pos.y+45);
 
             if(ball.intersect(squere)){
                 return squere;

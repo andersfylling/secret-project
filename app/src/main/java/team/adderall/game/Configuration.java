@@ -42,10 +42,12 @@ public class Configuration
     // ########################################################################################
     @GameComponent("gameLogicFirstWave")
     public GameLogicInterface[] firstLogicWave(
-            @Inject("gravity") Gravity gravity
+            @Inject("gravity") Gravity gravity,
+            @Inject("collision") Collision collision
+
     ) {
         return new GameLogicInterface[]{
-                gravity
+                gravity,collision
         };
     }
 
@@ -115,6 +117,14 @@ public class Configuration
             @Inject("players") Players players
     ) {
         return new Gravity(players);
+    }
+
+    @GameComponent("collision")
+    public Collision collision(
+            @Inject("players") Players players,
+            @Inject("level") LevelManager level
+    ) {
+        return new Collision(players,level);
     }
 
     @GameComponent("players")
