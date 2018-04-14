@@ -40,27 +40,38 @@ public class Configuration
     // ### Game logic setup
     // ###
     // ########################################################################################
+
     @GameComponent("gameLogicFirstWave")
     public GameLogicInterface[] firstLogicWave(
-            @Inject("gravity") Gravity gravity,
+            @Inject("gravity") Gravity gravity
+
+    ) {
+        return new GameLogicInterface[]{
+                gravity
+        };
+    }
+    @GameComponent("gameLogicSecondWave")
+    public GameLogicInterface[] secondLogicWave(
             @Inject("collision") Collision collision
 
     ) {
         return new GameLogicInterface[]{
-                gravity,collision
+                collision
         };
     }
 
     @GameComponent(GameContext.LOGIC)
     public GameLogicInterface[][] setLogicWaves(
-            @Inject("gameLogicFirstWave") GameLogicInterface[] first
+            @Inject("gameLogicFirstWave") GameLogicInterface[] first,
+            @Inject("gameLogicSecondWave") GameLogicInterface[] second
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
         // group waves
         return new GameLogicInterface[][]{
-                first
+                first,
+                second
         };
     }
 

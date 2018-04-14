@@ -162,6 +162,29 @@ public class GameConfigurationLoader
         }
         System.out.flush();
 
+        // hard core old stupid sort
+        for (int i = 0; i < this.components.size(); i++) {
+            GameComponentData current = this.components.get(i);
+            List<String> deps = current.getDependencies();
+            for (int j = i + 1; j < this.components.size(); j++) {
+                String n = this.components.get(j).getName();
+                for (String dep : deps) {
+                    if (dep.equals(n)) {
+                        for (int y = i + 1; y <= j; y++) {
+                            this.components.set(y - 1, this.components.get(y));
+                        }
+                        this.components.set(j, current);
+                    }
+                }
+
+            }
+        }
+        System.out.println(" HARDCORE SORT RESULT ::::::::::::");
+        for (GameComponentData component : this.components) {
+            System.out.print(component.getName() + ": " + Integer.toString(component.getDependencies().size()) + "\n");
+        }
+        System.out.flush();
+
 
         // instantiate components
         for (GameComponentData component : this.components) {
