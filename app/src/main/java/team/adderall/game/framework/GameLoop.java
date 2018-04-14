@@ -24,6 +24,10 @@ public class GameLoop
     private final GameLogicInterface[][] logics;
     private final GamePaintWrapper painter;
 
+    private UpdateRateCounter lps;
+    private UpdateRateCounter fps;
+
+
     private boolean running;
     private long nextRun;
 
@@ -45,6 +49,9 @@ public class GameLoop
 
         this.running = true;
         this.nextRun = System.currentTimeMillis();
+
+        this.lps = null;
+        this.fps = null;
     }
 
     /**
@@ -78,7 +85,10 @@ public class GameLoop
             int loops = 0;
             while (System.currentTimeMillis() < nextRun && loops < MAX_FRAMESKIP) {
                 try {
-                    this.executeLogicInWaves(nextRun - System.currentTimeMillis());
+                    this.executeLogicInWaves(nextRun - System.currentTimeMillis() + 1);
+                    if (this.lps != null) {
+                        this.lps.update();
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     // TODO: improve? somehow? help
@@ -87,11 +97,22 @@ public class GameLoop
             }
 
             nextRun += TIMEOUT_MS;
-            this.painter.redraw();
+            this.painter.redraw(); // threaded, might need to synchronize
+            if (this.fps != null) {
+                this.fps.update();
+            }
         }
     }
 
     public void stopGameLoop() {
         this.running = false;
+    }
+
+    public void setLps(UpdateRateCounter lps) {
+        this.lps = lps;
+    }
+
+    public void setFps(UpdateRateCounter fps) {
+        this.fps = fps;
     }
 }

@@ -12,8 +12,13 @@ import team.adderall.game.framework.component.GameDepWire;
 public class UpdateRateCountPainter
         implements GamePainter
 {
+    private final static int TIMEOUT = 25;
+
     private final Paint painter;
     private final UpdateRateCounter updateRateCounter;
+
+    private long lastRun;
+    private String lastAVGRate;
 
     private String prefix;
     private int x;
@@ -29,14 +34,19 @@ public class UpdateRateCountPainter
         this.prefix = "rate: ";
         this.x = 50;
         this.y = 50;
+        lastRun = System.currentTimeMillis();
+        lastAVGRate = "0";
     }
 
     @Override
     public void paint(Canvas canvas) {
-        final String text = this.prefix + Long.toString(this.updateRateCounter.getUpdateRate());
+        if (lastRun + TIMEOUT < System.currentTimeMillis()) {
+            this.lastAVGRate = Long.toString(this.updateRateCounter.getUpdateRate());
+            this.lastRun = System.currentTimeMillis();
+        }
+        final String text = this.prefix + this.lastAVGRate;
         canvas.drawText(text, this.x, this.y, this.painter);
     }
-
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;

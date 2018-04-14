@@ -2,6 +2,7 @@ package team.adderall.game;
 
 import android.app.Activity;
 
+import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.GamePaintWrapper;
 import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.UpdateRateCounter;
@@ -120,7 +121,9 @@ public class Configuration
 
     // FPS painter
     @GameComponent("FPSPainter")
-    public GamePainter setFPSPainter(@Inject("FPS") UpdateRateCounter fps) {
+    public GamePainter setFPSPainter(
+            @Inject("FPS") UpdateRateCounter fps
+    ) {
         UpdateRateCountPainter painter = new UpdateRateCountPainter(fps);
         painter.setPrefix("fps: ");
 
@@ -136,12 +139,27 @@ public class Configuration
 
     // LPS painter
     @GameComponent("LPSPainter")
-    public GamePainter setLPSPainter(@Inject("LPS") UpdateRateCounter lps) {
+    public GamePainter setLPSPainter(
+            @Inject("LPS") UpdateRateCounter lps
+    ) {
         UpdateRateCountPainter painter = new UpdateRateCountPainter(lps);
         painter.setPrefix("lps: ");
         painter.setY(110);
         painter.setHexColourCode("#4477AA");
 
         return painter;
+    }
+
+    // configure GameLoop counters
+    @GameComponent("_register_GameLoop_rateUpdaters")
+    public int setLPSAndFPSForGameLoop(
+            @Inject("FPS") UpdateRateCounter fps,
+            @Inject("LPS") UpdateRateCounter lps,
+            @Inject("GameLoop") GameLoop gameLoop
+    ) {
+        gameLoop.setLps(lps);
+        gameLoop.setFps(fps);
+
+        return -1;
     }
 }

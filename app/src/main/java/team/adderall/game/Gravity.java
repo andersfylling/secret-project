@@ -21,6 +21,6 @@ public class Gravity
 
     @Override
     public void run() {
-        System.out.println("running gravity logic");
+        //System.out.println("running gravity logic");
     }
 }
