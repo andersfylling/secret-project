@@ -14,6 +14,7 @@ import team.adderall.game.framework.context.GameContextSetter;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponentRegister;
 import team.adderall.game.framework.component.Inject;
+import team.adderall.game.level.LevelManager;
 
 /**
  * Reference this class in the GameActivity when initializing the game.
@@ -65,12 +66,14 @@ public class Configuration
     @GameComponent(GameContext.PAINT)
     public GamePainter[][] setPaintWaves(
             @Inject("FPSPainter") GamePainter fps,
-            @Inject("LPSPainter") GamePainter lps
+            @Inject("LPSPainter") GamePainter lps,
+            @Inject("level") LevelManager level
+
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
-        GamePainter[] firstWave = new GamePainter[]{
+        GamePainter[] firstWave = new GamePainter[]{level
         };
 
         GamePainter[] updateRatePainters = new GamePainter[] {
@@ -113,6 +116,14 @@ public class Configuration
         return new Players();
     }
 
+
+    @GameComponent("level")
+    public LevelManager level(
+            //@Inject("players") Players players
+    ) {
+        return new LevelManager(900,900,10,10,10,1);
+    }
+
     // FPS counter / draws per second
     @GameComponent("FPS")
     public UpdateRateCounter setFPSCounter() {
@@ -149,6 +160,8 @@ public class Configuration
 
         return painter;
     }
+
+
 
     // configure GameLoop counters
     @GameComponent("_register_GameLoop_rateUpdaters")
