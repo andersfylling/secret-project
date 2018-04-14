@@ -73,7 +73,8 @@ public class Configuration
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
-        GamePainter[] firstWave = new GamePainter[]{level
+        GamePainter[] firstWave = new GamePainter[]{
+                level
         };
 
         GamePainter[] updateRatePainters = new GamePainter[] {
@@ -119,7 +120,7 @@ public class Configuration
 
     @GameComponent("level")
     public LevelManager level(
-            //@Inject("players") Players players
+            @Inject("players") Players players
     ) {
         return new LevelManager(900,900,10,10,10,1);
     }
