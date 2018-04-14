@@ -2,8 +2,13 @@ package team.adderall.game.framework;
 
 import android.os.Process;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import team.adderall.game.framework.component.GameComponent;
@@ -19,7 +24,7 @@ public class GameLoop
     public final static int FPS = 60;
     public final static int TIMEOUT_MS = 1000 / FPS;
 
-
+    //private CountDownLatch latch;
     //private final ExecutorService logicerThreadPool;
     private final GameLogicInterface[][] logics;
     private final GamePaintWrapper painter;
@@ -64,12 +69,17 @@ public class GameLoop
         for (GameLogicInterface[] wave : this.logics) {
             final long start = System.currentTimeMillis();
             // run jobs in parallel
-            for (GameLogicInterface job : wave) {
-                //this.logicerThreadPool.execute(job);
+            //this.latch = new CountDownLatch(wave.length);
+            for (final GameLogicInterface job : wave) {
+            //    this.logicerThreadPool.execute(() -> {
+            //        job.run();
+            //        latch.countDown();
+            //    });
                 job.run();
             }
 
             // wait for jobs to finish
+            //latch.await(remainingMilliSeconds, TimeUnit.MILLISECONDS);
             //this.logicerThreadPool.awaitTermination(remainingMilliSeconds, TimeUnit.MILLISECONDS);
             remainingMilliSeconds -= System.currentTimeMillis() - start; // subtract used time
 
