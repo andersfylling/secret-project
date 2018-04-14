@@ -24,4 +24,5 @@ android:
     #- sys-img-armeabi-v7a-android-26
     #- sys-img-armeabi-v7a-android-17
 script:
+  - sdkmanager --update && yes | sdkmanager --licenses
   - ./gradlew build test
