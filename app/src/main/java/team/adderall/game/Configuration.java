@@ -128,8 +128,13 @@ public class Configuration
     }
 
     @GameComponent("players")
-    public Players players() {
-        return new Players();
+    public Players players(
+            @Inject("SensorChangedWorker") SensorChangedWorker handler
+    ) {
+        final Players players = new Players();
+        handler.addListener(players::onSensorEvt);
+
+        return players;
     }
 
     @GameComponent("canvasSize")
