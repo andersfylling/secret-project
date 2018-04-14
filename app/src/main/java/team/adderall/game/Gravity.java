@@ -18,33 +18,59 @@ public class Gravity
     private double verticalSpeed;
     private double GRAVITY = 9.8;
     private double TERMINALVEL = 30;
-    static int FPS = 60;
+    private long lastRun;
+
+
     @GameDepWire
     public Gravity(@Inject("players") Players p) {
         this.players = p;
+        this.lastRun = System.nanoTime();
     }
 
 
     @Override
     public void run() {
         for(BallManager b : players.toList()){
-            b.setPos(gravity(b.getPos()));
+            long now = System.nanoTime();
+
+            double diff = (now - this.lastRun) / 1000000000.0;
+            this.lastRun = now;
+
+            double velocity = b.getVelocity() + GRAVITY * diff;
+            if(velocity > (int)TERMINALVEL){
+                velocity = (int)TERMINALVEL;
+            }
+            b.setVelocity(velocity);
+
+            Point pos = b.getPos();
+            pos.set(pos.x, pos.y + (int)(velocity));
+            b.setPos(pos);
+
+
+            //b.setPos(gravity(b.getPos()));
         }
     }
 
-    /**
+/*    *//**
      * Gravity implemetation.
      * Fall to the ground at a constant rate.
-     */
+     *//*
     public Point gravity(Point pos) {
         int y = pos.y;
-        this.verticalSpeed += GRAVITY *1/FPS;//0.5* partOfSecond(System.currentTimeMillis());
+        long now = System.nanoTime();
+
+        double diff = now - this.lastRun;
+        double acceleration = 9.8;
+        double velocity += acceleration * diff;
+
+        this.verticalSpeed += GRAVITY * 0.5 * ();
+
         if(this.verticalSpeed > TERMINALVEL){
             this.verticalSpeed = TERMINALVEL;
         }
         y += this.verticalSpeed;
         pos.set(pos.x,y);
         return pos;
-    }
+    }*/
 
 }
