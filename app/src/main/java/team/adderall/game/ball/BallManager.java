@@ -113,12 +113,6 @@ public class BallManager
     }
 
     /**
-     * Add a new velocity
-     */
-    public void ballJump(){
-        this.tracker.addVelocity(-30);
-    }
-    /**
      * Paint / draw the ball
      * @param canvas
      */
@@ -194,5 +188,9 @@ public class BallManager
 
     public void setVelocity(double velocity) {
         this.velocity = velocity;
+    }
+
+    public boolean isActivePlayer() {
+        return activePlayer;
     }
 }

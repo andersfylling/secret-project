@@ -11,6 +11,8 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import team.adderall.game.Configuration;
+import team.adderall.game.Jumping;
+import team.adderall.game.Players;
 import team.adderall.game.SensorChangedWorker;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.configuration.GameConfiguration;
@@ -28,6 +30,7 @@ public class GameActivity
     private GameInitializer gameInitializer;
     private SensorChangedWorker sensorChangedWorker;
     private SensorManager sensorManager;
+    private Jumping jumping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,14 @@ public class GameActivity
         return this.sensorChangedWorker;
     }
 
+    @GameComponent("jumping")
+    public Jumping setJumpListener(
+            @Inject("players") Players players
+    ) {
+        this.jumping = new Jumping(players);
+        return this.jumping;
+    }
+
     @GameComponent("activity")
     public Activity activity() {
         return this;
@@ -85,16 +96,20 @@ public class GameActivity
 
     // TODO: move to a different class(!)
     private void addDeviceSensorListeners() {
-        if (this.sensorManager != null) {
-            final Sensor orientation = this.sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-            final int maxReportLatency = SensorManager.SENSOR_DELAY_GAME;
-            this.sensorManager.registerListener(this, orientation, maxReportLatency);
+        if (this.sensorManager == null) {
+            return;
         }
+
+        final Sensor orientation = this.sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+        final int maxReportLatency = SensorManager.SENSOR_DELAY_GAME;
+        this.sensorManager.registerListener(this, orientation, maxReportLatency);
     }
     private void removeDeviceSensorListeners() {
-        if (this.sensorManager != null) {
-            this.sensorManager.unregisterListener(this);
+        if (this.sensorManager == null) {
+            return;
         }
+
+        this.sensorManager.unregisterListener(this);
     }
 
     @Override
@@ -108,6 +123,16 @@ public class GameActivity
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {}
+
+
+    /**
+     * On any touch event on the screen.
+     */
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        this.jumping.run();
+    }
 
 
     @Override
