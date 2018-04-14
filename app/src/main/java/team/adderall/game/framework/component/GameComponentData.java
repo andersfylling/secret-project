@@ -147,7 +147,7 @@ public class GameComponentData
 
                     // check if instance haven't been initiated
                     if (component.getInstance() == null) {
-                        throw new InstantiationError("game component was expected to be instantiated: " + component.getName());
+                        throw new InstantiationError(this.getName() + " expected it's dependency be instantiated: " + component.getName());
                     }
 
                     counter++;
@@ -160,8 +160,16 @@ public class GameComponentData
         if (dependencies.length > 0 && dependencies[dependencies.length - 1] == null) {
             String err = "missing dependencies for game component: " + this.getName();
 
+            String have = "";
+            for (Object dep : dependencies) {
+                if (dep == null) {
+                    continue;
+                }
+                have += dep.toString() + ",";
+            }
 
-            err += ": params" + this.getParamsAsString();
+
+            err += ": params" + this.getParamsAsString() + ": " + have;
 
             throw new InstantiationError(err);
         }
@@ -265,5 +273,18 @@ public class GameComponentData
 
     public List<String> getDependencies() {
         return this.dependencies;
+    }
+
+    public String getDependenciesAsJSON() {
+        StringBuilder json = new StringBuilder("{");
+        for (String d : this.dependencies) {
+            json.append(d).append(",");
+        }
+        if (json.length() > 1) {
+            json.deleteCharAt(json.length() - 1);
+        }
+        json.append("}");
+
+        return json.toString();
     }
 }

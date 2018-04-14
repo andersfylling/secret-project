@@ -12,11 +12,14 @@ public class Players
     implements SensorEvtListener
 {
     private final List<BallManager> players;
+    private BallManager active;
 
     @GameDepWire
     public Players() {
         this.players = new ArrayList<>();
-        players.add(new BallManager(true));
+        this.active = new BallManager(true);
+
+        players.add(this.active); // use a registration service to handle multiplayer logic (?)
     }
 
     public List<BallManager> toList() {
@@ -28,5 +31,9 @@ public class Players
         for (BallManager manager : this.players) {
             manager.onSensorEvt(evt);
         }
+    }
+
+    public BallManager getActive() {
+        return this.active;
     }
 }
