@@ -15,12 +15,12 @@ import team.adderall.game.framework.context.GameContext;
 public class GameLoop
         implements Runnable
 {
-    public final static int MAX_FRAMESKIP = 100;
+    public final static int MAX_FRAMESKIP = 200;
     public final static int FPS = 60;
     public final static int TIMEOUT_MS = 1000 / FPS;
 
 
-    private final ExecutorService logicerThreadPool;
+    //private final ExecutorService logicerThreadPool;
     private final GameLogicInterface[][] logics;
     private final GamePaintWrapper painter;
 
@@ -44,7 +44,7 @@ public class GameLoop
                 requiredThreads = wave.length;
             }
         }
-        this.logicerThreadPool = Executors.newFixedThreadPool(requiredThreads);
+        //this.logicerThreadPool = Executors.newFixedThreadPool(requiredThreads);
 
         this.running = true;
         this.nextRun = System.currentTimeMillis();
@@ -65,11 +65,12 @@ public class GameLoop
             final long start = System.currentTimeMillis();
             // run jobs in parallel
             for (GameLogicInterface job : wave) {
-                this.logicerThreadPool.execute(job);
+                //this.logicerThreadPool.execute(job);
+                job.run();
             }
 
             // wait for jobs to finish
-            this.logicerThreadPool.awaitTermination(remainingMilliSeconds, TimeUnit.MILLISECONDS);
+            //this.logicerThreadPool.awaitTermination(remainingMilliSeconds, TimeUnit.MILLISECONDS);
             remainingMilliSeconds -= System.currentTimeMillis() - start; // subtract used time
 
             // finished wave, go to next wave

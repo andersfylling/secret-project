@@ -49,6 +49,8 @@ public class BallManager
     // behavior
     private double speed;
 
+    private double velocity;
+
     // Ball details
     private Ball ball;
 
@@ -84,6 +86,8 @@ public class BallManager
         this.speed = SPEED;
         this.state = STATE_ALIVE;
         this.activePlayer = activePlayer;
+
+        this.velocity = 0;
     }
 
 
@@ -184,4 +188,11 @@ public class BallManager
     }
 
 
+    public double getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
+    }
 }

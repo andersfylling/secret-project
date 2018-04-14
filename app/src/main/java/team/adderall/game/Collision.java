@@ -64,13 +64,15 @@ public class Collision
 
                 if (colide != null) {
                     player.setPos(getNoneIntercetCord(getRect(pos),colide));
+                    player.setVelocity(0);
                 }
             }
         }
 
     }
-        private Rect getRect(Point p){
-            Rect ball = new Rect(p.x -45, p.y-45, p.x + 45, p.y+45);
-            return ball;
-        }
+
+    private Rect getRect(Point p){
+        Rect ball = new Rect(p.x - 45, p.y - 45, p.x + 45, p.y + 45);
+        return ball;
+    }
 }
