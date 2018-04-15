@@ -59,11 +59,21 @@ public class Configuration
                 collision
         };
     }
+    @GameComponent("gameLogicThirdWave")
+    public GameLogicInterface[] thirdLogicWave(
+            @Inject("killPlayerWhenBelowScreen") KillPlayerWhenBelowScreen killer
+
+    ) {
+        return new GameLogicInterface[]{
+                killer
+        };
+    }
 
     @GameComponent(GameContext.LOGIC)
     public GameLogicInterface[][] setLogicWaves(
             @Inject("gameLogicFirstWave") GameLogicInterface[] first,
-            @Inject("gameLogicSecondWave") GameLogicInterface[] second
+            @Inject("gameLogicSecondWave") GameLogicInterface[] second,
+            @Inject("gameLogicThirdWave") GameLogicInterface[] third
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
@@ -71,7 +81,8 @@ public class Configuration
         // group waves
         return new GameLogicInterface[][]{
                 first,
-                second
+                second,
+                third
         };
     }
 
@@ -235,5 +246,13 @@ public class Configuration
         gameLoop.setFps(fps);
 
         return -1;
+    }
+
+    @GameComponent("killPlayerWhenBelowScreen")
+    public KillPlayerWhenBelowScreen addDeathZone(
+            @Inject("players") Players players,
+            @Inject("canvasSize") Point canvasSize
+    ) {
+        return new KillPlayerWhenBelowScreen(players, canvasSize);
     }
 }
