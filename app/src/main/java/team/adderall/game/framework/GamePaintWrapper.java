@@ -54,6 +54,9 @@ public class GamePaintWrapper
 
     @Override
     public void paint(final Canvas canvas) {
+
+        this.scrollBy(0,-1);
+
         for (GamePainter[] layerPainters : this.painters) {
             for (GamePainter painter : layerPainters) {
                 painter.paint(canvas);

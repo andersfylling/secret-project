@@ -64,7 +64,7 @@ public class Collision
 
                 if (collide != null) {
                     player.setPos(getNoneIntercetCord(getRect(pos), collide));
-                    //player.setVelocity(0);
+                    player.setVelocity(0);
                 }
             }
         }

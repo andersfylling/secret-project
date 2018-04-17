@@ -20,6 +20,6 @@ public class Jumping
 
     @Override
     public void run() {
-        this.player.setVelocity(-4);
+        this.player.setVelocity(-5);
     }
 }
