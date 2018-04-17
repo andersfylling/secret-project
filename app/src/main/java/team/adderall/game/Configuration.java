@@ -96,9 +96,11 @@ public class Configuration
             @Inject("FPSPainter") GamePainter fps,
             @Inject("LPSPainter") GamePainter lps,
             @Inject("level") LevelManager level,
-            @Inject("drawball") DrawBall drawball
+            @Inject("drawball") DrawBall drawball,
+            @Inject("DrawHighScore") DrawHighScore drawHighScore
 
-            ) {
+
+    ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
@@ -108,7 +110,8 @@ public class Configuration
 
         GamePainter[] updateRatePainters = new GamePainter[] {
                 fps, // frames per second
-                lps  // logic rounds per second
+                lps,  // logic rounds per second
+                drawHighScore
         };
 
         // group waves
@@ -194,6 +197,13 @@ public class Configuration
             @Inject("players") Players players
     ) {
         return new DrawBall(players);
+    }
+
+    @GameComponent("DrawHighScore")
+    public DrawHighScore highScore(
+            @Inject("players") Players players
+    ) {
+        return new DrawHighScore(players);
     }
 
     // FPS counter / draws per second

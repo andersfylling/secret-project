@@ -193,4 +193,9 @@ public class BallManager
     public boolean isActivePlayer() {
         return activePlayer;
     }
+
+
+    public void drawHighScore(Canvas canvas) {
+        this.tracker.drawHighScore(canvas);
+    }
 }
