@@ -12,7 +12,7 @@ public class PositionTracker
 {
     private static final double SPEEDREDUCTION = 0.2;
     private final int movementThreshold;
-    private HighScore highScore;
+    private HighScore highScore = null;
     private boolean blocked;
     private int x;
     private int y;
@@ -179,7 +179,8 @@ public class PositionTracker
         highScore.potensiallySetHighestXValue(y);
     }
 
-    public void drawHighScore(Canvas canvas) {
-        this.highScore.paint(canvas);
+    public void drawHighScore(Canvas canvas, float y) {
+        if(this.highScore != null)
+            this.highScore.paint(canvas, y);
     }
 }

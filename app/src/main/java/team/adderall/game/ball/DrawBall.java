@@ -31,4 +31,9 @@ public class DrawBall implements
             player.paint(canvas);
         }
     }
+
+    @Override
+    public void paint(Canvas canvas, float y) {
+
+    }
 }

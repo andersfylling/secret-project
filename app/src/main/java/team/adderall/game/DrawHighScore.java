@@ -25,8 +25,13 @@ public class DrawHighScore implements
 
     @Override
     public void paint(Canvas canvas) {
+
+    }
+
+    @Override
+    public void paint(Canvas canvas, float y) {
         for(BallManager player : players.toList()){
-            player.drawHighScore(canvas);
+            player.drawHighScore(canvas,y);
         }
     }
 }

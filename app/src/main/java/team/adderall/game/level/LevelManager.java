@@ -104,7 +104,12 @@ public class LevelManager
             }
         }
 
-        public int getHeight() {
+    @Override
+    public void paint(Canvas canvas, float y) {
+
+    }
+
+    public int getHeight() {
             return height;
         }
     }

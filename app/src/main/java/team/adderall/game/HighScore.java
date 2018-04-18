@@ -18,8 +18,8 @@ class HighScore {
     /**
      * Declare different values the person would be scored on
      */
-    private int highestXValue;
-    private Paint painter;
+    private int highestXValue = 0;
+    private Paint painter = null;
 
 
     public void HighScore(){
@@ -35,13 +35,24 @@ class HighScore {
         return this.highestXValue;
     }
     public void potensiallySetHighestXValue(int newScore){
-        if(newScore > this.highestXValue)
+        if(newScore < this.highestXValue)
             this.highestXValue = newScore;
     }
 
-    public void paint(Canvas canvas) {
-        final String text = "HighScore" + highestXValue;
-        canvas.drawText(text, 50, 100, this.painter);
+    /**
+     * Should these things be painted on a seperat view? on top of the other view.
+     * So that we wont need to update the y position?
+     * @param canvas
+     */
+    public void paint(Canvas canvas,float y) {
+        int scaledHighScore = highestXValue/-100;
+        final String text = "HighScore: " + Integer.toString(scaledHighScore);
+        if(this.painter == null){
+            this.painter = new Paint();
+            this.painter.setTextSize(40);
+            this.painter.setColor(Color.RED);
+        }
+        canvas.drawText(text, 50, y+200, this.painter);
     }
 
 

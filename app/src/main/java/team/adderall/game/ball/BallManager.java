@@ -195,7 +195,7 @@ public class BallManager
     }
 
 
-    public void drawHighScore(Canvas canvas) {
-        this.tracker.drawHighScore(canvas);
+    public void drawHighScore(Canvas canvas, float y) {
+        this.tracker.drawHighScore(canvas,y);
     }
 }

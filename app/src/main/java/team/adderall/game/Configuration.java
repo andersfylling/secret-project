@@ -116,9 +116,9 @@ public class Configuration
 
         // group waves
         return new GamePainter[][]{
-                firstWave,
-
-                updateRatePainters // always last as we need these to be on top
+                updateRatePainters,
+                firstWave
+                 // always last as we need these to be on top
         };
     }
 
