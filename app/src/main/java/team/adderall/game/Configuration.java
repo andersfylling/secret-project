@@ -93,7 +93,8 @@ public class Configuration
             @Inject("LPSPainter") GamePainter lps,
             @Inject("level") LevelManager level,
             @Inject("drawball") DrawBall drawball,
-            @Inject("DrawHighScore") DrawHighScore drawHighScore
+            @Inject("DrawHighScore") DrawHighScore drawHighScore,
+            @Inject("DrawKillScreen") DrawKillScreen drawKillScreen
 
 
     ) {
@@ -101,7 +102,7 @@ public class Configuration
         // but each wave is sequential
 
         GamePainter[] firstWave = new GamePainter[]{
-                level,drawball
+                level,drawball,drawKillScreen
         };
 
         GamePainter[] updateRatePainters = new GamePainter[] {
@@ -209,6 +210,14 @@ public class Configuration
         return new DrawHighScore(players);
     }
 
+    @GameComponent("DrawKillScreen")
+    public  DrawKillScreen drawKillScreen(
+            @Inject("players") Players players,
+            @Inject("GameState") GameState gameState
+
+    ) {
+        return new DrawKillScreen(players,gameState);
+    }
     // FPS counter / draws per second
     @GameComponent("FPS")
     public UpdateRateCounter setFPSCounter() {

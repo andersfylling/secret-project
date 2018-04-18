@@ -122,12 +122,6 @@ public class BallManager
         // update the tracker
         this.tracker.updateOldPosition();
 
-        if (this.state == STATE_DEAD) {
-            this.painter.setColor(Color.BLACK);
-            this.painter.setAlpha(200);
-            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), this.painter);
-            canvas.drawText("YOU ARE DEAD", canvas.getWidth() / 2, canvas.getHeight() / 2, this.deathPainter);
-        }
     }
 
     /**
