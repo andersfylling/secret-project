@@ -1,12 +1,12 @@
 package team.adderall.game.framework;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Canvas;
 import android.view.View;
 
 import java.util.ArrayList;
 
+import team.adderall.game.GameState;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
@@ -21,6 +21,7 @@ public class GamePaintWrapper
 {
     private final Activity activity;
     private final GamePainter[][] painters;
+    private final GameState gameState;
     private ArrayList<GamePainter[]> gameObjects;
     private ArrayList<GamePainter[]> fixedPositionObjects;
 
@@ -34,12 +35,15 @@ public class GamePaintWrapper
     @GameDepWire
     public GamePaintWrapper(
             @Inject("activity") final Activity activity,
-            @Inject(GameContext.PAINT) GamePainter[][] painters
+            @Inject(GameContext.PAINT) GamePainter[][] painters,
+            @Inject("GameState") GameState gameState
     ) {
         super(activity);
 
         this.activity = activity;
         this.painters = painters;
+        this.gameState = gameState;
+
         this.fixedPositionObjects = new ArrayList<GamePainter[]>();
         this.gameObjects = new ArrayList<GamePainter[]>();
 
@@ -62,6 +66,8 @@ public class GamePaintWrapper
         this.activity.runOnUiThread(() -> self.activity.setContentView(self));
     }
 
+
+
     public void redraw() {
         final GamePaintWrapper self = this;
         this.activity.runOnUiThread(self::invalidate);
@@ -72,6 +78,12 @@ public class GamePaintWrapper
         super.onDraw(canvas);
         this.paint(canvas);
         this.paint(canvas,this.getScrollY());
+
+        this.updateScrollY();
+    }
+
+    private void updateScrollY() {
+        this.gameState.setyScaleValue(this.getScrollY());
     }
 
     @Override

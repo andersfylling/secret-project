@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.view.Display;
 
-import team.adderall.game.ball.BallManager;
 import team.adderall.game.ball.DrawBall;
 import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.GamePaintWrapper;
@@ -13,10 +12,7 @@ import team.adderall.game.framework.UpdateRateCounter;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.context.GameContext;
-import team.adderall.game.framework.context.GameContextGetterAssured;
-import team.adderall.game.framework.context.GameContextSetter;
 import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.component.GameComponentRegister;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.level.LevelManager;
 
@@ -125,9 +121,10 @@ public class Configuration
     @GameComponent("gamePaintWrapper")
     public GamePaintWrapper gamePaintWrapper(
             @Inject(GameContext.PAINT) GamePainter[][] painters,
-            @Inject("activity") Activity activity
+            @Inject("activity") Activity activity,
+            @Inject("GameState") GameState gameState
     ) {
-        return new GamePaintWrapper(activity, painters);
+        return new GamePaintWrapper(activity, painters,gameState);
     }
 
 
@@ -142,6 +139,12 @@ public class Configuration
             @Inject("players") Players players
     ) {
         return new Gravity(players);
+    }
+
+    @GameComponent("GameState")
+    public GameState gameState(
+    ) {
+        return new GameState();
     }
 
     @GameComponent("collision")
@@ -261,8 +264,9 @@ public class Configuration
     @GameComponent("killPlayerWhenBelowScreen")
     public KillPlayerWhenBelowScreen addDeathZone(
             @Inject("players") Players players,
-            @Inject("canvasSize") Point canvasSize
+            @Inject("canvasSize") Point canvasSize,
+            @Inject("GameState") GameState gameState
     ) {
-        return new KillPlayerWhenBelowScreen(players, canvasSize);
+        return new KillPlayerWhenBelowScreen(players, canvasSize,gameState);
     }
 }

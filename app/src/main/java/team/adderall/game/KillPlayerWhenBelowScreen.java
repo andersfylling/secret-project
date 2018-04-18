@@ -1,7 +1,6 @@
 package team.adderall.game;
 
 import android.graphics.Point;
-import android.view.Display;
 
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
@@ -14,23 +13,27 @@ public class KillPlayerWhenBelowScreen
     implements GameLogicInterface
 {
 
+    private final GameState gameState;
     private Players players;
     private int deathLine;
 
     @GameDepWire
     public KillPlayerWhenBelowScreen(
             @Inject("players") Players players,
-            @Inject("canvasSize") Point canvasSize
+            @Inject("canvasSize") Point canvasSize,
+            @Inject("GameState") GameState gameState
     ) {
         this.players = players;
         this.deathLine = canvasSize.y;
+        this.gameState = gameState;
     }
 
 
     @Override
     public void run() {
+        int realDeathLine = (int) (gameState.getyScaleValue() + this.deathLine);
         for (BallManager b : this.players.toList()) {
-            if (b.getPos().y > this.deathLine) {
+            if (b.getPos().y > realDeathLine) {
                 b.setState(BallManager.STATE_DEAD);
             }
         }
