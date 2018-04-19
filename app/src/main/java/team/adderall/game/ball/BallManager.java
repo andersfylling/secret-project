@@ -64,6 +64,9 @@ public class BallManager
     private int state;
     private final boolean activePlayer;
 
+
+    private boolean atGround = false;
+
     /**
      * Constructor
      */
@@ -191,5 +194,12 @@ public class BallManager
 
     public void drawHighScore(Canvas canvas, float y) {
         this.tracker.drawHighScore(canvas,y);
+    }
+
+    public void setAtGround(boolean atGround) {
+        this.atGround = atGround;
+    }
+    public boolean getAtGround(){
+        return this.atGround;
     }
 }
