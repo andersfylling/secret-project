@@ -222,7 +222,7 @@ public class GameComponentData
             if (param.equals(gameComponentData.getName())) {
                 for (String paramB : gameComponentData.getParamsName()) {
                     if (paramB.equals(this.getName())) {
-                        throw new InstantiationError("both methods require each other (cycling dependency): " + this.getName() + ", " + gameComponentData.getName());
+                        triggerDependencyCyclingError(this.getName(), gameComponentData.getName());
                     }
                 }
             }
@@ -245,30 +245,54 @@ public class GameComponentData
         return 0;
     }
 
+    private void triggerDependencyCyclingError(String a, String b) {
+        throw new InstantiationError("both methods require each other (cycling dependency): " + a + ", " + b);
+    }
+
     public void updateDependencies(final List<GameComponentData> components) {
+        this.updateDependencies(components, this.getName());
+    }
+
+    public void updateDependencies(final List<GameComponentData> components, final String root) {
         for (GameComponentData component : components) {
-            if (this.dependsOnComponent(component.getName())) {
-                component.updateDependencies(components);
+            // don't evaluate itself
+            if (this.getName().equals(component.getName())) {
+                continue;
+            }
 
-                List<String> requiredDependencies = component.getDependencies();
-                List<String> missingDependencies = new ArrayList<>();
-                for (String want : requiredDependencies) {
-                    boolean alreadyGotIt = false;
-                    for (String got : this.dependencies) {
-                        if (want.equals(got)) {
-                            alreadyGotIt = true;
-                            break;
-                        }
-                    }
+            // ignore if not a dependency
+            if (!this.dependsOnComponent(component.getName())) {
+                continue;
+            }
 
-                    if (!alreadyGotIt) {
-                        missingDependencies.add(want);
+            // if this is a dependency and it requires the root component,
+            // its a cycling dependency issue
+            if (!root.equals(this.getName()) && component.getName().equals(root)) {
+                triggerDependencyCyclingError(root, this.getName());
+            }
+
+            // lay out the dependencies of the dependency
+            component.updateDependencies(components, root);
+
+            List<String> requiredDependencies = component.getDependencies();
+            List<String> missingDependencies = new ArrayList<>();
+            for (String want : requiredDependencies) {
+                boolean alreadyGotIt = false;
+                for (String got : this.dependencies) {
+                    if (want.equals(got)) {
+                        alreadyGotIt = true;
+                        break;
                     }
                 }
 
-                this.dependencies.addAll(missingDependencies);
+                if (!alreadyGotIt) {
+                    missingDependencies.add(want);
+                }
             }
+
+            this.dependencies.addAll(missingDependencies);
         }
+        System.out.println("=============");
     }
 
     public List<String> getDependencies() {

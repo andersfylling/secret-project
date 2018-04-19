@@ -132,7 +132,7 @@ public class GameConfigurationLoader
         // add GameContext
         this.components.add(new GameComponentData(GameContext.NAME, this.ctx));
 
-        // update depency list
+        // update dependency list
         for (final GameComponentData component : this.components) {
             component.updateDependencies(this.components);
         }
