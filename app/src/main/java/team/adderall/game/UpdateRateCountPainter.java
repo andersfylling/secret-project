@@ -40,12 +40,17 @@ public class UpdateRateCountPainter
 
     @Override
     public void paint(Canvas canvas) {
+
+    }
+
+    @Override
+    public void paint(Canvas canvas, float y) {
         if (lastRun + TIMEOUT < System.currentTimeMillis()) {
             this.lastAVGRate = Long.toString(this.updateRateCounter.getUpdateRate());
             this.lastRun = System.currentTimeMillis();
         }
         final String text = this.prefix + this.lastAVGRate;
-        canvas.drawText(text, this.x, this.y, this.painter);
+        canvas.drawText(text, this.x, y+this.y, this.painter);
     }
 
     public void setPrefix(String prefix) {

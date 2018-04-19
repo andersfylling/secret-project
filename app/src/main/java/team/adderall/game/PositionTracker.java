@@ -1,5 +1,6 @@
 package team.adderall.game;
 
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 
@@ -11,9 +12,8 @@ public class PositionTracker
 {
     private static final double SPEEDREDUCTION = 0.2;
     private final int movementThreshold;
-
+    private HighScore highScore = null;
     private boolean blocked;
-
     private int x;
     private int y;
     private double verticalSpeed = 0;
@@ -45,6 +45,7 @@ public class PositionTracker
 
     private void reset() {
         this.blocked = false;
+        this.highScore  = new HighScore();
 
         this.x = 0;
         this.y = 0;
@@ -175,5 +176,11 @@ public class PositionTracker
     public void setposition(Point position) {
         this.x = position.x;
         this.y = position.y;
+        highScore.potensiallySetHighestXValue(y);
+    }
+
+    public void drawHighScore(Canvas canvas, float y) {
+        if(this.highScore != null)
+            this.highScore.paint(canvas, y);
     }
 }
