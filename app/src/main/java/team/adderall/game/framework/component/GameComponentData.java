@@ -292,7 +292,6 @@ public class GameComponentData
 
             this.dependencies.addAll(missingDependencies);
         }
-        System.out.println("=============");
     }
 
     public List<String> getDependencies() {
