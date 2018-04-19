@@ -94,7 +94,7 @@ public class LevelManager
             int counter = 0;
             starValue++;
             for (Floor floor : this.levels) {
-                floor.paint(canvas, this.painters, this.height - (counter * this.thickness) + (int)(starValue * 2.75));
+                floor.paint(canvas, this.painters, this.height - (counter * this.thickness) + (int)(starValue * 0));
 
                 // TODO: ... xD
                 counter++; // next level

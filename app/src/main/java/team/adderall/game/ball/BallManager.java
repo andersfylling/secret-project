@@ -193,4 +193,8 @@ public class BallManager
     public boolean isActivePlayer() {
         return activePlayer;
     }
+
+    public Ball getBall() {
+        return ball;
+    }
 }

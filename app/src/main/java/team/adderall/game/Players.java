@@ -11,6 +11,7 @@ import team.adderall.game.framework.component.GameDepWire;
 public class Players
     implements SensorEvtListener
 {
+    // TODO: sort players based on email, android id, or whatever.
     private final List<BallManager> players;
     private BallManager active;
 
@@ -35,5 +36,13 @@ public class Players
 
     public BallManager getActive() {
         return this.active;
+    }
+
+    public int size() {
+        return this.players.size();
+    }
+
+    public void registerNewPlayer(BallManager newPlayer) {
+        this.players.add(newPlayer);
     }
 }

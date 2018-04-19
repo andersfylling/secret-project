@@ -68,12 +68,22 @@ public class Configuration
                 killer
         };
     }
+    @GameComponent("gameLogicLastWave")
+    public GameLogicInterface[] lastLogicWave(
+            @Inject("multiplayer") Multiplayer multiplayer
+
+    ) {
+        return new GameLogicInterface[]{
+                multiplayer
+        };
+    }
 
     @GameComponent(GameContext.LOGIC)
     public GameLogicInterface[][] setLogicWaves(
             @Inject("gameLogicFirstWave") GameLogicInterface[] first,
             @Inject("gameLogicSecondWave") GameLogicInterface[] second,
-            @Inject("gameLogicThirdWave") GameLogicInterface[] third
+            @Inject("gameLogicThirdWave") GameLogicInterface[] third,
+            @Inject("gameLogicLastWave") GameLogicInterface[] last
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
@@ -82,7 +92,8 @@ public class Configuration
         return new GameLogicInterface[][]{
                 first,
                 second,
-                third
+                third,
+                last
         };
     }
 
@@ -254,5 +265,13 @@ public class Configuration
             @Inject("canvasSize") Point canvasSize
     ) {
         return new KillPlayerWhenBelowScreen(players, canvasSize);
+    }
+
+
+    @GameComponent("multiplayer")
+    public Multiplayer setupMultiplayer(
+            @Inject("players") Players players
+    ) {
+        return new Multiplayer(players);
     }
 }
