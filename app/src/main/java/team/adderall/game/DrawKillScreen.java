@@ -38,10 +38,8 @@ public class DrawKillScreen implements GamePainter {
 
     @Override
     public void paint(Canvas canvas) {
-        /**
-         * TODO: Should only be done for you as a player?
-         */
         for(BallManager b : players.toList()) {
+            if(!b.isActivePlayer()) continue;
             if (b.getState() == BallManager.STATE_DEAD) {
                 int extraY = (int) gameState.getyScaleValue();
                 this.painter.setColor(Color.BLACK);

@@ -57,7 +57,7 @@ public class Collision
         int height = level.getHeight();
         int y = 0;
 
-        for(BallManager player: players.toList()) {
+        for(BallManager player: players.getAlivePlayers()) {
             Point pos = player.getPos();
             for (Floor floor : level.getFloors()) {
                 Rect collide = floor.checkColition(height - (y * thickness), pos, thickness);

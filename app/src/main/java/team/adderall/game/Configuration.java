@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.view.Display;
 
 import team.adderall.game.ball.DrawBall;
+import team.adderall.game.easyLogicChecks.PlayerDeathListHandler;
 import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.GamePaintWrapper;
 import team.adderall.game.framework.GamePainter;
@@ -55,13 +56,20 @@ public class Configuration
                 collision
         };
     }
+
+    /**
+     * TODO: Rename this wave to gameLogicEasyChecks?
+     */
     @GameComponent("gameLogicThirdWave")
     public GameLogicInterface[] thirdLogicWave(
-            @Inject("killPlayerWhenBelowScreen") KillPlayerWhenBelowScreen killer
+            @Inject("killPlayerWhenBelowScreen") KillPlayerWhenBelowScreen killer,
+            @Inject("PlayerDeathListHandler") PlayerDeathListHandler playerDeathListHandler
+
 
     ) {
         return new GameLogicInterface[]{
-                killer
+                killer,
+                playerDeathListHandler
         };
     }
 
@@ -278,5 +286,12 @@ public class Configuration
             @Inject("GameState") GameState gameState
     ) {
         return new KillPlayerWhenBelowScreen(players, canvasSize,gameState);
+    }
+
+    @GameComponent("PlayerDeathListHandler")
+    public PlayerDeathListHandler playerDeathListHandler(
+            @Inject("players") Players players
+    ) {
+        return new PlayerDeathListHandler(players);
     }
 }

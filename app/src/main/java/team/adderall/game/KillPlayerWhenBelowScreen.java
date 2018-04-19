@@ -32,7 +32,7 @@ public class KillPlayerWhenBelowScreen
     @Override
     public void run() {
         int realDeathLine = (int) (gameState.getyScaleValue() + this.deathLine);
-        for (BallManager b : this.players.toList()) {
+        for (BallManager b : this.players.getAlivePlayers()) {
             if (b.getPos().y > realDeathLine) {
                 b.setState(BallManager.STATE_DEAD);
             }
