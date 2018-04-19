@@ -6,6 +6,7 @@ import android.view.Display;
 
 import team.adderall.game.ball.DrawBall;
 import team.adderall.game.easyLogicChecks.PlayerDeathListHandler;
+import team.adderall.game.easyLogicChecks.Side2SideTeleportation;
 import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.GamePaintWrapper;
 import team.adderall.game.framework.GamePainter;
@@ -63,13 +64,16 @@ public class Configuration
     @GameComponent("gameLogicThirdWave")
     public GameLogicInterface[] thirdLogicWave(
             @Inject("killPlayerWhenBelowScreen") KillPlayerWhenBelowScreen killer,
-            @Inject("PlayerDeathListHandler") PlayerDeathListHandler playerDeathListHandler
+            @Inject("PlayerDeathListHandler") PlayerDeathListHandler playerDeathListHandler,
+            @Inject("Side2SideTeleportation") Side2SideTeleportation side2SideTeleportation
+
 
 
     ) {
         return new GameLogicInterface[]{
                 killer,
-                playerDeathListHandler
+                playerDeathListHandler,
+                side2SideTeleportation
         };
     }
 
@@ -103,7 +107,6 @@ public class Configuration
             @Inject("drawball") DrawBall drawball,
             @Inject("DrawHighScore") DrawHighScore drawHighScore,
             @Inject("DrawKillScreen") DrawKillScreen drawKillScreen
-
 
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
@@ -294,4 +297,15 @@ public class Configuration
     ) {
         return new PlayerDeathListHandler(players);
     }
+
+    @GameComponent("Side2SideTeleportation")
+    public Side2SideTeleportation side2SideTeleportation(
+            @Inject("players") Players players,
+            @Inject("canvasSize") Point canvasSize
+    ) {
+        return new Side2SideTeleportation(players,canvasSize.x);
+
+    }
+
+
 }
