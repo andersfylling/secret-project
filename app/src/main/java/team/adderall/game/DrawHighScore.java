@@ -15,23 +15,27 @@ import team.adderall.game.framework.component.Inject;
 public class DrawHighScore implements
         GamePainter{
     private final Players players;
+    private final GameState gameState;
 
     @GameDepWire
-    public DrawHighScore(@Inject("players") Players p)
+    public DrawHighScore(@Inject("players") Players p,
+                         @Inject("GameState") GameState gameState)
     {
         this.players = p;
+        this.gameState = gameState;
     }
 
 
     @Override
     public void paint(Canvas canvas) {
-
+        int y = (int) gameState.getyScaleValue();
+        for(BallManager player : players.toList()){
+            player.drawHighScore(canvas,y);
+        }
     }
 
     @Override
     public void paint(Canvas canvas, float y) {
-        for(BallManager player : players.toList()){
-            player.drawHighScore(canvas,y);
-        }
+
     }
 }

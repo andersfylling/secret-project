@@ -102,13 +102,13 @@ public class Configuration
         // but each wave is sequential
 
         GamePainter[] firstWave = new GamePainter[]{
-                level,drawball,drawKillScreen
+                level,drawball,drawKillScreen,drawHighScore
         };
 
         GamePainter[] updateRatePainters = new GamePainter[] {
                 fps, // frames per second
-                lps,  // logic rounds per second
-                drawHighScore
+                lps  // logic rounds per second
+
         };
 
         // group waves
@@ -205,9 +205,10 @@ public class Configuration
 
     @GameComponent("DrawHighScore")
     public DrawHighScore highScore(
-            @Inject("players") Players players
+            @Inject("players") Players players,
+            @Inject("GameState") GameState gameState
     ) {
-        return new DrawHighScore(players);
+        return new DrawHighScore(players,gameState);
     }
 
     @GameComponent("DrawKillScreen")
