@@ -68,6 +68,7 @@ public class Configuration
             @Inject("Side2SideTeleportation") Side2SideTeleportation side2SideTeleportation
 
 
+
     ) {
         return new GameLogicInterface[]{
                 killer,
@@ -106,7 +107,6 @@ public class Configuration
             @Inject("drawball") DrawBall drawball,
             @Inject("DrawHighScore") DrawHighScore drawHighScore,
             @Inject("DrawKillScreen") DrawKillScreen drawKillScreen
-
 
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
@@ -304,6 +304,7 @@ public class Configuration
             @Inject("canvasSize") Point canvasSize
     ) {
         return new Side2SideTeleportation(players,canvasSize.x);
+
     }
 
 
