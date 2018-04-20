@@ -20,6 +20,9 @@ public class Jumping
 
     @Override
     public void run() {
-        this.player.setVelocity(-4);
+        if(this.player.getAtGround()) {
+            this.player.setVelocity(-5);
+            this.player.setAtGround(false);
+        }
     }
 }

@@ -92,7 +92,7 @@ public class LevelManager
         @Override
         public void paint(Canvas canvas) {
             int counter = 0;
-            starValue++;
+            //starValue++;
             for (Floor floor : this.levels) {
                 floor.paint(canvas, this.painters, this.height - (counter * this.thickness) + (int)(starValue * 0));
 
@@ -104,7 +104,12 @@ public class LevelManager
             }
         }
 
-        public int getHeight() {
+    @Override
+    public void paint(Canvas canvas, float y) {
+
+    }
+
+    public int getHeight() {
             return height;
         }
     }

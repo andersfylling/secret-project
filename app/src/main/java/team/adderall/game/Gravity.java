@@ -30,7 +30,7 @@ public class Gravity
 
     @Override
     public void run() {
-        for(BallManager b : players.toList()){
+        for(BallManager b : players.getAlivePlayers()){
             long now = System.nanoTime();
 
             double diff = (now - this.lastRun) / 1000000000.0;

@@ -64,6 +64,9 @@ public class BallManager
     private int state;
     private final boolean activePlayer;
 
+
+    private boolean atGround = false;
+
     /**
      * Constructor
      */
@@ -122,12 +125,6 @@ public class BallManager
         // update the tracker
         this.tracker.updateOldPosition();
 
-        if (this.state == STATE_DEAD) {
-            this.painter.setColor(Color.BLACK);
-            this.painter.setAlpha(200);
-            canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), this.painter);
-            canvas.drawText("YOU ARE DEAD", canvas.getWidth() / 2, canvas.getHeight() / 2, this.deathPainter);
-        }
     }
 
     /**
@@ -196,5 +193,16 @@ public class BallManager
 
     public Ball getBall() {
         return ball;
+    }
+
+    public void drawHighScore(Canvas canvas, float y) {
+        this.tracker.drawHighScore(canvas,y);
+    }
+
+    public void setAtGround(boolean atGround) {
+        this.atGround = atGround;
+    }
+    public boolean getAtGround(){
+        return this.atGround;
     }
 }
