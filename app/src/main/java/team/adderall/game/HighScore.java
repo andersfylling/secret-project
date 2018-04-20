@@ -35,8 +35,9 @@ class HighScore {
         return this.highestXValue;
     }
     public void potensiallySetHighestXValue(int newScore){
-        if(newScore < this.highestXValue)
+        if(newScore < this.highestXValue) {
             this.highestXValue = newScore;
+        }
     }
 
     /**

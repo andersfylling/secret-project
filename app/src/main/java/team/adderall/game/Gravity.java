@@ -30,7 +30,8 @@ public class Gravity
 
     @Override
     public void run() {
-        for(BallManager b : players.getAlivePlayers()){
+        for(Player player : players.getAlivePlayersAsList()){
+            BallManager b = player.getBallManager();
             long now = System.nanoTime();
 
             double diff = (now - this.lastRun) / 1000000000.0;
@@ -45,32 +46,7 @@ public class Gravity
             Point pos = b.getPos();
             pos.set(pos.x, pos.y + (int)(velocity));
             b.setPos(pos);
-
-
-            //b.setPos(gravity(b.getPos()));
         }
     }
-
-/*    *//**
-     * Gravity implemetation.
-     * Fall to the ground at a constant rate.
-     *//*
-    public Point gravity(Point pos) {
-        int y = pos.y;
-        long now = System.nanoTime();
-
-        double diff = now - this.lastRun;
-        double acceleration = 9.8;
-        double velocity += acceleration * diff;
-
-        this.verticalSpeed += GRAVITY * 0.5 * ();
-
-        if(this.verticalSpeed > TERMINALVEL){
-            this.verticalSpeed = TERMINALVEL;
-        }
-        y += this.verticalSpeed;
-        pos.set(pos.x,y);
-        return pos;
-    }*/
 
 }

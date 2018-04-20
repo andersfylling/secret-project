@@ -30,10 +30,12 @@ public class PlayerDeathListHandler
          * Move any players away from the active pile, if they are actually dead.
          */
         public void run() {
-            for(BallManager alive: players.getAlivePlayers()){
-                if(alive.getState() == BallManager.STATE_DEAD){
-                    players.setToDead(alive);
+            for (Player player : this.players.getAlivePlayersAsList()) {
+                if(player.getBallManager().getState() != BallManager.STATE_DEAD){
+                    continue;
                 }
+
+                players.setToDead(player.getGameID());
             }
         }
     }

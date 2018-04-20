@@ -16,17 +16,20 @@ import team.adderall.GameActivity;
  */
 public class GameDetails {
     public final static String INTENT_KEY = "GAME_DETAILS_INTENT_KEY";
+    public final static int CODE_GAME_ENDED = 34534;
 
     // players <userID, &Player>
     private Map<Long, Player> players;
 
     private long gameSeed;
+    private long highscore;
 
 
 
     public GameDetails() {
         this.players = new HashMap<>();
         this.gameSeed = 1;
+        this.highscore = 0;
     }
 
 
@@ -45,6 +48,10 @@ public class GameDetails {
 
     public void setPlayers(Map<Long, Player> players) {
         this.players = players;
+    }
+
+    public void addPlayer(final Player player) {
+        this.players.put((long) this.players.size(), player);
     }
 
 
@@ -72,7 +79,7 @@ public class GameDetails {
     }
 
     public Intent writeToGameActivityIntent(Context ctx) {
-        Intent intent = new Intent(ctx, this.getClass());
+        Intent intent = new Intent(ctx, GameActivity.class);
         return this.writeToIntent(intent);
     }
 
@@ -81,5 +88,13 @@ public class GameDetails {
         intent.putExtra(INTENT_KEY, json);
 
         return intent;
+    }
+
+    public long getHighscore() {
+        return highscore;
+    }
+
+    public void setHighscore(long highscore) {
+        this.highscore = highscore;
     }
 }

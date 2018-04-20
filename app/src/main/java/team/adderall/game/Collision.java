@@ -57,15 +57,16 @@ public class Collision
         int height = level.getHeight();
         int y = 0;
 
-        for(BallManager player: players.getAlivePlayers()) {
-            Point pos = player.getPos();
+        for(Player player: players.getAlivePlayersAsList()) {
+            BallManager bm = player.getBallManager();
+            Point pos = bm.getPos();
             for (Floor floor : level.getFloors()) {
                 Rect collide = floor.checkColition(height - (y * thickness), pos, thickness);
 
                 if (collide != null) {
-                    player.setPos(getNoneIntercetCord(getRect(pos), collide));
-                    player.setVelocity(0);
-                    player.setAtGround(true);
+                    bm.setPos(getNoneIntercetCord(getRect(pos), collide));
+                    bm.setVelocity(0);
+                    bm.setAtGround(true);
                 }
             }
         }

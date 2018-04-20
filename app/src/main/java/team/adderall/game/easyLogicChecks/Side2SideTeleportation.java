@@ -4,6 +4,7 @@ import android.graphics.Point;
 
 import team.adderall.game.Player;
 import team.adderall.game.Players;
+import team.adderall.game.ball.Ball;
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
@@ -27,19 +28,18 @@ public class Side2SideTeleportation implements GameLogicInterface {
 
     @Override
     public void run() {
-        for(BallManager player :players.getAlivePlayers()){
-            Point p = player.getPos();
-            /**
-             * Is radius exported in any easy to reach components?
-             */
-            int radius = 45;
+        for(Player player : players.getAlivePlayersAsList()){
+            BallManager bm = player.getBallManager();
+            Point p = bm.getPos();
+
+            int radius = bm.getBall().getRadius();
             if(p.x + radius < 0){
                 p.set(p.x +width,p.y);
-                player.setPos(p);
+                bm.setPos(p);
             }
             else if(p.x - radius > width){
                 p.set(p.x%width,p.y);
-                player.setPos(p);
+                bm.setPos(p);
             }
         }
     }

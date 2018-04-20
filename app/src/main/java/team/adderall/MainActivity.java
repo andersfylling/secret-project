@@ -33,25 +33,13 @@ public class MainActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new MenuItemHandler(mDrawerLayout, this));
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 
-
-
         mDrawerLayout.addDrawerListener(new MenuSlideHandler());
-
-
-
-
-//        final Button button = findViewById(R.id.button_play_game);
-//        button.setOnClickListener(v -> {
-//            Intent intent = new Intent(getApplicationContext(), GameActivity.class);
-//            startActivity(intent);
-//        });
 
         LOGGER.setLevel(Level.INFO);
     }

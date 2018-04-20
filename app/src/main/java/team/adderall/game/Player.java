@@ -1,5 +1,7 @@
 package team.adderall.game;
 
+import team.adderall.game.ball.BallManager;
+
 /**
  * Details about a player
  */
@@ -13,6 +15,8 @@ public class Player {
     private long userID;
 
     private boolean activePlayer;
+
+    private BallManager ballManager;
 
 
     public Player() {
@@ -30,6 +34,7 @@ public class Player {
         gameID = 0;
         userID = 0;
         activePlayer = false;
+        ballManager = null;
     }
 
     public String getId() {
@@ -78,5 +83,17 @@ public class Player {
 
     public void setActivePlayer(boolean activePlayer) {
         this.activePlayer = activePlayer;
+    }
+
+    public void createBallManager(boolean activePlayer) {
+        if (this.ballManager != null) {
+            return;
+        }
+
+        this.ballManager = new BallManager(activePlayer);
+    }
+
+    public BallManager getBallManager() {
+        return ballManager;
     }
 }

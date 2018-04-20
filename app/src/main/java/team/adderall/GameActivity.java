@@ -2,6 +2,7 @@ package team.adderall;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -11,7 +12,9 @@ import android.view.Display;
 import android.view.WindowManager;
 
 import team.adderall.game.Configuration;
+import team.adderall.game.GameDetails;
 import team.adderall.game.Jumping;
+import team.adderall.game.Player;
 import team.adderall.game.Players;
 import team.adderall.game.SensorChangedWorker;
 import team.adderall.game.framework.component.Inject;
@@ -32,10 +35,16 @@ public class GameActivity
     private SensorManager sensorManager;
     private Jumping jumping;
 
+    private GameDetails details;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        // read details from intent
+        Intent intent = getIntent();
+        this.details = GameDetails.READ_IN_FROM_INTENT(intent);
 
 
         // initialize device sensor capabilities
@@ -94,6 +103,27 @@ public class GameActivity
         return wm.getDefaultDisplay();
     }
 
+    /**
+     * USe this to store any details that should be returned when the game ends.
+     *
+     * @return
+     */
+    @GameComponent("GameDetails")
+    public GameDetails gameDetails() {
+        return this.details;
+    }
+
+    @GameComponent("players")
+    public Players players() {
+        final Players players = new Players();
+        players.registerPlayersWithUserID(this.details.getPlayers());
+        for(Player player : players.getAlivePlayersAsList()) {
+            player.createBallManager(player.isActivePlayer());
+        }
+
+        return players;
+    }
+
     // TODO: move to a different class(!)
     private void addDeviceSensorListeners() {
         if (this.sensorManager == null) {
@@ -145,5 +175,14 @@ public class GameActivity
     public void onPause(){
         super.onPause();
         this.removeDeviceSensorListeners();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        this.details.writeToIntent(returnIntent);
+
+        setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
+        finish();
     }
 }

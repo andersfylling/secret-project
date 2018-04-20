@@ -2,6 +2,7 @@ package team.adderall.game.ball;
 
 import android.graphics.Canvas;
 
+import team.adderall.game.Player;
 import team.adderall.game.Players;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.GamePainter;
@@ -27,8 +28,8 @@ public class DrawBall implements
 
     @Override
     public void paint(Canvas canvas) {
-        for(BallManager player : players.toList()){
-            player.paint(canvas);
+        for(Player player : players.getAlivePlayersAsList()){
+            player.getBallManager().paint(canvas);
         }
     }
 

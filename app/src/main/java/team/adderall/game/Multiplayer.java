@@ -79,12 +79,7 @@ public class Multiplayer
     public void eventHandler(final Packet evt) {
         // check if player exists
         if (!this.players.containsKey(evt.getUserID())) {
-            // register a new player
-            // TODO: development ONLY
-            BallManager newPlayer = new BallManager(false);
-            newPlayer.getBall().setColour("#1144aa");
-            this.playersObj.registerNewPlayer(newPlayer);
-            this.players.put(evt.getUserID(), newPlayer);
+            return;
         }
 
         // check if the event is for this player
@@ -92,7 +87,6 @@ public class Multiplayer
             return;
         }
 
-        System.err.println("NOOOOOOOOOOOOOOOOOOOO\n\n");
         BallManager player = this.players.get(evt.getUserID());
         player.setPos(new Point(evt.getX(), evt.getY()));
     }
@@ -107,10 +101,15 @@ public class Multiplayer
         }
         this.lastUpdate = System.currentTimeMillis();
 
-        BallManager player = this.playersObj.getActive();
-        boolean jumping = player.getVelocity() < 0;
-        int x = player.getPos().x;
-        int y = player.getPos().y;
+        Player player = this.playersObj.getActive();
+        if (player == null) {
+            return;
+        }
+
+        BallManager bm = player.getBallManager();
+        boolean jumping = bm.getVelocity() < 0;
+        int x = bm.getPos().x;
+        int y = bm.getPos().y;
 
         Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, 0, this.gameID);
 

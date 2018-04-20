@@ -178,16 +178,6 @@ public class Configuration
         return new Collision(players,level);
     }
 
-    @GameComponent("players")
-    public Players players(
-            @Inject("SensorChangedWorker") SensorChangedWorker handler
-    ) {
-        final Players players = new Players();
-        handler.addListener(players::onSensorEvt);
-
-        return players;
-    }
-
     @GameComponent("canvasSize")
     public Point getCanvasSize(
             @Inject("activity") Activity activity,
@@ -279,20 +269,6 @@ public class Configuration
     }
 
 
-
-    // configure GameLoop counters
-    @GameComponent("_register_GameLoop_rateUpdaters")
-    public int setLPSAndFPSForGameLoop(
-            @Inject("FPS") UpdateRateCounter fps,
-            @Inject("LPS") UpdateRateCounter lps,
-            @Inject("GameLoop") GameLoop gameLoop
-    ) {
-        gameLoop.setLps(lps);
-        gameLoop.setFps(fps);
-
-        return -1;
-    }
-
     @GameComponent("killPlayerWhenBelowScreen")
     public KillPlayerWhenBelowScreen addDeathZone(
             @Inject("players") Players players,
@@ -323,5 +299,36 @@ public class Configuration
             @Inject("players") Players players
     ) {
         return new Multiplayer(players);
+    }
+
+
+
+    // ########################################################################################
+    // ###
+    // ### Tweak GameComponents
+    // ### TODO: support insert dependency injection, after construction.
+    // ########################################################################################
+
+    // configure GameLoop counters
+    @GameComponent("_register_GameLoop_rateUpdaters")
+    public int setLPSAndFPSForGameLoop(
+            @Inject("FPS") UpdateRateCounter fps,
+            @Inject("LPS") UpdateRateCounter lps,
+            @Inject("GameLoop") GameLoop gameLoop
+    ) {
+        gameLoop.setLps(lps);
+        gameLoop.setFps(fps);
+
+        return -1;
+    }
+
+    @GameComponent("_tweak_SensorChangedWorker_1")
+    public int bindSensorChangesToPlayers(
+            @Inject("players") Players players,
+            @Inject("SensorChangedWorker") SensorChangedWorker handler
+    ) {
+        handler.addListener(players::onSensorEvt);
+
+        return -1;
     }
 }

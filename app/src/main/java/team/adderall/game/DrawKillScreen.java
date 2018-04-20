@@ -38,17 +38,21 @@ public class DrawKillScreen implements GamePainter {
 
     @Override
     public void paint(Canvas canvas) {
-        for(BallManager b : players.toList()) {
-            if(!b.isActivePlayer()) continue;
-            if (b.getState() == BallManager.STATE_DEAD) {
-                int extraY = (int) gameState.getyScaleValue();
-                this.painter.setColor(Color.BLACK);
-                this.painter.setAlpha(200);
-
-                canvas.drawRect(0, 0 + extraY, canvas.getWidth(), canvas.getHeight()+ extraY, this.painter);
-                canvas.drawText("YOU ARE DEAD", canvas.getWidth() / 2,  (canvas.getHeight() / 2) + extraY, this.textPainter);
-            }
+        Player player = players.getActive();
+        if (player == null) {
+            return;
         }
+
+        if (player.getBallManager().getState() != BallManager.STATE_DEAD) {
+            return;
+        }
+
+        int extraY = (int) gameState.getyScaleValue();
+        this.painter.setColor(Color.BLACK);
+        this.painter.setAlpha(200);
+
+        canvas.drawRect(0, 0 + extraY, canvas.getWidth(), canvas.getHeight()+ extraY, this.painter);
+        canvas.drawText("YOU ARE DEAD", canvas.getWidth() / 2,  (canvas.getHeight() / 2) + extraY, this.textPainter);
     }
 
     @Override
