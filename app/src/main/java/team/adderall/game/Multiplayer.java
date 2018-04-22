@@ -106,7 +106,7 @@ public class Multiplayer
         }
     }
 
-    private boolean deactivated() {
+    public boolean deactivated() {
         return !this.onlineGame;
     }
 
@@ -130,10 +130,6 @@ public class Multiplayer
      */
     @Override
     public void run() {
-        if (this.deactivated()) {
-            return;
-        }
-
         if (this.lastUpdate + TIMEOUT > System.currentTimeMillis()) {
             return;
         }

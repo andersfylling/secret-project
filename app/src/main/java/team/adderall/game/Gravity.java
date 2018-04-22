@@ -15,11 +15,9 @@ public class Gravity
     implements GameLogicInterface
 {
     private final Players players;
-    private double verticalSpeed;
     private double GRAVITY = 9.8;
     private double TERMINALVEL = 30;
     private long lastRun;
-
 
     @GameDepWire
     public Gravity(@Inject("players") Players p) {
@@ -27,12 +25,11 @@ public class Gravity
         this.lastRun = System.nanoTime();
     }
 
-
     @Override
     public void run() {
         for(Player player : players.getAlivePlayers()){
             BallManager b = player.getBallManager();
-            long now = System.nanoTime();
+            long now = System.nanoTime(); // inaccurate af
 
             double diff = (now - this.lastRun) / 1000000000.0;
             this.lastRun = now;
@@ -48,5 +45,4 @@ public class Gravity
             b.setPos(pos);
         }
     }
-
 }

@@ -3,6 +3,7 @@ package team.adderall.game.level;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +47,12 @@ public class LevelManager
          * @param gameSeed           affects floor/level generation
          */
         //@GameDepWire
-        public LevelManager(int width, int height, int pointsInWidth, int minimumLevelsReady, int thickness, long gameSeed) {
+        public LevelManager(Point size, int pointsInWidth, int minimumLevelsReady, int thickness, long gameSeed) {
             this.levelsOnScreen = minimumLevelsReady;
             this.blocksInWidth = pointsInWidth;
 
-            this.width = width;
-            this.height = height;
+            this.width = size.x;
+            this.height = size.y;
 
             this.thickness = thickness;
 

@@ -96,6 +96,10 @@ public class Config
             @Inject("multiplayer") Multiplayer multiplayer
 
     ) {
+        if (multiplayer.deactivated()) {
+            return new GameLogicInterface[]{};
+        }
+
         return new GameLogicInterface[]{
                 multiplayer
         };
@@ -185,9 +189,10 @@ public class Config
 
     @GameComponent("level")
     public LevelManager level(@Inject("players") Players players,
+                              @Inject("GameDetails") GameDetails gameDetails,
                               @Inject("canvasSize") Point canvasSize)
     {
-        return new LevelManager(canvasSize.x,canvasSize.y,10,10,100,1);
+        return new LevelManager(canvasSize,10,10,100, gameDetails.getGameSeed());
     }
 
     // FPS counter / draws per second

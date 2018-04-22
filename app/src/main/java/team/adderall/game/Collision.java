@@ -34,7 +34,7 @@ public class Collision
         int newX = x.centerX();
         int newY = x.centerY();
 
-        if(x.top  <= y.top) {
+        if(x.top <= y.top) {
             newY = y.top -x.height()/2;
         }else if(x.bottom >= y.bottom) {
             newY = y.bottom +x.height()/2;
