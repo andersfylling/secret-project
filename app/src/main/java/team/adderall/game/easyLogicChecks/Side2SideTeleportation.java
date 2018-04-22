@@ -31,11 +31,11 @@ public class Side2SideTeleportation implements GameLogicInterface {
             Point p = bm.getPos();
 
             int radius = bm.getBall().getRadius();
-            if(p.x + radius < 0){
+            if(p.x <= 0){
                 p.set(p.x +width,p.y);
                 bm.setPos(p);
             }
-            else if(p.x - radius > width){
+            else if(p.x >= width){
                 p.set(p.x%width,p.y);
                 bm.setPos(p);
             }
