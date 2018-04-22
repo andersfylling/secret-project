@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import team.adderall.game.highscore.HighScore;
+
 /**
  * Created by Cim on 14/4/18.
  */

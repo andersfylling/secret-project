@@ -14,9 +14,11 @@ import team.adderall.GameActivity;
 /**
  * Populated from intent
  */
-public class GameDetails {
+public class GameDetails
+{
     public final static String INTENT_KEY = "GAME_DETAILS_INTENT_KEY";
     public final static int CODE_GAME_ENDED = 34534;
+    public final static int CODE_GAME_UNABLE_TO_START = 3467345;
 
     // players <userID, &Player>
     private Map<Long, Player> players;
@@ -24,9 +26,13 @@ public class GameDetails {
     private long gameSeed;
     private long highscore;
 
+    private final boolean multiplayer;
 
 
-    public GameDetails() {
+
+    public GameDetails(final boolean multiplayer) {
+        this.multiplayer = multiplayer;
+
         this.players = new HashMap<>();
         this.gameSeed = 1;
         this.highscore = 0;
@@ -59,11 +65,11 @@ public class GameDetails {
 
     public static GameDetails READ_IN_FROM_INTENT(Intent intent) {
         if (intent == null) {
-            return new GameDetails();
+            return null;
         }
 
         if(!intent.hasExtra(GameDetails.INTENT_KEY)) {
-            return new GameDetails();
+            return null;
         }
 
         String json = intent.getStringExtra(GameDetails.INTENT_KEY);
@@ -72,7 +78,7 @@ public class GameDetails {
             content = new Gson().fromJson(json, GameDetails.class);
         } catch(IllegalStateException | JsonSyntaxException e) {
             e.printStackTrace();
-            content = new GameDetails();
+            content = null;
         }
 
         return content;
@@ -96,5 +102,9 @@ public class GameDetails {
 
     public void setHighscore(long highscore) {
         this.highscore = highscore;
+    }
+
+    public boolean isMultiplayer() {
+        return multiplayer;
     }
 }

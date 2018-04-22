@@ -15,6 +15,8 @@ import team.adderall.game.Player;
 public class SoloFragment
         extends Fragment
 {
+    public final static boolean STAT_MULTIPLAYER = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -27,7 +29,7 @@ public class SoloFragment
     }
 
     public void startGameActivity(final View view) {
-        GameDetails config = new GameDetails();
+        GameDetails config = new GameDetails(STAT_MULTIPLAYER);
         config.setGameSeed(542352);
 
         Player player = new Player();

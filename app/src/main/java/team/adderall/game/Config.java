@@ -16,13 +16,14 @@ import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.context.GameContext;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.Inject;
+import team.adderall.game.highscore.DrawHighScore;
 import team.adderall.game.level.LevelManager;
 
 /**
  * Reference this class in the GameActivity when initializing the game.
  */
 @GameConfiguration
-public class Configuration
+public class Config
 {
 //    @GameComponentRegister // TODO: implement logic. not currently working.
 //    public void registerInstances(@Inject(GameContext.NAME) GameContextGetterAssured ctx, @Inject("GameContextSetter") GameContextSetter setter) {
@@ -213,14 +214,6 @@ public class Configuration
             @Inject("players") Players players
     ) {
         return new DrawBall(players);
-    }
-
-    @GameComponent("DrawHighScore")
-    public DrawHighScore highScore(
-            @Inject("players") Players players,
-            @Inject("GameState") GameState gameState
-    ) {
-        return new DrawHighScore(players,gameState);
     }
 
     @GameComponent("DrawKillScreen")

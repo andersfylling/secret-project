@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
 
-import team.adderall.game.Configuration;
 import team.adderall.game.GameDetails;
 import team.adderall.game.Jumping;
 import team.adderall.game.Player;
@@ -45,6 +44,12 @@ public class GameActivity
         // read details from intent
         Intent intent = getIntent();
         this.details = GameDetails.READ_IN_FROM_INTENT(intent);
+        if (this.details == null) {
+            Intent returnIntent = new Intent();
+            setResult(GameDetails.CODE_GAME_UNABLE_TO_START, returnIntent);
+            finish();
+            return;
+        }
 
 
         // initialize device sensor capabilities
@@ -52,7 +57,8 @@ public class GameActivity
         this.addDeviceSensorListeners();
 
         this.gameInitializer = new GameInitializer(
-                Configuration.class
+                team.adderall.game.Config.class,
+                team.adderall.game.highscore.Config.class
         );
         this.gameInitializer.loadEssentials(); // add GameContext
         this.gameInitializer.addGameConfigurationActivities(this); // link this instance

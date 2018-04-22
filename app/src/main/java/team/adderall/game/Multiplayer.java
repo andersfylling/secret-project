@@ -29,8 +29,9 @@ public class Multiplayer
     private final static int SERVER_PORT = 3173;
     private final static long TIMEOUT = 20;
 
-    private final Map<Long, BallManager> players;
-    private final Players playersObj;
+    private final GameDetails gameDetails;
+    private final Map<Long, BallManager> multiplayers;
+    private final Players players;
     private long gameID;
     private long id;
 
@@ -40,15 +41,11 @@ public class Multiplayer
 
     private Client client;
 
-    @GameDepWire
-    public Multiplayer(
-            @Inject("players") Players players
-    ) {
+    public Multiplayer(Players players, GameDetails gameDetails) {
+        this.gameDetails = gameDetails;
         this.lastUpdate = System.currentTimeMillis() - TIMEOUT;
-        this.gameID = 23; // TODO: ask server
-        this.playersObj = players;
-        this.players = new HashMap<>();
-        this.id = -1;
+
+        this.players = players;
 
         // TODO: improve: let DI deal with exceptions
         try {
@@ -68,7 +65,7 @@ public class Multiplayer
         }
         this.client.connect();
 
-        // register our player
+        // register player
 
     }
 
@@ -111,7 +108,8 @@ public class Multiplayer
         int x = bm.getPos().x;
         int y = bm.getPos().y;
 
-        Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, 0, this.gameID);
+        // TODO: refactor
+        Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, this.playersObj.getActive().getUserID(), this.playersObj.getActive().getGameID());
 
         this.client.send(event);
     }
