@@ -142,6 +142,13 @@ public class GameComponentHolder
             return;
         }
 
+        // check if component uses itself as a param
+        for (final String dependency : this.dependencies) {
+            if (this.name.equals(dependency)) {
+                throwDependencyCyclingError(this.name, this.name);
+            }
+        }
+
         // find and initialize every construction dependency
         // (dependencies required later, "insert DI", is ignored)
         List<GameComponentHolder> parameters = new ArrayList<>();

@@ -57,9 +57,4 @@ public class GameContext
     public int size() {
         return this.instances.size();
     }
-
-    public int sizeWithoutGameContext() {
-        int size = this.instances.size();
-        return size == 0 ? 0 : size - 1; // kek
-    }
 }

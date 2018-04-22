@@ -33,7 +33,7 @@ public class GameActivity
     private GameInitializer gameInitializer;
     private SensorChangedWorker sensorChangedWorker;
     private SensorManager sensorManager;
-    private Jumping jumping; // TODO: insert DI support
+    private Jumping jumping;
 
     private GameDetails details;
 

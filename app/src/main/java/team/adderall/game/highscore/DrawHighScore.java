@@ -21,10 +21,9 @@ public class DrawHighScore
     private final GameState gameState;
 
     @GameDepWire
-    public DrawHighScore(
-            @Inject("players") Players p,
-            @Inject("GameState") GameState gameState
-    ) {
+    public DrawHighScore(@Inject("players") Players p,
+                         @Inject("GameState") GameState gameState)
+    {
         this.players = p;
         this.gameState = gameState;
     }
@@ -36,7 +35,6 @@ public class DrawHighScore
         for(Player player : players.getAlivePlayersAsList()){
             player.getBallManager().drawHighScore(canvas,y);
         }
-        System.out.println("########## PAINTNG");
     }
 
     @Override

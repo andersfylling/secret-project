@@ -1,6 +1,7 @@
 package team.adderall.game.framework.configuration;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.lang.annotation.Annotation;
@@ -28,31 +29,51 @@ public class GameConfigurationLoader
 
     private final List<Class<?>> configs;
     private final List<GameComponentHolder> components;
-    private final GameContextSetter ctx;
     private final List<Activity> instances;
 
     private boolean failOnNullInstance;
 
-    public GameConfigurationLoader(final GameContextSetter ctx, final List<Class<?>> configs) {
+    public GameConfigurationLoader(@NonNull final List<Class<?>> configs) {
         this.configs = new ArrayList<>(configs);
         this.components = new ArrayList<>();
         this.instances = new ArrayList<>();
-        this.ctx = ctx;
         this.failOnNullInstance = false;
     }
 
-    public GameConfigurationLoader(GameContext ctx, Class<?>... configs) {
+    public GameConfigurationLoader(@NonNull Class<?>... configs) {
         this.configs = new ArrayList<>();
         this.configs.addAll(Arrays.asList(configs));
 
         this.instances = new ArrayList<>();
         this.components = new ArrayList<>();
-        this.ctx = ctx;
         this.failOnNullInstance = false;
     }
 
-    public void addGameConfigurationInstances(final List<Activity> instances) {
+    public void addGameConfigurations(@NonNull final Class<?>... configs) {
+        this.configs.addAll(Arrays.asList(configs));
+    }
+
+    public void addGameConfigurationInstances(@NonNull final List<Activity> instances) {
         this.instances.addAll(instances);
+    }
+
+    /**
+     * Crash the program if a null instance is detected.
+     * Otherwise a warning is given.
+     */
+    public void activateFailOnNullInstance() {
+        this.failOnNullInstance = true;
+    }
+
+    /**
+     * Add GameComponents manually, must be an instance however.
+     * @param name
+     * @param instance
+     */
+    public void addGameComponentInstance(@NonNull final String name,
+                                         @NonNull final Object instance)
+    {
+        this.components.add(new GameComponentHolder(name, instance));
     }
 
     /**
@@ -83,13 +104,6 @@ public class GameConfigurationLoader
 
     private void loadGameComponentRegisters(final Class<?> config, final Object instance) {
         // check for component list
-
-
-//        Constructor<?>[] constructors = config.getConstructors();
-//        for (Constructor<?> constructor : constructors) {
-//            constructor.getAnnotation(GameComponents)
-//        }
-
         for (Method method : config.getDeclaredMethods()) {
             // ensure method is a GameComponent
             GameComponent component = method.getAnnotation(GameComponent.class);
@@ -218,14 +232,6 @@ public class GameConfigurationLoader
         }
     }
 
-    /**
-     * Crash the program if a null instance is detected.
-     * Otherwise a warning is given.
-     */
-    public void activateFailOnNullInstance() {
-        this.failOnNullInstance = true;
-    }
-
     public void load() {
         for (final Class<?> config : this.configs) {
             if (config.getAnnotation(GameConfiguration.class) == null) {
@@ -253,9 +259,6 @@ public class GameConfigurationLoader
 
             this.loadGameComponentRegisters(instance.getClass(), instance);
         }
-
-        // add GameContext
-        this.components.add(new GameComponentHolder(GameContext.NAME, (GameContext) this.ctx));
 
         // check for name duplicates
         for (GameComponentHolder a : this.components) {
@@ -290,10 +293,10 @@ public class GameConfigurationLoader
 
             return 0;
         });
-        for (GameComponentHolder component : this.components) {
-            System.out.print(component.toString() + "\n");
-        }
-        System.out.flush();
+//        for (GameComponentHolder component : this.components) {
+//            System.out.print(component.toString() + "\n");
+//        }
+//        System.out.flush();
 
         // hard core old stupid sort
         boolean unsorted = true;
@@ -323,11 +326,11 @@ public class GameConfigurationLoader
                 }
             }
         }
-        System.out.println(" HARDCORE SORT RESULT ::::::::::::");
-        for (GameComponentHolder component : this.components) {
-            System.out.print(component.toStringWithAllDependencies() + "\n");
-        }
-        System.out.flush();
+//        System.out.println(" HARDCORE SORT RESULT ::::::::::::");
+//        for (GameComponentHolder component : this.components) {
+//            System.out.print(component.toStringWithAllDependencies() + "\n");
+//        }
+//        System.out.flush();
 
 
         // instantiate components
@@ -348,18 +351,16 @@ public class GameConfigurationLoader
                 Log.e(TAG, err);
             }
         }
-
-        // add instances to game context
-        for (GameComponentHolder component : this.components) {
-            this.ctx.setInstance(component.getName(), component.getInstance());
-        }
-
-        // start adding content to DI insert methods
-        this.findGameDepWireMethodsAndPopulate();
     }
 
-    // TODO: thread this
-    private void findGameDepWireMethodsAndPopulate() {
+    public void installGameComponents(@NonNull GameContextSetter ctx) {
+        // add instances to game context
+        for (GameComponentHolder component : this.components) {
+            ctx.setInstance(component.getName(), component.getInstance());
+        }
+    }
+
+    public void findGameDepWireMethodsAndPopulate() {
         for (Class<?> config : this.configs) {
             if (config.getAnnotation(GameConfiguration.class) == null) {
                 continue;
@@ -393,11 +394,16 @@ public class GameConfigurationLoader
     private void populateGameDepWireMethods(final Object instance) {
         // get all methods with @GameDepWire
         Method[] methods = instance.getClass().getMethods();
-        for (Method method : methods) {
+        List<Method> gameDepWireMethods = new ArrayList<>();
+        for (Method method : methods) { // ease up debug time
             if (method.getAnnotation(GameDepWire.class) == null) {
                 continue;
             }
 
+            gameDepWireMethods.add(method);
+        }
+
+        for (Method method : gameDepWireMethods) {
             // find dependencies
             List<String> params = new ArrayList<>();
             for (Annotation[] annotations : method.getParameterAnnotations()) {
@@ -431,13 +437,13 @@ public class GameConfigurationLoader
             try {
                 GameComponentHolder.defaultMethodInvoker(method, dependencies.toArray(), instance);
             } catch (InvocationTargetException | IllegalAccessException e) {
-                System.err.println("unable to inject params into method: " + method.getName() + ", in class: " + instance.getClass().getName());
+                System.out.println("unable to inject params into method: " + method.getName() + ", in class: " + instance.getClass().getName());
 
                 String paramsStr = "";
                 for (String param : params) {
                     paramsStr += param + ", ";
                 }
-                System.err.println("params: " + paramsStr);
+                System.out.println("params: " + paramsStr);
 
                 e.printStackTrace();
             }
