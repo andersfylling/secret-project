@@ -9,8 +9,8 @@ import android.graphics.Rect;
 
 
 import team.adderall.game.PositionTracker;
-import team.adderall.game.SensorEvt;
-import team.adderall.game.SensorEvtListener;
+import team.adderall.game.userinput.SensorEvt;
+import team.adderall.game.userinput.SensorEvtListener;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 

@@ -1,4 +1,4 @@
-package team.adderall.game;
+package team.adderall.game.userinput;
 
 public class SensorEvt {
     public final static int INDEX_X = 0;

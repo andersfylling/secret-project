@@ -8,6 +8,7 @@ import team.adderall.game.framework.component.GameDepWire;
  * Make other components be able to register actions on specific changes. death, reborn, etc.
  */
 @GameComponent
+@Deprecated
 public class PlayerStateTracker {
 
 
