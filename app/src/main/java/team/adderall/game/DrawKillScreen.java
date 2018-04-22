@@ -10,10 +10,7 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 18/4/18.
- */
-@GameComponent("DrawKillScreen")
+@GameComponent
 public class DrawKillScreen implements GamePainter {
 
     private final Players players;
@@ -22,10 +19,9 @@ public class DrawKillScreen implements GamePainter {
     private final Paint textPainter;
 
     @GameDepWire
-    public DrawKillScreen(
-            @Inject("players") Players players,
-            @Inject("GameState") GameState gameState
-    ){
+    public DrawKillScreen(@Inject("players") Players players,
+                          @Inject("GameState") GameState gameState)
+    {
         this.players = players;
         this.painter = new Paint();
         this.textPainter = new Paint();

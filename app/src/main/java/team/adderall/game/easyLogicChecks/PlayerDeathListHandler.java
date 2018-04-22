@@ -9,10 +9,6 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 19/4/18.
- */
-
 @GameComponent
 public class PlayerDeathListHandler
      implements GameLogicInterface
@@ -21,14 +17,15 @@ public class PlayerDeathListHandler
         private final Players players;
 
         @GameDepWire
-        public PlayerDeathListHandler(@Inject("players") Players p){
+        public PlayerDeathListHandler(@Inject("players") Players p)
+        {
             this.players = p;
         }
 
-        @Override
         /**
          * Move any players away from the active pile, if they are actually dead.
          */
+        @Override
         public void run() {
             for (Player player : this.players.getAlivePlayersAsList()) {
                 if(player.getBallManager().getState() != BallManager.STATE_DEAD){

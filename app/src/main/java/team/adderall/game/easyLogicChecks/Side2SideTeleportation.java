@@ -11,19 +11,17 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 19/4/18.
- */
-
 @GameComponent
 public class Side2SideTeleportation implements GameLogicInterface {
     private final Players players;
     private int width;
 
     @GameDepWire
-    public Side2SideTeleportation(@Inject("players") Players p, int x){
-        this.players = p;
-        this.width = x;
+    public Side2SideTeleportation(@Inject("players") Players players,
+                                  @Inject("canvasSize") Point canvasSize)
+    {
+        this.players = players;
+        this.width = canvasSize.x;
     }
 
     @Override

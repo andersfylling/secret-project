@@ -8,19 +8,22 @@ import java.util.Map;
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
+import team.adderall.game.framework.component.Inject;
 
-@GameComponent("players")
+@GameComponent
 public class Players
     implements SensorEvtListener
 {
     private final Map<Long, Player> players;
     private Map<Long, Player> alivePlayers;
     private Map<Long, Player> deadPlayers;
+    private final GameDetails details;
 
     private Player active;
 
     @GameDepWire
-    public Players() {
+    public Players(@Inject("GameDetails") GameDetails gameDetails) {
+        this.details = gameDetails;
         this.players = new HashMap<>();
         this.deadPlayers = new HashMap<>();
         this.active = null;
@@ -31,6 +34,12 @@ public class Players
          * Atleast for now.
          */
         this.alivePlayers = new HashMap<>(players);
+
+        // TODO: refactor
+        registerPlayersWithUserID(this.details.getPlayers());
+        for(Player player : getAlivePlayersAsList()) {
+            player.createBallManager(player.isActivePlayer());
+        }
     }
 
     public List<Player> getAlivePlayersAsList() {

@@ -6,10 +6,6 @@ import android.graphics.Rect;
 
 import team.adderall.game.highscore.HighScore;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 public class PositionTracker
 {
     private static final double SPEEDREDUCTION = 0.2;

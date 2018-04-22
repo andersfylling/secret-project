@@ -11,9 +11,7 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 17/4/18.
- */
+
 public class HighScore {
     /**
      * Declare different values the person would be scored on

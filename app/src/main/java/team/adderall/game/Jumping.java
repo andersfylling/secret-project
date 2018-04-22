@@ -2,7 +2,7 @@ package team.adderall.game;
 
 import team.adderall.game.framework.component.*;
 
-@GameComponent("jumping")
+@GameComponent
 public class Jumping
     implements Runnable
 {

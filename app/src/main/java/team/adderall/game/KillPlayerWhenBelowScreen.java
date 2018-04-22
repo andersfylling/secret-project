@@ -8,7 +8,7 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-@GameComponent("killPlayerWhenBelowScreen")
+@GameComponent
 public class KillPlayerWhenBelowScreen
     implements GameLogicInterface
 {

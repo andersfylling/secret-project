@@ -13,17 +13,14 @@ import team.adderall.game.framework.component.Inject;
 import team.adderall.game.level.Floor;
 import team.adderall.game.level.LevelManager;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 @GameComponent
 public class Collision
         implements GameLogicInterface {
     private final Players players;
     private final LevelManager level;
     @GameDepWire
-    public Collision(@Inject("players") Players p,@Inject("level") LevelManager level )
+    public Collision(@Inject("players") Players p,
+                     @Inject("level") LevelManager level)
     {
         this.players = p;
         this.level = level;

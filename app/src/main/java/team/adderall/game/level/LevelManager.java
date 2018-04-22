@@ -16,7 +16,7 @@ import team.adderall.game.framework.UpdateRateCounter;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 
-@GameComponent("level")
+//@GameComponent("level")
 public class LevelManager
             implements GamePainter {
         private List<Floor> levels;
@@ -45,7 +45,7 @@ public class LevelManager
          * @param thickness          how thick should each floor/line/level be
          * @param gameSeed           affects floor/level generation
          */
-        @GameDepWire
+        //@GameDepWire
         public LevelManager(int width, int height, int pointsInWidth, int minimumLevelsReady, int thickness, long gameSeed) {
             this.levelsOnScreen = minimumLevelsReady;
             this.blocksInWidth = pointsInWidth;

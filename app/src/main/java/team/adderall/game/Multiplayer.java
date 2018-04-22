@@ -20,7 +20,7 @@ import team.adderall.game.framework.multiplayer.Packet;
 /**
  * Sends updates about main player and keep other players up to date.
  */
-@GameComponent("multiplayer")
+@GameComponent
 @GameLogic(wave=5)
 public class Multiplayer
     implements GameLogicInterface
@@ -30,7 +30,7 @@ public class Multiplayer
     private final static long TIMEOUT = 20;
 
     private final GameDetails gameDetails;
-    private final Map<Long, BallManager> multiplayers;
+    //private final Map<Long, BallManager> multiplayers;
     private final Players players;
     private long gameID;
     private long id;
@@ -41,7 +41,10 @@ public class Multiplayer
 
     private Client client;
 
-    public Multiplayer(Players players, GameDetails gameDetails) {
+    @GameDepWire
+    public Multiplayer(@Inject("players") Players players,
+                       @Inject("GameDetails") GameDetails gameDetails)
+    {
         this.gameDetails = gameDetails;
         this.lastUpdate = System.currentTimeMillis() - TIMEOUT;
 
@@ -75,17 +78,17 @@ public class Multiplayer
 
     public void eventHandler(final Packet evt) {
         // check if player exists
-        if (!this.players.containsKey(evt.getUserID())) {
-            return;
-        }
-
-        // check if the event is for this player
-        if (this.players.get(evt.getUserID()).isActivePlayer()) {
-            return;
-        }
-
-        BallManager player = this.players.get(evt.getUserID());
-        player.setPos(new Point(evt.getX(), evt.getY()));
+//        if (!this.players.containsKey(evt.getUserID())) {
+//            return;
+//        }
+//
+//        // check if the event is for this player
+//        if (this.players.get(evt.getUserID()).isActivePlayer()) {
+//            return;
+//        }
+//
+//        BallManager player = this.players.get(evt.getUserID());
+//        player.setPos(new Point(evt.getX(), evt.getY()));
     }
 
     /**
@@ -93,24 +96,24 @@ public class Multiplayer
      */
     @Override
     public void run() {
-        if (this.lastUpdate + TIMEOUT > System.currentTimeMillis()) {
-            return;
-        }
-        this.lastUpdate = System.currentTimeMillis();
-
-        Player player = this.playersObj.getActive();
-        if (player == null) {
-            return;
-        }
-
-        BallManager bm = player.getBallManager();
-        boolean jumping = bm.getVelocity() < 0;
-        int x = bm.getPos().x;
-        int y = bm.getPos().y;
-
-        // TODO: refactor
-        Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, this.playersObj.getActive().getUserID(), this.playersObj.getActive().getGameID());
-
-        this.client.send(event);
+//        if (this.lastUpdate + TIMEOUT > System.currentTimeMillis()) {
+//            return;
+//        }
+//        this.lastUpdate = System.currentTimeMillis();
+//
+//        Player player = this.playersObj.getActive();
+//        if (player == null) {
+//            return;
+//        }
+//
+//        BallManager bm = player.getBallManager();
+//        boolean jumping = bm.getVelocity() < 0;
+//        int x = bm.getPos().x;
+//        int y = bm.getPos().y;
+//
+//        // TODO: refactor
+//        Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, this.playersObj.getActive().getUserID(), this.playersObj.getActive().getGameID());
+//
+//        this.client.send(event);
     }
 }

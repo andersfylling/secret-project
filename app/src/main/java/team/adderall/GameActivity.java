@@ -16,6 +16,7 @@ import team.adderall.game.Jumping;
 import team.adderall.game.Player;
 import team.adderall.game.Players;
 import team.adderall.game.SensorChangedWorker;
+import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.GameInitializer;
@@ -32,7 +33,7 @@ public class GameActivity
     private GameInitializer gameInitializer;
     private SensorChangedWorker sensorChangedWorker;
     private SensorManager sensorManager;
-    private Jumping jumping;
+    private Jumping jumping; // TODO: insert DI support
 
     private GameDetails details;
 
@@ -58,7 +59,8 @@ public class GameActivity
 
         this.gameInitializer = new GameInitializer(
                 team.adderall.game.Config.class,
-                team.adderall.game.highscore.Config.class
+                team.adderall.game.highscore.Config.class,
+                team.adderall.game.ball.Config.class
         );
         this.gameInitializer.loadEssentials(); // add GameContext
         this.gameInitializer.addGameConfigurationActivities(this); // link this instance
@@ -74,7 +76,6 @@ public class GameActivity
         System.out.println("######### loading game objects");
     }
 
-
     @GameComponent("SensorChangedWorker")
     public SensorChangedWorker setSensorChangedWorker(
             @Inject("display") Display display
@@ -84,14 +85,6 @@ public class GameActivity
         this.sensorChangedWorker.start(); // start thread
 
         return this.sensorChangedWorker;
-    }
-
-    @GameComponent("jumping")
-    public Jumping setJumpListener(
-            @Inject("players") Players players
-    ) {
-        this.jumping = new Jumping(players);
-        return this.jumping;
     }
 
     @GameComponent("activity")
@@ -115,20 +108,17 @@ public class GameActivity
      * @return
      */
     @GameComponent("GameDetails")
-    public GameDetails gameDetails() {
+    public GameDetails gameDetails()
+    {
         return this.details;
     }
 
-    @GameComponent("players")
-    public Players players() {
-        final Players players = new Players();
-        players.registerPlayersWithUserID(this.details.getPlayers());
-        for(Player player : players.getAlivePlayersAsList()) {
-            player.createBallManager(player.isActivePlayer());
-        }
-
-        return players;
+    @GameDepWire
+    public void setJumping(@Inject("jumping") Jumping jumping)
+    {
+        this.jumping = jumping;
     }
+
 
     // TODO: move to a different class(!)
     private void addDeviceSensorListeners() {
@@ -167,7 +157,9 @@ public class GameActivity
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
-        this.jumping.run();
+        if (this.jumping != null) {
+            this.jumping.run();
+        }
     }
 
 
