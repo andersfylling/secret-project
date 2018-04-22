@@ -30,7 +30,7 @@ public class Gravity
 
     @Override
     public void run() {
-        for(Player player : players.getAlivePlayersAsList()){
+        for(Player player : players.getAlivePlayers()){
             BallManager b = player.getBallManager();
             long now = System.nanoTime();
 

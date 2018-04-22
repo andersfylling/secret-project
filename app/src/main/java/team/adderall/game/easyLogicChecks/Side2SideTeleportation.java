@@ -26,7 +26,7 @@ public class Side2SideTeleportation implements GameLogicInterface {
 
     @Override
     public void run() {
-        for(Player player : players.getAlivePlayersAsList()){
+        for(Player player : players.getAlivePlayers()){
             BallManager bm = player.getBallManager();
             Point p = bm.getPos();
 

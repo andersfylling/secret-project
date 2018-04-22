@@ -27,7 +27,7 @@ public class GameDetails
     private long highscore;
 
     private final boolean multiplayer;
-
+    private long gameID;
 
 
     public GameDetails(final boolean multiplayer) {
@@ -36,6 +36,7 @@ public class GameDetails
         this.players = new HashMap<>();
         this.gameSeed = 1;
         this.highscore = 0;
+        this.gameID = Multiplayer.NOT_REAL_GAME_ID;
     }
 
 
@@ -106,5 +107,13 @@ public class GameDetails
 
     public boolean isMultiplayer() {
         return multiplayer;
+    }
+
+    public long getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(long gameID) {
+        this.gameID = gameID;
     }
 }

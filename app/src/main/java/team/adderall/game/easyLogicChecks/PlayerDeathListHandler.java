@@ -27,12 +27,10 @@ public class PlayerDeathListHandler
          */
         @Override
         public void run() {
-            for (Player player : this.players.getAlivePlayersAsList()) {
-                if(player.getBallManager().getState() != BallManager.STATE_DEAD){
-                    continue;
+            for (Player player : this.players.getAlivePlayers()) {
+                if(player.getBallManager().getState() == BallManager.STATE_DEAD){
+                    players.setToDead(player);
                 }
-
-                players.setToDead(player.getGameID());
             }
         }
     }

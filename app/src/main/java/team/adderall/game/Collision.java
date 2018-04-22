@@ -54,7 +54,7 @@ public class Collision
         int height = level.getHeight();
         int y = 0;
 
-        for(Player player: players.getAlivePlayersAsList()) {
+        for(Player player: players.getAlivePlayers()) {
             BallManager bm = player.getBallManager();
             Point pos = bm.getPos();
             for (Floor floor : level.getFloors()) {

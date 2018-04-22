@@ -14,58 +14,43 @@ import team.adderall.game.framework.component.Inject;
 public class Players
     implements SensorEvtListener
 {
-    private final Map<Long, Player> players;
-    private Map<Long, Player> alivePlayers;
-    private Map<Long, Player> deadPlayers;
+    private final List<Player> players;
+    private List<Player> alivePlayers;
+    private List<Player> deadPlayers;
     private final GameDetails details;
 
     private Player active;
+    private List<PlayerChange> listeners;
 
     @GameDepWire
-    public Players(@Inject("GameDetails") GameDetails gameDetails) {
+    public Players(@Inject("GameDetails") GameDetails gameDetails)
+    {
         this.details = gameDetails;
-        this.players = new HashMap<>();
-        this.deadPlayers = new HashMap<>();
+        this.players = new ArrayList<>();
+        this.deadPlayers = new ArrayList<>();
+        this.alivePlayers = new ArrayList<>();
         this.active = null;
+        this.listeners = new ArrayList<>();
 
-        /**
-         * This.alivePlayers is a copy of the players array.
-         * We need both as some things, e.g drawing fps/highscore.. should be done regardless of player state
-         * Atleast for now.
-         */
-        this.alivePlayers = new HashMap<>(players);
-
-        // TODO: refactor
-        registerPlayersWithUserID(this.details.getPlayers());
-        for(Player player : getAlivePlayersAsList()) {
+        // add players
+        for (Map.Entry<Long, Player> entry : details.getPlayers().entrySet()) {
+            Player player = entry.getValue();
             player.createBallManager(player.isActivePlayer());
+
+            this.players.add(player);
+            this.alivePlayers.add(player);
         }
     }
 
-    public List<Player> getAlivePlayersAsList() {
-        List<Player> list = new ArrayList<>();
-        for (Map.Entry<Long, Player> entry : alivePlayers.entrySet()) {
-            list.add(entry.getValue());
-        }
-
-        return list;
-    }
-    public Map<Long, Player> getAlivePlayers() {
+    public List<Player> getAlivePlayers() {
         return alivePlayers;
     }
 
-    public List<Player> getDeadPlayersAsList() {
-        List<Player> list = new ArrayList<>();
-        for (Map.Entry<Long, Player> entry : deadPlayers.entrySet()) {
-            list.add(entry.getValue());
-        }
-
-        return list;
-    }
-    public Map<Long, Player> getDeadPlayers() {
+    public List<Player> getDeadPlayers() {
         return deadPlayers;
     }
 
+    // rewrite
     @Override
     public void onSensorEvt(SensorEvt evt) {
         if (this.active == null) {
@@ -81,9 +66,9 @@ public class Players
 
     public Player getActive() {
         if (this.active == null) {
-            for (Map.Entry<Long, Player> entry : players.entrySet()) {
-                if (entry.getValue().isActivePlayer()) {
-                    this.active = entry.getValue();
+            for (Player player : players) {
+                if (player.isActivePlayer()) {
+                    this.active = player;
                     break;
                 }
             }
@@ -95,35 +80,31 @@ public class Players
         return this.players.size();
     }
 
-    /**
-     * This method does not check with the game server, and can therefore NOT
-     * be used in multiplayer.
-     *
-     * @param player
-     * @return generated user_id
-     */
-    public long registerNewPlayer(Player player) {
-        long userID = 243235; // random number
-        while (players.containsKey(userID)) {
-            userID++;
-        }
-        this.players.put(userID, player);
-        this.alivePlayers.put(userID, player);
+    public void setToDead(Player player) {
+        int index = this.alivePlayers.indexOf(player);
+        if (index > -1) {
+            this.alivePlayers.remove(index);
+            this.deadPlayers.add(player);
 
-        return userID;
+            // trigger listeners
+            this.triggerListenersThreaded(player, PlayerChange.DIED);
+        }
     }
 
-    public void setToDead(long userID) {
-        if (!alivePlayers.containsKey(userID)) {
-            return;
-        }
 
-        Player deadGuy = alivePlayers.remove(userID);
-        deadPlayers.put(userID, deadGuy);
+
+    public void registerListener(final PlayerChange listener) {
+        this.listeners.add(listener);
     }
 
-    public void registerPlayersWithUserID(Map<Long, Player> players) {
-        this.players.putAll(players);
-        this.alivePlayers.putAll(players);
+    public void triggerListeners(final Player player, final int action) {
+        for (PlayerChange listener : this.listeners) {
+            listener.trigger(player, action);
+        }
+    }
+    public void triggerListenersThreaded(final Player player, final int action) {
+        (new Thread(() -> {
+            this.triggerListeners(player, action);
+        })).start();
     }
 }
