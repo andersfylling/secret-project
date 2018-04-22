@@ -12,17 +12,33 @@ import team.adderall.game.framework.GamePaintWrapper;
 import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.UpdateRateCounter;
 import team.adderall.game.framework.component.GameComponent;
+import team.adderall.game.framework.component.GameComponents;
+import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.context.GameContext;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.Inject;
+import team.adderall.game.highscore.DrawHighScore;
 import team.adderall.game.level.LevelManager;
 
 /**
  * Reference this class in the GameActivity when initializing the game.
  */
 @GameConfiguration
-public class Configuration
+@GameComponents({ // initialize these from their constructor
+        Players.class,
+        GameState.class,
+        GamePaintWrapper.class,
+        Gravity.class,
+        Collision.class,
+        DrawKillScreen.class,
+        KillPlayerWhenBelowScreen.class,
+        PlayerDeathListHandler.class,
+        Side2SideTeleportation.class,
+        Multiplayer.class,
+        Jumping.class
+})
+public class Config
 {
 //    @GameComponentRegister // TODO: implement logic. not currently working.
 //    public void registerInstances(@Inject(GameContext.NAME) GameContextGetterAssured ctx, @Inject("GameContextSetter") GameContextSetter setter) {
@@ -64,11 +80,8 @@ public class Configuration
     @GameComponent("gameLogicThirdWave")
     public GameLogicInterface[] thirdLogicWave(
             @Inject("killPlayerWhenBelowScreen") KillPlayerWhenBelowScreen killer,
-            @Inject("PlayerDeathListHandler") PlayerDeathListHandler playerDeathListHandler,
-            @Inject("Side2SideTeleportation") Side2SideTeleportation side2SideTeleportation
-
-
-
+            @Inject("playerDeathListHandler") PlayerDeathListHandler playerDeathListHandler,
+            @Inject("side2SideTeleportation") Side2SideTeleportation side2SideTeleportation
     ) {
         return new GameLogicInterface[]{
                 killer,
@@ -76,12 +89,22 @@ public class Configuration
                 side2SideTeleportation
         };
     }
+    @GameComponent("gameLogicLastWave")
+    public GameLogicInterface[] lastLogicWave(
+            @Inject("multiplayer") Multiplayer multiplayer
+
+    ) {
+        return new GameLogicInterface[]{
+                multiplayer
+        };
+    }
 
     @GameComponent(GameContext.LOGIC)
     public GameLogicInterface[][] setLogicWaves(
             @Inject("gameLogicFirstWave") GameLogicInterface[] first,
             @Inject("gameLogicSecondWave") GameLogicInterface[] second,
-            @Inject("gameLogicThirdWave") GameLogicInterface[] third
+            @Inject("gameLogicThirdWave") GameLogicInterface[] third,
+            @Inject("gameLogicLastWave") GameLogicInterface[] last
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
@@ -90,7 +113,8 @@ public class Configuration
         return new GameLogicInterface[][]{
                 first,
                 second,
-                third
+                third,
+                last
         };
     }
 
@@ -104,16 +128,18 @@ public class Configuration
             @Inject("FPSPainter") GamePainter fps,
             @Inject("LPSPainter") GamePainter lps,
             @Inject("level") LevelManager level,
-            @Inject("drawball") DrawBall drawball,
-            @Inject("DrawHighScore") DrawHighScore drawHighScore,
-            @Inject("DrawKillScreen") DrawKillScreen drawKillScreen
-
+            @Inject("drawBall") DrawBall drawball,
+            @Inject("drawHighScore") DrawHighScore drawHighScore,
+            @Inject("drawKillScreen") DrawKillScreen drawKillScreen
     ) {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
         GamePainter[] firstWave = new GamePainter[]{
-                level,drawball,drawKillScreen,drawHighScore
+                level,
+                drawball,
+                drawKillScreen,
+                drawHighScore
         };
 
         GamePainter[] updateRatePainters = new GamePainter[] {
@@ -130,53 +156,11 @@ public class Configuration
         };
     }
 
-    @GameComponent("gamePaintWrapper")
-    public GamePaintWrapper gamePaintWrapper(
-            @Inject(GameContext.PAINT) GamePainter[][] painters,
-            @Inject("activity") Activity activity,
-            @Inject("GameState") GameState gameState
-    ) {
-        return new GamePaintWrapper(activity, painters,gameState);
-    }
-
-
-
     // ########################################################################################
     // ###
     // ### Other components
     // ###
     // ########################################################################################
-    @GameComponent("gravity")
-    public Gravity gravity(
-            @Inject("players") Players players
-    ) {
-        return new Gravity(players);
-    }
-
-    @GameComponent("GameState")
-    public GameState gameState(
-    ) {
-        return new GameState();
-    }
-
-    @GameComponent("collision")
-    public Collision collision(
-            @Inject("players") Players players,
-            @Inject("level") LevelManager level
-    ) {
-        return new Collision(players,level);
-    }
-
-    @GameComponent("players")
-    public Players players(
-            @Inject("SensorChangedWorker") SensorChangedWorker handler
-    ) {
-        final Players players = new Players();
-        handler.addListener(players::onSensorEvt);
-
-        return players;
-    }
-
     @GameComponent("canvasSize")
     public Point getCanvasSize(
             @Inject("activity") Activity activity,
@@ -198,38 +182,12 @@ public class Configuration
 
 
     @GameComponent("level")
-    public LevelManager level(
-            @Inject("players") Players players,
-            @Inject("canvasSize") Point canvasSize
-    ) {
-
-
+    public LevelManager level(@Inject("players") Players players,
+                              @Inject("canvasSize") Point canvasSize)
+    {
         return new LevelManager(canvasSize.x,canvasSize.y,10,10,100,1);
     }
 
-    @GameComponent("drawball")
-    public DrawBall ball(
-            @Inject("players") Players players
-    ) {
-        return new DrawBall(players);
-    }
-
-    @GameComponent("DrawHighScore")
-    public DrawHighScore highScore(
-            @Inject("players") Players players,
-            @Inject("GameState") GameState gameState
-    ) {
-        return new DrawHighScore(players,gameState);
-    }
-
-    @GameComponent("DrawKillScreen")
-    public  DrawKillScreen drawKillScreen(
-            @Inject("players") Players players,
-            @Inject("GameState") GameState gameState
-
-    ) {
-        return new DrawKillScreen(players,gameState);
-    }
     // FPS counter / draws per second
     @GameComponent("FPS")
     public UpdateRateCounter setFPSCounter() {
@@ -267,45 +225,28 @@ public class Configuration
         return painter;
     }
 
-
+    // ########################################################################################
+    // ###
+    // ### Tweak GameComponents
+    // ### TODO: support insert dependency injection, after construction.
+    // ########################################################################################
 
     // configure GameLoop counters
-    @GameComponent("_register_GameLoop_rateUpdaters")
-    public int setLPSAndFPSForGameLoop(
+    @GameDepWire
+    public void setLPSAndFPSForGameLoop(
             @Inject("FPS") UpdateRateCounter fps,
             @Inject("LPS") UpdateRateCounter lps,
             @Inject("GameLoop") GameLoop gameLoop
     ) {
         gameLoop.setLps(lps);
         gameLoop.setFps(fps);
-
-        return -1;
     }
 
-    @GameComponent("killPlayerWhenBelowScreen")
-    public KillPlayerWhenBelowScreen addDeathZone(
+    @GameDepWire
+    public void bindSensorChangesToPlayers(
             @Inject("players") Players players,
-            @Inject("canvasSize") Point canvasSize,
-            @Inject("GameState") GameState gameState
+            @Inject("SensorChangedWorker") SensorChangedWorker handler
     ) {
-        return new KillPlayerWhenBelowScreen(players, canvasSize,gameState);
+        handler.addListener(players::onSensorEvt);
     }
-
-    @GameComponent("PlayerDeathListHandler")
-    public PlayerDeathListHandler playerDeathListHandler(
-            @Inject("players") Players players
-    ) {
-        return new PlayerDeathListHandler(players);
-    }
-
-    @GameComponent("Side2SideTeleportation")
-    public Side2SideTeleportation side2SideTeleportation(
-            @Inject("players") Players players,
-            @Inject("canvasSize") Point canvasSize
-    ) {
-        return new Side2SideTeleportation(players,canvasSize.x);
-
-    }
-
-
 }

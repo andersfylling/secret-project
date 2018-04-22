@@ -1,9 +1,5 @@
 package team.adderall.game.ball;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,8 +12,7 @@ import team.adderall.game.PositionTracker;
 import team.adderall.game.SensorEvt;
 import team.adderall.game.SensorEvtListener;
 import team.adderall.game.framework.component.GameComponent;
-
-import java.util.ArrayList;
+import team.adderall.game.framework.component.GameDepWire;
 
 /**
  * Handles rendering of the ball.
@@ -25,7 +20,7 @@ import java.util.ArrayList;
  * TODO: how do we deal with collision detection? perhaps use a class to bind BallManager
  * TODO: and LevelManager somehow.. beans + DI?
  */
-@GameComponent("ballManager")
+@GameComponent
 public class BallManager
         implements
         SensorEvtListener
@@ -69,8 +64,34 @@ public class BallManager
 
     /**
      * Constructor
+     * Default player
      */
+    @GameDepWire
+    public BallManager() {
 
+        this.ball = new Ball(RADIUS);
+
+        this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
+
+        this.painter = new Paint();
+        this.painter.setColor(Color.parseColor(ball.getColour()));
+        this.painter.setStyle(Paint.Style.FILL);
+
+        this.deathPainter = new Paint();
+        this.deathPainter.setColor(Color.RED);
+        this.deathPainter.setTextSize(75);
+        this.deathPainter.setTextAlign(Paint.Align.CENTER);
+
+        this.speed = SPEED;
+        this.state = STATE_ALIVE;
+        this.activePlayer = true;
+
+        this.velocity = 0;
+    }
+
+    /**
+     * Constructor
+     */
     public BallManager(final boolean activePlayer) {
 
         this.ball = new Ball(RADIUS);
@@ -191,6 +212,9 @@ public class BallManager
         return activePlayer;
     }
 
+    public Ball getBall() {
+        return ball;
+    }
 
     public void drawHighScore(Canvas canvas, float y) {
         this.tracker.drawHighScore(canvas,y);

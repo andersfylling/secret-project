@@ -1,9 +1,5 @@
 package team.adderall.game.ball;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 
 public class Ball
 {

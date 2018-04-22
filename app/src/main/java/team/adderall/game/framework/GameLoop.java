@@ -16,7 +16,7 @@ import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.context.GameContext;
 
-@GameComponent
+@GameComponent("GameLoop")
 public class GameLoop
         implements Runnable
 {

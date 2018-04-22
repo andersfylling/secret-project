@@ -10,12 +10,13 @@ import team.adderall.game.framework.configuration.EssentialGameConfigurationDepe
 import team.adderall.game.framework.configuration.GameConfigurationLoader;
 import team.adderall.game.framework.context.GameContext;
 
-public class GameInitializer {
+public class GameInitializer
+{
 
     private final GameContext ctx;
     private final List<Class<?>> configClasses;
     private final List<Activity> configClassInstances;
-    private GameConfigurationLoader configLoader;
+    private final GameConfigurationLoader configLoader;
 
     /**
      * A package to be scanned for classes with the annotation @GameConfiguration
@@ -28,6 +29,8 @@ public class GameInitializer {
         this.configClassInstances = new ArrayList<>();
         this.configClasses = new ArrayList<>();
         this.configClasses.addAll(Arrays.asList(configClasses));
+
+        this.configLoader = new GameConfigurationLoader(this.configClasses);
     }
 
     /**
@@ -43,7 +46,6 @@ public class GameInitializer {
      * Load all instances to memory
      */
     private void load() {
-        this.configLoader = new GameConfigurationLoader(this.ctx, this.configClasses);
         this.configLoader.addGameConfigurationInstances(this.configClassInstances);
 
         // load all @GameComponents from @GameConfiguration classes
@@ -58,6 +60,8 @@ public class GameInitializer {
         final GameInitializer self = this;
         (new Thread(() -> {
             self.load();
+            configLoader.installGameComponents(ctx);
+            configLoader.findGameDepWireMethodsAndPopulate(); // inject GameDepWire methods
 
             if (callback == null) {
                 return;
@@ -77,7 +81,8 @@ public class GameInitializer {
     }
 
     public void loadEssentials() {
-        this.configClasses.add(EssentialGameConfigurationDependencies.class);
+        this.configLoader.addGameConfigurations(EssentialGameConfigurationDependencies.class);
+        this.configLoader.addGameComponentInstance(GameContext.NAME, this.ctx);
     }
 
     /**

@@ -1,19 +1,22 @@
-package team.adderall.game;
+package team.adderall.game.highscore;
 
 import android.graphics.Canvas;
 
+import team.adderall.game.GameState;
+import team.adderall.game.Player;
+import team.adderall.game.Players;
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 14/4/18.
- */
-@GameComponent("DrawHighScore")
-public class DrawHighScore implements
-        GamePainter{
+
+@GameComponent
+public class DrawHighScore
+        implements
+        GamePainter
+{
     private final Players players;
     private final GameState gameState;
 
@@ -29,13 +32,12 @@ public class DrawHighScore implements
     @Override
     public void paint(Canvas canvas) {
         int y = (int) gameState.getyScaleValue();
-        for(BallManager player : players.toList()){
-            player.drawHighScore(canvas,y);
+        for(Player player : players.getAlivePlayersAsList()){
+            player.getBallManager().drawHighScore(canvas,y);
         }
     }
 
     @Override
     public void paint(Canvas canvas, float y) {
-
     }
 }

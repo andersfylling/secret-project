@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_lobby"
+            android:icon="@drawable/ic_lobby_222_24dp"
+            android:title="@string/menu_lobby" />
+        <item
+            android:id="@+id/nav_solo"
+            android:icon="@drawable/ic_solo_222_24dp"
+            android:title="@string/nav_solo" />
+        <item
+            android:id="@+id/nav_high_score"
+            android:icon="@drawable/ic_high_score_222_24dp"
+            android:title="@string/nav_high_score" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_222_24dp"
+            android:title="@string/nav_settings" />
+
+        <!-- display logout if logged in -->
+        <item
+            android:id="@+id/nav_logout_login"
+            android:icon="@drawable/ic_lock_222_24dp"
+            android:title="@string/nav_logout_login" />
+    </group>
+</menu>

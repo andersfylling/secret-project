@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 // TODO: implement lol
 // fix constructor dependencies for @GameComponent's
-@Target({ElementType.CONSTRUCTOR})
+@Target({ElementType.CONSTRUCTOR, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GameDepWire {
 }

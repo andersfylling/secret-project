@@ -2,6 +2,7 @@ package team.adderall;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,10 +11,12 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
 
-import team.adderall.game.Configuration;
+import team.adderall.game.GameDetails;
 import team.adderall.game.Jumping;
+import team.adderall.game.Player;
 import team.adderall.game.Players;
 import team.adderall.game.SensorChangedWorker;
+import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.GameInitializer;
@@ -32,10 +35,22 @@ public class GameActivity
     private SensorManager sensorManager;
     private Jumping jumping;
 
+    private GameDetails details;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        // read details from intent
+        Intent intent = getIntent();
+        this.details = GameDetails.READ_IN_FROM_INTENT(intent);
+        if (this.details == null) {
+            Intent returnIntent = new Intent();
+            setResult(GameDetails.CODE_GAME_UNABLE_TO_START, returnIntent);
+            finish();
+            return;
+        }
 
 
         // initialize device sensor capabilities
@@ -43,7 +58,9 @@ public class GameActivity
         this.addDeviceSensorListeners();
 
         this.gameInitializer = new GameInitializer(
-                Configuration.class
+                team.adderall.game.Config.class,
+                team.adderall.game.highscore.Config.class,
+                team.adderall.game.ball.Config.class
         );
         this.gameInitializer.loadEssentials(); // add GameContext
         this.gameInitializer.addGameConfigurationActivities(this); // link this instance
@@ -59,7 +76,6 @@ public class GameActivity
         System.out.println("######### loading game objects");
     }
 
-
     @GameComponent("SensorChangedWorker")
     public SensorChangedWorker setSensorChangedWorker(
             @Inject("display") Display display
@@ -69,14 +85,6 @@ public class GameActivity
         this.sensorChangedWorker.start(); // start thread
 
         return this.sensorChangedWorker;
-    }
-
-    @GameComponent("jumping")
-    public Jumping setJumpListener(
-            @Inject("players") Players players
-    ) {
-        this.jumping = new Jumping(players);
-        return this.jumping;
     }
 
     @GameComponent("activity")
@@ -93,6 +101,24 @@ public class GameActivity
 
         return wm.getDefaultDisplay();
     }
+
+    /**
+     * USe this to store any details that should be returned when the game ends.
+     *
+     * @return
+     */
+    @GameComponent("GameDetails")
+    public GameDetails gameDetails()
+    {
+        return this.details;
+    }
+
+    @GameDepWire
+    public void setJumping(@Inject("jumping") Jumping jumping)
+    {
+        this.jumping = jumping;
+    }
+
 
     // TODO: move to a different class(!)
     private void addDeviceSensorListeners() {
@@ -131,7 +157,9 @@ public class GameActivity
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
-        this.jumping.run();
+        if (this.jumping != null) {
+            this.jumping.run();
+        }
     }
 
 
@@ -145,5 +173,14 @@ public class GameActivity
     public void onPause(){
         super.onPause();
         this.removeDeviceSensorListeners();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        this.details.writeToIntent(returnIntent);
+
+        setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
+        finish();
     }
 }

@@ -17,47 +17,54 @@ public class GameConfigurationLoaderTest {
     @Test
     public void testLoadingGameConfiguration() {
         Class<?> c = GameComponents.class;
-        GameContext ctx = new GameContext();
-        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c);
+        GameConfigurationLoader loader = new GameConfigurationLoader(c);
         loader.activateFailOnNullInstance();
         loader.load();
 
+        GameContext ctx = new GameContext();
+        loader.installGameComponents(ctx);
+
         // make sure all the methods were found, processed and instantiated
-        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS, ctx.sizeWithoutGameContext());
+        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS, ctx.size());
     }
 
     @Test
     public void testLoadingClassWithoutGameConfiguration() {
         Class<?> c = GameComponentsWithoutGameConfigAnnotation.class;
         GameContext ctx = new GameContext();
-        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c);
+        GameConfigurationLoader loader = new GameConfigurationLoader(c);
         loader.activateFailOnNullInstance();
         loader.load();
+        loader.installGameComponents(ctx);
 
         // make sure all the methods were found, processed and instantiated
-        assertEquals(0, ctx.sizeWithoutGameContext());
+        assertEquals(0, ctx.size());
     }
 
     @Test
     public void testLoadingMultipleGameConfigurations() {
         Class<?> c1 = GameComponents.class;
         Class<?> c2 = GameComponentsExtra.class;
-        GameContext ctx = new GameContext();
-        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c1, c2);
+        GameConfigurationLoader loader = new GameConfigurationLoader(c1, c2);
         loader.activateFailOnNullInstance();
         loader.load();
 
+        GameContext ctx = new GameContext();
+        loader.installGameComponents(ctx);
+
         // make sure all the methods were found, processed and instantiated
-        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS + GameComponentsExtra.NUM_OF_GAME_COMPONENTS, ctx.sizeWithoutGameContext());
+        assertEquals(GameComponents.NUM_OF_GAME_COMPONENTS + GameComponentsExtra.NUM_OF_GAME_COMPONENTS, ctx.size());
     }
 
     @Test(expected = InstantiationError.class)
     public void testGameComponentWithUnknownDependency() {
         Class<?> c = GameComponentsWithUnknownDep.class;
-        GameContext ctx = new GameContext();
-        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c);
+        GameConfigurationLoader loader = new GameConfigurationLoader(c);
         loader.activateFailOnNullInstance();
         loader.load();
+
+        GameContext ctx = new GameContext();
+        loader.installGameComponents(ctx);
 
         assertEquals(0, ctx.size());
     }
@@ -65,8 +72,7 @@ public class GameConfigurationLoaderTest {
     @Test(expected = InstantiationError.class)
     public void testSelfCyclingDependency() {
         Class<?> c = GameComponentsWithSelfDepCycling.class;
-        GameContext ctx = new GameContext();
-        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c);
+        GameConfigurationLoader loader = new GameConfigurationLoader(c);
         loader.activateFailOnNullInstance();
         loader.load();
     }
@@ -74,8 +80,7 @@ public class GameConfigurationLoaderTest {
     @Test(expected = InstantiationError.class)
     public void testCyclingDependency() {
         Class<?> c = GameComponentsWithDepCycling.class;
-        GameContext ctx = new GameContext();
-        GameConfigurationLoader loader = new GameConfigurationLoader(ctx, c);
+        GameConfigurationLoader loader = new GameConfigurationLoader(c);
         loader.activateFailOnNullInstance();
         loader.load();
     }

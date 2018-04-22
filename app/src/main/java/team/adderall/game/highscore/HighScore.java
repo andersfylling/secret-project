@@ -1,4 +1,4 @@
-package team.adderall.game;
+package team.adderall.game.highscore;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,10 +11,8 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 17/4/18.
- */
-class HighScore {
+
+public class HighScore {
     /**
      * Declare different values the person would be scored on
      */
@@ -35,8 +33,9 @@ class HighScore {
         return this.highestXValue;
     }
     public void potensiallySetHighestXValue(int newScore){
-        if(newScore < this.highestXValue)
+        if(newScore < this.highestXValue) {
             this.highestXValue = newScore;
+        }
     }
 
     /**

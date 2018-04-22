@@ -6,11 +6,9 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 18/4/18.
- */
 @GameComponent("GameState")
-public class GameState {
+public class GameState
+{
     private float yScaleValue=0;
 
     @GameDepWire

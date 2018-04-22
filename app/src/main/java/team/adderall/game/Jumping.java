@@ -1,15 +1,12 @@
 package team.adderall.game;
 
-import team.adderall.game.ball.BallManager;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
+import team.adderall.game.framework.component.*;
 
-@GameComponent("jumping")
+@GameComponent
 public class Jumping
     implements Runnable
 {
-    private final BallManager player;
+    private final Player player;
 
     @GameDepWire
     public Jumping(
@@ -20,9 +17,9 @@ public class Jumping
 
     @Override
     public void run() {
-        if(this.player.getAtGround()) {
-            this.player.setVelocity(-5);
-            this.player.setAtGround(false);
+        if(this.player != null && this.player.getBallManager().getAtGround()) {
+            this.player.getBallManager().setVelocity(-5);
+            this.player.getBallManager().setAtGround(false);
         }
     }
 }

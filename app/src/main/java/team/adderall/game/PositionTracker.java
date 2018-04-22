@@ -4,9 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-/**
- * Created by Cim on 14/4/18.
- */
+import team.adderall.game.highscore.HighScore;
 
 public class PositionTracker
 {
