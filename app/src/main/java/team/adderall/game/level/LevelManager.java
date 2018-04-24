@@ -11,6 +11,7 @@ import java.util.List;
  * Created by Cim on 14/4/18.
  */
 
+import team.adderall.game.GameExtraObjects.Aid;
 import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.UpdateRateCounter;
 import team.adderall.game.framework.component.GameComponent;
@@ -36,8 +37,9 @@ public class LevelManager
         private Paint blockPainter;
         private Paint spacePainter;
         int starValue = 0;
+        private ArrayList<Aid> aids;
 
-        /**
+    /**
          * @param width              width of drawable area
          * @param height             height of drawable area
          * @param pointsInWidth      n1-n2 = line, n2-n3: space, n3-n4: line, etc.
@@ -62,12 +64,6 @@ public class LevelManager
             Floor solidFloor = this.generator.generateSolidFloor(width);
             this.levels.add(solidFloor);
 
-            // generate the levels
-            for (int i = 1; i < height; i++) {
-                final Floor floor = this.generator.generateFloor(i, this.levels.get(i - 1), width);
-                this.levels.add(floor);
-            }
-
             // setup painters
             this.painters = new Paint[Floor.TYPE_HIGHEST_INDEX + 1];
 
@@ -88,6 +84,31 @@ public class LevelManager
         public int getThickness() {
             return this.thickness;
         }
+
+
+    /**
+     * Get the Aids list from the AidsHandler.
+     * Also generete the floors now that we have the correct Aid Types
+     * After that we would also initialise all the correct painters.
+     * @param aids
+     */
+    public void setAids(ArrayList<Aid> aids) {
+        this.aids = aids;
+        this.generator.setAids(aids);
+
+        // generate the levels
+        for (int i = 1; i < this.height; i++) {
+            final Floor floor = this.generator.generateFloor(i, this.levels.get(i - 1), this.width);
+            this.levels.add(floor);
+        }
+
+        // Initialise all the correct painters for aids
+        for (Aid aid : aids) {
+            int type = aid.getType();
+            this.painters[type] = aid.getPainter();
+        }
+
+    }
 
         @Override
         public void paint(Canvas canvas) {

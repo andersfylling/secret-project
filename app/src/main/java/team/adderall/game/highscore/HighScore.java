@@ -1,4 +1,4 @@
-package team.adderall.game.highscore;
+package team.adderall.game;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,21 +11,21 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-
-public class HighScore {
+/**
+ * Created by Cim on 17/4/18.
+ */
+class HighScore {
     /**
      * Declare different values the person would be scored on
      */
     private int highestXValue = 0;
+    private int aidHighScore = 0;
     private Paint painter = null;
 
 
     public void HighScore(){
-        this.highestXValue = 0;
-
-        this.painter = new Paint();
-        this.painter.setTextSize(40);
-        this.painter.setColor(Color.RED);
+        // TODO: Does it not call this?
+        this.reset();
 
     }
 
@@ -33,9 +33,13 @@ public class HighScore {
         return this.highestXValue;
     }
     public void potensiallySetHighestXValue(int newScore){
-        if(newScore < this.highestXValue) {
+        if(newScore < this.highestXValue)
             this.highestXValue = newScore;
-        }
+    }
+
+    public int getScaledHighScore(){
+        int score =  this.highestXValue + this.aidHighScore;
+        return score/-100;
     }
 
     /**
@@ -44,15 +48,27 @@ public class HighScore {
      * @param canvas
      */
     public void paint(Canvas canvas,float y) {
-        int scaledHighScore = highestXValue/-100;
-        final String text = "HighScore: " + Integer.toString(scaledHighScore);
+        final String text = "HighScore: " + Integer.toString(getScaledHighScore());
         if(this.painter == null){
-            this.painter = new Paint();
-            this.painter.setTextSize(40);
-            this.painter.setColor(Color.RED);
+            this.reset();
+
         }
         canvas.drawText(text, 50, y+200, this.painter);
     }
 
+    private void reset() {
+        this.painter = new Paint();
+        this.painter.setTextSize(40);
+        this.painter.setColor(Color.RED);
+        this.highestXValue = 0;
+        this.aidHighScore = 0;
+    }
 
+    /**
+     * Update the Extra score recieved by the aid.
+     * @param score
+     */
+    public void updateAidExtraScore(int score) {
+        this.aidHighScore +=score;
+    }
 }

@@ -226,4 +226,7 @@ public class BallManager
     public boolean getAtGround(){
         return this.atGround;
     }
+    public void updateAidExtraScore(int i) {
+        this.tracker.updateAidExtraScore(i);
+    }
 }

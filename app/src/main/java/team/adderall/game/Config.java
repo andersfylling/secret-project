@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.view.Display;
 
+import team.adderall.game.GameExtraObjects.AidsHandler;
 import team.adderall.game.ball.DrawBall;
 import team.adderall.game.easyLogicChecks.PlayerDeathListHandler;
 import team.adderall.game.easyLogicChecks.Side2SideTeleportation;
@@ -66,11 +67,12 @@ public class Config
     }
     @GameComponent("gameLogicSecondWave")
     public GameLogicInterface[] secondLogicWave(
-            @Inject("collision") Collision collision
-
+            @Inject("collision") Collision collision,
+            @Inject("AidsHandler") AidsHandler aidsHandler
     ) {
         return new GameLogicInterface[]{
-                collision
+                collision,
+                aidsHandler
         };
     }
 
@@ -248,5 +250,14 @@ public class Config
             @Inject("SensorChangedWorker") SensorChangedWorker handler
     ) {
         handler.addListener(players::onSensorEvt);
+    }
+
+    @GameComponent("AidsHandler")
+    public AidsHandler aidsHandler(
+            @Inject("players") Players players,
+            @Inject("level") LevelManager level
+    ) {
+        return new AidsHandler(players,level);
+
     }
 }
