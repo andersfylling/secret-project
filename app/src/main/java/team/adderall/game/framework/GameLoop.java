@@ -26,7 +26,8 @@ public class GameLoop
 
     //private CountDownLatch latch;
     //private final ExecutorService logicerThreadPool;
-    private final GameLogicInterface[][] logics;
+    private GameLogicInterface[][] logics; // populated by GameLogicManager at runtime
+    private final GameLogicManager gameLogicManager;
     private final GamePaintWrapper painter;
 
     private UpdateRateCounter lps;
@@ -37,18 +38,18 @@ public class GameLoop
 
     @GameDepWire
     public GameLoop(
-            @Inject(GameContext.LOGIC) final GameLogicInterface[][] logics,
+            @Inject("gameLogicManager") final GameLogicManager gameLogicManager,
             @Inject("gamePaintWrapper") final GamePaintWrapper gamePaintWrapper
     ) {
-        this.logics = logics;
+        this.gameLogicManager = gameLogicManager;
         this.painter = gamePaintWrapper;
 
-        int requiredThreads = 0;
-        for (GameLogicInterface[] wave : logics) {
-            if (wave.length > requiredThreads) {
-                requiredThreads = wave.length;
-            }
-        }
+//        int requiredThreads = 0;
+//        for (GameLogicInterface[] wave : logics) {
+//            if (wave.length > requiredThreads) {
+//                requiredThreads = wave.length;
+//            }
+//        }
         //this.logicerThreadPool = Executors.newFixedThreadPool(requiredThreads);
 
         this.running = true;
@@ -75,6 +76,9 @@ public class GameLoop
             //        job.run();
             //        latch.countDown();
             //    });
+                if (job == null) {
+                    break; // @see GameLogicManager#getGameLogicInterfacesAsArray array init.
+                }
                 job.run();
             }
 
@@ -90,6 +94,9 @@ public class GameLoop
     @Override
     public void run() {
         android.os.Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+
+        // populate logics
+        this.logics = this.gameLogicManager.getGameLogicInterfacesAsArray();
 
         while (this.running) {
             int loops = 0;

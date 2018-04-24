@@ -9,11 +9,13 @@ import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
+import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.level.Floor;
 import team.adderall.game.level.LevelManager;
 
 @GameComponent
+@GameLogic(wave = 2)
 public class Collision
         implements GameLogicInterface {
     private final Players players;

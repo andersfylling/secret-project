@@ -54,6 +54,10 @@ public class GameContext
         return instance;
     }
 
+    public Map<String, Object> getInstances() {
+        return this.instances;
+    }
+
     public int size() {
         return this.instances.size();
     }

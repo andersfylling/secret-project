@@ -21,7 +21,7 @@ import team.adderall.game.framework.multiplayer.Packet;
  * Sends updates about main player and keep other players up to date.
  */
 @GameComponent
-@GameLogic(wave=5)
+@GameLogic(wave=100)
 public class Multiplayer
     implements GameLogicInterface
 {
