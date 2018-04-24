@@ -59,12 +59,12 @@ public class Clientv1
     public void close() {
         listen = false;
         listener.interrupt();
+        socket.close();
         try {
             listener.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        socket.close();
     }
 
     @Override
@@ -94,6 +94,8 @@ public class Clientv1
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
                 socket.receive(packet);
+            } catch (SocketException e) {
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
             }

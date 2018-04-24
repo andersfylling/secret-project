@@ -13,8 +13,6 @@ import android.view.WindowManager;
 
 import team.adderall.game.GameDetails;
 import team.adderall.game.Jumping;
-import team.adderall.game.Player;
-import team.adderall.game.Players;
 import team.adderall.game.SensorChangedWorker;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
@@ -183,7 +181,7 @@ public class GameActivity
         this.details.writeToIntent(returnIntent);
         this.removeDeviceSensorListeners();
         sensorChangedWorker.kill();
-        gameInitializer.kill();
+        gameInitializer.close();
 
 
         setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
