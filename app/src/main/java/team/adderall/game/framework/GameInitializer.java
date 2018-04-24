@@ -115,4 +115,9 @@ public class GameInitializer
             manager.addGameLogic(wave, (GameLogicInterface) component);
         }
     }
+
+    public void kill() {
+        GameLoop gameLoop = (GameLoop) this.ctx.getAssuredInstance("GameLoop");
+        gameLoop.stopGameLoop();
+    }
 }
