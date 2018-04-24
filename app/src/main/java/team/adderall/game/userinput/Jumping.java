@@ -20,7 +20,7 @@ public class Jumping
     @Override
     public void run() {
         if(this.player != null && this.player.getBallManager().getAtGround()) {
-            this.player.getBallManager().setVelocity(-5); // TODO: make this smoother
+            this.player.getBallManager().setVelocity(-6); // TODO: fix stuttering
             this.player.getBallManager().setAtGround(false);
         }
     }

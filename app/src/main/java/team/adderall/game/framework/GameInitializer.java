@@ -5,7 +5,9 @@ import android.app.Activity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
+import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.configuration.EssentialGameConfigurationDependencies;
 import team.adderall.game.framework.configuration.GameConfigurationLoader;
 import team.adderall.game.framework.context.GameContext;
@@ -59,14 +61,22 @@ public class GameInitializer
     public void load(final GameFinishedLoading callback) {
         final GameInitializer self = this;
         (new Thread(() -> {
+            // load all the components into memory and initialize them
             self.load();
-            configLoader.installGameComponents(ctx);
-            configLoader.findGameDepWireMethodsAndPopulate(); // inject GameDepWire methods
 
-            if (callback == null) {
-                return;
+            // add the component instances to the GameContext
+            configLoader.installGameComponents(ctx);
+
+            // extract GameLogic components and add them to the GameLogicManager
+            self.populateGameLogicManager();
+
+            // inject GameDepWire methods
+            configLoader.findGameDepWireMethodsAndPopulate();
+
+            // check if we should fire the callback
+            if (callback != null) {
+                callback.trigger();
             }
-            callback.trigger();
         })).start();
     }
 
@@ -76,8 +86,6 @@ public class GameInitializer
     public void start() {
         Runnable gameLoop = (Runnable) this.ctx.getAssuredInstance("GameLoop");
         (new Thread(gameLoop)).start();
-
-        System.out.println("\nRUNNING\n");
     }
 
     public void loadEssentials() {
@@ -92,5 +100,19 @@ public class GameInitializer
      */
     public void addGameConfigurationActivities(Activity... instances) {
         this.configClassInstances.addAll(Arrays.asList(instances));
+    }
+
+    private void populateGameLogicManager() {
+        GameLogicManager manager = (GameLogicManager) this.ctx.getAssuredInstance("gameLogicManager");
+
+        for (Map.Entry<String, Object> entry : this.ctx.getInstances().entrySet()) {
+            Object component = entry.getValue();
+            if (component.getClass().getAnnotation(GameLogic.class) == null) {
+                continue;
+            }
+
+            int wave = component.getClass().getAnnotation(GameLogic.class).wave();
+            manager.addGameLogic(wave, (GameLogicInterface) component);
+        }
     }
 }

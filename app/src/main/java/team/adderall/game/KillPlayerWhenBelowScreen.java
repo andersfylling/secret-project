@@ -6,9 +6,11 @@ import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
+import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 
 @GameComponent
+@GameLogic(wave = 3)
 public class KillPlayerWhenBelowScreen
     implements GameLogicInterface
 {
