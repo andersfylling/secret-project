@@ -13,8 +13,6 @@ import android.view.WindowManager;
 
 import team.adderall.game.GameDetails;
 import team.adderall.game.Jumping;
-import team.adderall.game.Player;
-import team.adderall.game.Players;
 import team.adderall.game.SensorChangedWorker;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
@@ -174,12 +172,16 @@ public class GameActivity
     public void onPause(){
         super.onPause();
         this.removeDeviceSensorListeners();
+        //TODO: pause game loop, and unpause it in onResume()
     }
 
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
         this.details.writeToIntent(returnIntent);
+        this.removeDeviceSensorListeners();
+        gameInitializer.close(); // close all @GameComponents
+
 
         setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
         finish();
