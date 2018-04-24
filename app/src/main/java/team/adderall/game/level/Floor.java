@@ -43,7 +43,7 @@ public class Floor
         this.y = y;
         for (Line line : this.lines) {
             int floorType = line.getFloorType();
-            floorType = floorType/this.TYPE_SOLID;
+            floorType = floorType/TYPE_SOLID;
             if(floorType == 1) floorType = 10;
 
             final Paint painter = painters[floorType];
@@ -52,9 +52,9 @@ public class Floor
             }
             canvas.drawLine(line.getX1(), y, line.getX2(), y, painter);
 
-            Rect aid = getAid(line.getFloorType()%this.TYPE_SOLID,line.getX1(),y,line.getX2());
+            Rect aid = getAid(line.getFloorType()%TYPE_SOLID,line.getX1(),y,line.getX2());
             if(aid != null) {
-                final Paint Aidpainter = painters[line.getFloorType()%this.TYPE_SOLID];
+                final Paint Aidpainter = painters[line.getFloorType()%TYPE_SOLID];
                 if (Aidpainter == null) {
                     continue;
                 }
@@ -75,7 +75,7 @@ public class Floor
 
     public int aidColision(Point pos){
         for (Line line : this.lines) {
-            Rect aid = getAid(line.getFloorType()%this.TYPE_SOLID,line.getX1(),this.y,line.getX2());
+            Rect aid = getAid(line.getFloorType()%TYPE_SOLID,line.getX1(),this.y,line.getX2());
             if (aid == null) continue;
             Rect ball = new Rect(pos.x -45, pos.y-45, pos.x + 45, pos.y+45);
             if(ball.intersect(aid)){
@@ -84,19 +84,19 @@ public class Floor
                  * And change florType
                  * Then the aidCollisionHandler would perform the aid importance
                  */
-                int floortype = line.getFloorType()/this.TYPE_SOLID;
-                int realtype = line.getFloorType() %this.TYPE_SOLID;
-                if(floortype == 1) floortype = 10;
+                int floortype = line.getFloorType()/TYPE_SOLID;
+                int realtype = line.getFloorType() %TYPE_SOLID;
+                floortype = floortype * TYPE_SOLID;
                 line.setFloorType(floortype);
                 return realtype;
             }
         }
-        return 0;
+        return -1;
     }
 
     public Rect checkColition(int y, Point pos, int thickness){
         for (Line line : this.lines) {
-            if(line.getFloorType() < this.TYPE_SOLID) continue;
+            if(line.getFloorType() < TYPE_SOLID) continue;
             Rect squere = new Rect(line.getX1(), this.y, line.getX2(), this.y +thickness);
             Rect ball = new Rect(pos.x -45, pos.y-45, pos.x + 45, pos.y+45);
 

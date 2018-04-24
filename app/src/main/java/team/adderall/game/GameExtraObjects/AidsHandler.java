@@ -56,7 +56,7 @@ public class AidsHandler implements GameLogicInterface {
         for (Floor floor : level.getFloors()) {
             int type = floor.aidColision(pos);
 
-            if (type != 0) {
+            if (type != -1) {
                 /**
                  * Handle aid objectives here.
                  */
