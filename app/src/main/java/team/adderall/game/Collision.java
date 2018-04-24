@@ -18,6 +18,7 @@ public class Collision
         implements GameLogicInterface {
     private final Players players;
     private final LevelManager level;
+    private boolean hitOnTop = false;
     @GameDepWire
     public Collision(@Inject("players") Players p,
                      @Inject("level") LevelManager level)
@@ -36,6 +37,7 @@ public class Collision
 
         if(x.top  <= y.top) {
             newY = y.top -x.height()/2;
+            this.hitOnTop = true;
         }else if(x.bottom >= y.bottom) {
             newY = y.bottom +x.height()/2;
         }
@@ -52,6 +54,7 @@ public class Collision
     public void run() {
         int thickness = level.getThickness();
         int height = level.getHeight();
+        this.hitOnTop = false;
         int y = 0;
 
         for(Player player: players.getAlivePlayersAsList()) {
@@ -63,7 +66,9 @@ public class Collision
                 if (collide != null) {
                     bm.setPos(getNoneIntercetCord(getRect(pos), collide));
                     bm.setVelocity(0);
-                    bm.setAtGround(true);
+
+                    if(this.hitOnTop)
+                        bm.setAtGround(true);
                 }
             }
         }
