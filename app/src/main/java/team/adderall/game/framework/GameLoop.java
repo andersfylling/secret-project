@@ -121,7 +121,7 @@ public class GameLoop
         }
     }
 
-    public void stopGameLoop() {
+    public void close() {
         this.running = false;
     }
 

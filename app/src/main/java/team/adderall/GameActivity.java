@@ -180,8 +180,7 @@ public class GameActivity
         Intent returnIntent = new Intent();
         this.details.writeToIntent(returnIntent);
         this.removeDeviceSensorListeners();
-        sensorChangedWorker.kill();
-        gameInitializer.close();
+        gameInitializer.close(); // close all @GameComponents
 
 
         setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
