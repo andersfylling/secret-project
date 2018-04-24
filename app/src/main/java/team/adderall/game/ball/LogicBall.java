@@ -10,7 +10,7 @@ public class LogicBall implements GameLogicInterface{
     BallManager ball;
 
     @GameDepWire
-    LogicBall(@Inject("ballManager") BallManager ball)
+    public LogicBall(@Inject("ballManager") BallManager ball)
     {
         this.ball = ball;
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Point;
 import android.view.Display;
 
+import team.adderall.game.GameExtraObjects.AidsHandler;
 import team.adderall.game.ball.DrawBall;
 import team.adderall.game.easyLogicChecks.PlayerDeathListHandler;
 import team.adderall.game.easyLogicChecks.Side2SideTeleportation;
@@ -40,6 +41,7 @@ import team.adderall.game.level.LevelManager;
 })
 public class Config
 {
+
     // ########################################################################################
     // ###
     // ### Game painters / renderer setup
