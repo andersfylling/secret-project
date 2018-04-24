@@ -96,7 +96,7 @@ public class Floor
 
     public Rect checkColition(int y, Point pos, int thickness){
         for (Line line : this.lines) {
-            if(line.getFloorType() == 0) continue;
+            if(line.getFloorType() < this.TYPE_SOLID) continue;
             Rect squere = new Rect(line.getX1(), this.y, line.getX2(), this.y +thickness);
             Rect ball = new Rect(pos.x -45, pos.y-45, pos.x + 45, pos.y+45);
 
