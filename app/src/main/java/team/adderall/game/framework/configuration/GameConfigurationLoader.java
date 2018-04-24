@@ -12,13 +12,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameComponentData;
 import team.adderall.game.framework.component.GameComponentHolder;
 import team.adderall.game.framework.component.GameComponents;
 import team.adderall.game.framework.component.GameDepWire;
+import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.context.GameContext;
 import team.adderall.game.framework.context.GameContextSetter;
@@ -351,6 +355,9 @@ public class GameConfigurationLoader
                 Log.e(TAG, err);
             }
         }
+
+        // create game logic components
+
     }
 
     public void installGameComponents(@NonNull GameContextSetter ctx) {

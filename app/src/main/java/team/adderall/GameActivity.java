@@ -60,7 +60,8 @@ public class GameActivity
         this.gameInitializer = new GameInitializer(
                 team.adderall.game.Config.class,
                 team.adderall.game.highscore.Config.class,
-                team.adderall.game.ball.Config.class
+                team.adderall.game.ball.Config.class,
+                team.adderall.game.GameExtraObjects.Config.class
         );
         this.gameInitializer.loadEssentials(); // add GameContext
         this.gameInitializer.addGameConfigurationActivities(this); // link this instance

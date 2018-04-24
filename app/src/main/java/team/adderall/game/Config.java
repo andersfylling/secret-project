@@ -41,84 +41,6 @@ import team.adderall.game.level.LevelManager;
 })
 public class Config
 {
-//    @GameComponentRegister // TODO: implement logic. not currently working.
-//    public void registerInstances(@Inject(GameContext.NAME) GameContextGetterAssured ctx, @Inject("GameContextSetter") GameContextSetter setter) {
-//        LogicManager logic = (LogicManager) ctx.getAssuredInstance(GameContext.LOGIC);
-//        PaintManager painter = (PaintManager) ctx.getAssuredInstance(GameContext.PAINT);
-//
-//        // register a new game instance
-//        setter.setInstance("Game", new Game(logic, painter));
-//    }
-
-    // ########################################################################################
-    // ###
-    // ### Game logic setup
-    // ###
-    // ########################################################################################
-
-    @GameComponent("gameLogicFirstWave")
-    public GameLogicInterface[] firstLogicWave(
-            @Inject("gravity") Gravity gravity
-
-    ) {
-        return new GameLogicInterface[]{
-                gravity
-        };
-    }
-    @GameComponent("gameLogicSecondWave")
-    public GameLogicInterface[] secondLogicWave(
-            @Inject("collision") Collision collision,
-            @Inject("AidsHandler") AidsHandler aidsHandler
-    ) {
-        return new GameLogicInterface[]{
-                collision,
-                aidsHandler
-        };
-    }
-
-    /**
-     * TODO: Rename this wave to gameLogicEasyChecks?
-     */
-    @GameComponent("gameLogicThirdWave")
-    public GameLogicInterface[] thirdLogicWave(
-            @Inject("killPlayerWhenBelowScreen") KillPlayerWhenBelowScreen killer,
-            @Inject("playerDeathListHandler") PlayerDeathListHandler playerDeathListHandler,
-            @Inject("side2SideTeleportation") Side2SideTeleportation side2SideTeleportation
-    ) {
-        return new GameLogicInterface[]{
-                killer,
-                playerDeathListHandler,
-                side2SideTeleportation
-        };
-    }
-    @GameComponent("gameLogicLastWave")
-    public GameLogicInterface[] lastLogicWave(
-            @Inject("multiplayer") Multiplayer multiplayer
-
-    ) {
-        return new GameLogicInterface[]{
-                multiplayer
-        };
-    }
-
-    @GameComponent(GameContext.LOGIC)
-    public GameLogicInterface[][] setLogicWaves(
-            @Inject("gameLogicFirstWave") GameLogicInterface[] first,
-            @Inject("gameLogicSecondWave") GameLogicInterface[] second,
-            @Inject("gameLogicThirdWave") GameLogicInterface[] third,
-            @Inject("gameLogicLastWave") GameLogicInterface[] last
-    ) {
-        // same as GPU logic, a wave can hold N task which can run in parallel
-        // but each wave is sequential
-
-        // group waves
-        return new GameLogicInterface[][]{
-                first,
-                second,
-                third,
-                last
-        };
-    }
 
     // ########################################################################################
     // ###
@@ -250,14 +172,5 @@ public class Config
             @Inject("SensorChangedWorker") SensorChangedWorker handler
     ) {
         handler.addListener(players::onSensorEvt);
-    }
-
-    @GameComponent("AidsHandler")
-    public AidsHandler aidsHandler(
-            @Inject("players") Players players,
-            @Inject("level") LevelManager level
-    ) {
-        return new AidsHandler(players,level);
-
     }
 }

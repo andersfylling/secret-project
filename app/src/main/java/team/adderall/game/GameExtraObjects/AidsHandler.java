@@ -11,19 +11,26 @@ import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
+import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.level.Floor;
 import team.adderall.game.level.LevelManager;
 
 
 @GameComponent
-public class AidsHandler implements GameLogicInterface {
+@GameLogic(wave = 2)
+public class AidsHandler
+        implements
+        GameLogicInterface
+{
     private final Players players;
     private final LevelManager level;
     private ArrayList<Aid> aids;
 
     @GameDepWire
-    public AidsHandler(@Inject("players") Players p, @Inject("level") LevelManager level) {
+    public AidsHandler(@Inject("players") Players p,
+                       @Inject("level") LevelManager level)
+    {
         this.players = p;
         this.level = level;
         this.aids = new ArrayList<>();
