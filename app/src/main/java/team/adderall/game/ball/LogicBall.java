@@ -5,11 +5,11 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
-@GameComponent
+//@GameComponent
 public class LogicBall implements GameLogicInterface{
     BallManager ball;
 
-    @GameDepWire
+    //@GameDepWire
     LogicBall(@Inject("ballManager") BallManager ball)
     {
         this.ball = ball;

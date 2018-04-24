@@ -5,7 +5,7 @@ package team.adderall.game.level;
  */
 
 public class Line {
-    private final int floorType;
+    private int floorType;
     private final int x1;
     private final int x2;
 
@@ -25,6 +25,9 @@ public class Line {
 
     public int getX2() {
         return x2;
+    }
+    public void setFloorType(int floorType) {
+        this.floorType = floorType;
     }
 }
 
