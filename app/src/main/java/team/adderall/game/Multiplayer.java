@@ -149,4 +149,8 @@ public class Multiplayer
 
         this.client.send(event);
     }
+
+    public void close() {
+        this.client.close();
+    }
 }

@@ -2,6 +2,8 @@ package team.adderall.game.framework;
 
 import android.app.Activity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +13,7 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.configuration.EssentialGameConfigurationDependencies;
 import team.adderall.game.framework.configuration.GameConfigurationLoader;
 import team.adderall.game.framework.context.GameContext;
+import team.adderall.game.framework.multiplayer.Client;
 
 public class GameInitializer
 {
@@ -113,6 +116,26 @@ public class GameInitializer
 
             int wave = component.getClass().getAnnotation(GameLogic.class).wave();
             manager.addGameLogic(wave, (GameLogicInterface) component);
+        }
+    }
+
+    /**
+     * When shutting down the game session, go through every game component and run
+     * every method with the name close.
+     */
+    public void close() {
+        for (Map.Entry<String, Object> entry : this.ctx.getInstances().entrySet()) {
+            Object component = entry.getValue();
+            Method[] methods = component.getClass().getMethods();
+            for (Method method : methods) {
+                if (method.getName().equals("close") && method.getParameterTypes().length == 0) {
+                    try {
+                        method.invoke(component);
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 }

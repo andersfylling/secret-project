@@ -172,12 +172,16 @@ public class GameActivity
     public void onPause(){
         super.onPause();
         this.removeDeviceSensorListeners();
+        //TODO: pause game loop, and unpause it in onResume()
     }
 
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
         this.details.writeToIntent(returnIntent);
+        this.removeDeviceSensorListeners();
+        gameInitializer.close(); // close all @GameComponents
+
 
         setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
         finish();

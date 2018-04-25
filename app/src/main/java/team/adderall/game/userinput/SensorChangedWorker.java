@@ -102,7 +102,7 @@ public class SensorChangedWorker
         }
     }
 
-    public void kill() {
+    public void close() {
         this.notDeadYet = false;
 
         // add an object in case there's no more incoming events
