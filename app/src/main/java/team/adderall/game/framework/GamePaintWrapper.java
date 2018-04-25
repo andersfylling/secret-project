@@ -25,7 +25,7 @@ public class GamePaintWrapper
     private final GameState gameState;
     private ArrayList<GamePainter[]> gameObjects;
     private ArrayList<GamePainter[]> fixedPositionObjects;
-    private long lastRun =0;
+    private long lastRun = 0;
 
 
     /**
@@ -91,7 +91,7 @@ public class GamePaintWrapper
      * And saves the updated value in gameState
      */
     private void updateScrollY() {
-        setNewScrollValue();
+        setNewScrollValueFromStart();
         this.gameState.setyScaleValue(this.getScrollY());
     }
 
@@ -120,19 +120,23 @@ public class GamePaintWrapper
         }
     }
 
+
     /**
-     * Update the Scrolling of the Floors based on time since last update.
+     * Update the Scrolling of the Floors based on time since start.
      * This way it should be quite similar when playing multiplayer.
      */
-    public void setNewScrollValue() {
+    public void setNewScrollValueFromStart() {
         long now = System.nanoTime();
+
+        if(this.lastRun == 0) {
+            this.lastRun = now;
+        }
 
         double diff = (now - this.lastRun) / 10000000.0;
         double update = diff * this.SCROLLSPEED;
 
         if(update>1) {
-            this.lastRun = now;
-            this.scrollBy(0, (int) -update);
+            this.setScrollY((int) -update);
         }
     }
 }
