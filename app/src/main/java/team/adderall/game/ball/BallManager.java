@@ -72,6 +72,7 @@ public class BallManager
         this.ball = new Ball(RADIUS);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
+        tracker.setposition(new Point(100, 0));
 
         this.painter = new Paint();
         this.painter.setColor(Color.parseColor(ball.getColour()));
@@ -97,6 +98,7 @@ public class BallManager
         this.ball = new Ball(RADIUS);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
+        tracker.setposition(new Point(100, 0));
 
         this.painter = new Paint();
         this.painter.setColor(Color.parseColor(ball.getColour()));

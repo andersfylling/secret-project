@@ -1,15 +1,13 @@
 package team.adderall.game;
 
-import android.app.Activity;
 import android.graphics.Point;
 import android.view.Display;
 
-import team.adderall.game.GameExtraObjects.AidsHandler;
 import team.adderall.game.ball.DrawBall;
 import team.adderall.game.easyLogicChecks.PlayerDeathListHandler;
 import team.adderall.game.easyLogicChecks.Side2SideTeleportation;
 import team.adderall.game.framework.GameLoop;
-import team.adderall.game.framework.GamePaintWrapper;
+import team.adderall.game.framework.GraphicsManager;
 import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.UpdateRateCounter;
 import team.adderall.game.framework.component.GameComponent;
@@ -17,7 +15,6 @@ import team.adderall.game.framework.component.GameComponents;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.configuration.GameConfiguration;
 import team.adderall.game.framework.context.GameContext;
-import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.highscore.DrawHighScore;
 import team.adderall.game.level.LevelManager;
@@ -31,7 +28,7 @@ import team.adderall.game.userinput.SensorChangedWorker;
 @GameComponents({ // initialize these from their constructor
         Players.class,
         GameState.class,
-        GamePaintWrapper.class,
+        GraphicsManager.class,
         Gravity.class,
         Collision.class,
         DrawKillScreen.class,

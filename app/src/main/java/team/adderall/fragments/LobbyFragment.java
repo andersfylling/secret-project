@@ -148,4 +148,21 @@ public class LobbyFragment
         GameDetails result = GameDetails.READ_IN_FROM_INTENT(data);
         System.out.println(result.getHighscore());
     }
+
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        usernames.clear();
+        playersAdapter.notifyDataSetChanged();
+        statusChanges.cancel(false);
+    }
+
 }

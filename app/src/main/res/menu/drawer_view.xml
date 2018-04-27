@@ -3,8 +3,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_lobby"
-            android:icon="@drawable/ic_lobby_222_24dp"
             android:enabled="false"
+            android:icon="@drawable/ic_lobby_222_24dp"
             android:title="@string/menu_lobby" />
         <item
             android:id="@+id/nav_solo"

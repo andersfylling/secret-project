@@ -27,7 +27,7 @@ public class Multiplayer
     implements GameLogicInterface
 {
     public final static long NOT_REAL_GAME_ID = 0;
-    private final static long TIMEOUT = 20;
+    private final static long TIMEOUT = 5;
 
     private final GameDetails gameDetails;
     private final Map<Long, Player> gamers;
