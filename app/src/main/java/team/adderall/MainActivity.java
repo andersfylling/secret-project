@@ -13,14 +13,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MainActivity
-        extends AppCompatActivity
+        extends AppCompatActivity implements FragmentListner
 {
     private final static Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
     private DrawerLayout mDrawerLayout;
+    private GoogleSignInAccount gplay;
 
 
     @Override
@@ -94,5 +97,11 @@ public class MainActivity
         finish();
         System.gc(); // garbage collector
         System.exit(0);
+    }
+
+    @Override
+    public void onGetGplayInteraction(GoogleSignInAccount acc) {
+        this.gplay = acc;
+
     }
 }
