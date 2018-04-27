@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- looking for a game -->
+    <!-- no game found, created new one => waiting for players -->
+    <!-- a player joined. Starting game in 10 seconds -->
+    <!-- show number of players in game, more can join during the timeout of 10sec -->
+    <!-- when the game has started, each player must send data to the server saying they have joined -->
+    <!-- once joined, set a 3 second timeout ? -->
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/lobby_game_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="Lobby fragment" />
-</LinearLayout>
+
+    <!-- -->
+    <!--
+    <SeekBar
+        android:id="@+id/seekBar_amount_of_players"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="10"
+        />
+    -->
+
+    <Button
+        android:id="@+id/button_start_lobby_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center|bottom"
+        android:text="@string/button_join_game" />
+</RelativeLayout>

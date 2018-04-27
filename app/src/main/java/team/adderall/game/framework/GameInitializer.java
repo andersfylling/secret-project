@@ -64,6 +64,7 @@ public class GameInitializer
     public void load(final GameFinishedLoading callback) {
         final GameInitializer self = this;
         (new Thread(() -> {
+
             // load all the components into memory and initialize them
             self.load();
 
@@ -75,6 +76,7 @@ public class GameInitializer
 
             // inject GameDepWire methods
             configLoader.findGameDepWireMethodsAndPopulate();
+
 
             // check if we should fire the callback
             if (callback != null) {

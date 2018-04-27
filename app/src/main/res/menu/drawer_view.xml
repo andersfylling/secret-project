@@ -4,6 +4,7 @@
         <item
             android:id="@+id/nav_lobby"
             android:icon="@drawable/ic_lobby_222_24dp"
+            android:enabled="false"
             android:title="@string/menu_lobby" />
         <item
             android:id="@+id/nav_solo"

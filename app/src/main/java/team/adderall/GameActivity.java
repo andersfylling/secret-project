@@ -10,6 +10,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import team.adderall.game.GameDetails;
 import team.adderall.game.userinput.Jumping;
@@ -28,7 +29,7 @@ public class GameActivity
         SensorEventListener
 {
 
-    private GameInitializer gameInitializer;
+    private GameInitializer gameSession;
     private SensorChangedWorker sensorChangedWorker;
     private SensorManager sensorManager;
     private Jumping jumping;
@@ -55,22 +56,22 @@ public class GameActivity
         this.sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         this.addDeviceSensorListeners();
 
-        this.gameInitializer = new GameInitializer(
+        this.gameSession = new GameInitializer(
                 team.adderall.game.Config.class,
                 team.adderall.game.highscore.Config.class,
                 team.adderall.game.ball.Config.class,
                 team.adderall.game.GameExtraObjects.Config.class
         );
-        this.gameInitializer.loadEssentials(); // add GameContext
-        this.gameInitializer.addGameConfigurationActivities(this); // link this instance
+        this.gameSession.loadEssentials(); // add GameContext
+        this.gameSession.addGameConfigurationActivities(this); // link this instance
     }
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        this.gameInitializer.load(()-> {
+        this.gameSession.load(()-> {
             System.out.println("######### finished loading game");
-            this.gameInitializer.start();
+            this.gameSession.start();
         });
         System.out.println("######### loading game objects");
     }
@@ -180,7 +181,7 @@ public class GameActivity
         Intent returnIntent = new Intent();
         this.details.writeToIntent(returnIntent);
         this.removeDeviceSensorListeners();
-        gameInitializer.close(); // close all @GameComponents
+        gameSession.close(); // close all @GameComponents
 
 
         setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
