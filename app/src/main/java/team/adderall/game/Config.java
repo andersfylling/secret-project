@@ -50,14 +50,13 @@ public class Config
     // ###
     // ########################################################################################
     @GameComponent(GameContext.PAINT)
-    public GamePainter[][] setPaintWaves(
-            @Inject("FPSPainter") GamePainter fps,
-            @Inject("LPSPainter") GamePainter lps,
-            @Inject("level") LevelManager level,
-            @Inject("drawBall") DrawBall drawball,
-            @Inject("drawHighScore") DrawHighScore drawHighScore,
-            @Inject("drawKillScreen") DrawKillScreen drawKillScreen
-    ) {
+    public GamePainter[][] setPaintWaves(@Inject("FPSPainter") GamePainter fps,
+                                         @Inject("LPSPainter") GamePainter lps,
+                                         @Inject("level") LevelManager level,
+                                         @Inject("drawBall") DrawBall drawball,
+                                         @Inject("drawHighScore") DrawHighScore drawHighScore,
+                                         @Inject("drawKillScreen") DrawKillScreen drawKillScreen)
+    {
         // same as GPU logic, a wave can hold N task which can run in parallel
         // but each wave is sequential
 
@@ -88,44 +87,34 @@ public class Config
     // ###
     // ########################################################################################
     @GameComponent("canvasSize")
-    public Point getCanvasSize(
-            @Inject("activity") Activity activity,
-            @Inject("display") Display display
-    ) {
+    public Point getCanvasSize(@Inject("display") Display display)
+    {
         Point canvasSize = new Point();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            // we swap these since we use landscape mode
-            display.getRealSize(canvasSize);
-            //this.physicalWidth = ;
-            //this.physicalHeight = d.getMode().getPhysicalWidth();
-        } else {
-            // shit solution. doesn't really work.
-            canvasSize.set(activity.getResources().getDisplayMetrics().widthPixels, activity.getResources().getDisplayMetrics().heightPixels);
-        }
+        display.getRealSize(canvasSize);
 
         return canvasSize;
     }
 
 
-    @GameComponent("level")
-    public LevelManager level(@Inject("players") Players players,
-                              @Inject("GameDetails") GameDetails gameDetails,
-                              @Inject("canvasSize") Point canvasSize)
-    {
-        return new LevelManager(canvasSize,10,10,100, gameDetails.getGameSeed());
-    }
+//    @GameComponent("level")
+//    public LevelManager level(@Inject("players") Players players,
+//                              @Inject("GameDetails") GameDetails gameDetails,
+//                              @Inject("canvasSize") Point canvasSize)
+//    {
+//        return new LevelManager(canvasSize,10,10,100, gameDetails.getGameSeed());
+//    }
 
     // FPS counter / draws per second
     @GameComponent("FPS")
-    public UpdateRateCounter setFPSCounter() {
+    public UpdateRateCounter setFPSCounter()
+    {
         return new UpdateRateCount();
     }
 
     // FPS painter
     @GameComponent("FPSPainter")
-    public GamePainter setFPSPainter(
-            @Inject("FPS") UpdateRateCounter fps
-    ) {
+    public GamePainter setFPSPainter(@Inject("FPS") UpdateRateCounter fps)
+    {
         UpdateRateCountPainter painter = new UpdateRateCountPainter(fps);
         painter.setPrefix("fps: ");
 
@@ -135,15 +124,15 @@ public class Config
 
     // LPS counter / logic rounds per second
     @GameComponent("LPS")
-    public UpdateRateCounter setLPSCounter() {
+    public UpdateRateCounter setLPSCounter()
+    {
         return new UpdateRateCount();
     }
 
     // LPS painter
     @GameComponent("LPSPainter")
-    public GamePainter setLPSPainter(
-            @Inject("LPS") UpdateRateCounter lps
-    ) {
+    public GamePainter setLPSPainter(@Inject("LPS") UpdateRateCounter lps)
+    {
         UpdateRateCountPainter painter = new UpdateRateCountPainter(lps);
         painter.setPrefix("lps: ");
         painter.setY(110);
@@ -160,20 +149,18 @@ public class Config
 
     // configure GameLoop counters
     @GameDepWire
-    public void setLPSAndFPSForGameLoop(
-            @Inject("FPS") UpdateRateCounter fps,
-            @Inject("LPS") UpdateRateCounter lps,
-            @Inject("GameLoop") GameLoop gameLoop
-    ) {
+    public void setLPSAndFPSForGameLoop(@Inject("FPS") UpdateRateCounter fps,
+                                        @Inject("LPS") UpdateRateCounter lps,
+                                        @Inject("GameLoop") GameLoop gameLoop)
+    {
         gameLoop.setLps(lps);
         gameLoop.setFps(fps);
     }
 
     @GameDepWire
-    public void bindSensorChangesToPlayers(
-            @Inject("players") Players players,
-            @Inject("SensorChangedWorker") SensorChangedWorker handler
-    ) {
+    public void bindSensorsToPlayers(@Inject("players") Players players,
+                                     @Inject("SensorChangedWorker") SensorChangedWorker handler)
+    {
         handler.addListener(players::onSensorEvt);
     }
 }
