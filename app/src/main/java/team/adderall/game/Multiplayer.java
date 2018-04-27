@@ -2,6 +2,7 @@ package team.adderall.game;
 
 import android.graphics.Point;
 
+import java.math.BigInteger;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -26,9 +27,6 @@ public class Multiplayer
     implements GameLogicInterface
 {
     public final static long NOT_REAL_GAME_ID = 0;
-
-    private final static String SERVER_ADDRESS = "10.0.0.87"; //config file?
-    private final static int SERVER_PORT = 3173;
     private final static long TIMEOUT = 20;
 
     private final GameDetails gameDetails;
@@ -81,14 +79,15 @@ public class Multiplayer
         }
         this.client.receive(this::eventHandler);
         try {
-            this.client.configure(SERVER_ADDRESS, SERVER_PORT);
+            this.client.configure(gameDetails.getGameServer(), gameDetails.getGameServerPort());
         } catch (UnknownHostException e) {
             System.err.println(e.getMessage());
         }
         this.client.connect();
 
         // register player
-
+        Packet packet = new Packet(Packet.TYPE_REGISTER, players.getActive().getGameToken());
+        client.send(packet);
     }
 
     public void playerUpdate(Player player, int action) {
@@ -118,7 +117,7 @@ public class Multiplayer
 
         // check if the event is for this player
         if (this.gamer.getUserID() == evt.getUserID()) {
-            return;
+            return; // TODO: update oneself to completely sync units
         }
 
         Player player = this.gamers.get(evt.getUserID());

@@ -51,13 +51,13 @@ public class HandlePlayerStatusChanges
         while (!isCancelled()) {
             this.requestPlayerStatus();
             try {
-                Thread.sleep(500);
+                Thread.sleep(900);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 this.cancel(false);
             }
 
-            if (counter > 7) {
+            if (counter > 30) {
                 this.cancel(false);
             }
             counter++;

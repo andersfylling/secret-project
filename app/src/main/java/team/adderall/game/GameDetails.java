@@ -23,6 +23,9 @@ public class GameDetails
     // players <userID, &Player>
     private Map<Long, Player> players;
 
+    private String gameServer;
+    private int gameServerPort;
+
     private long gameSeed;
     private long highscore;
 
@@ -37,6 +40,8 @@ public class GameDetails
         this.gameSeed = 1;
         this.highscore = 0;
         this.gameID = Multiplayer.NOT_REAL_GAME_ID;
+        this.gameServer = "127.0.0.1";
+        this.gameServerPort = 80;
     }
 
 
@@ -115,5 +120,21 @@ public class GameDetails
 
     public void setGameID(long gameID) {
         this.gameID = gameID;
+    }
+
+    public String getGameServer() {
+        return gameServer;
+    }
+
+    public void setGameServer(String gameServer) {
+        this.gameServer = gameServer;
+    }
+
+    public int getGameServerPort() {
+        return gameServerPort;
+    }
+
+    public void setGameServerPort(int gameServerPort) {
+        this.gameServerPort = gameServerPort;
     }
 }

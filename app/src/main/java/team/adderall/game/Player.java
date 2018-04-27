@@ -17,6 +17,7 @@ public class Player {
     private boolean activePlayer;
 
     private BallManager ballManager;
+    private Long gameToken;
 
 
     public Player() {
@@ -35,6 +36,7 @@ public class Player {
         userID = 0;
         activePlayer = false;
         ballManager = null;
+        gameToken = 0L;
     }
 
     public String getId() {
@@ -95,5 +97,13 @@ public class Player {
 
     public BallManager getBallManager() {
         return ballManager;
+    }
+
+    public Long getGameToken() {
+        return gameToken;
+    }
+
+    public void setGameToken(Long gameToken) {
+        this.gameToken = gameToken;
     }
 }

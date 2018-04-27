@@ -1,12 +1,11 @@
 package team.adderall;
 
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
+import retrofit2.http.*;
 
 public interface GameService {
-    @GET("auth")
-    Call<JSend<UserSession>> authenticate();
+    @POST("auth")
+    Call<JSend<UserSession>> authenticate(@Body PlayerDetails details);
 
     @GET("game")
     Call<JSend<PlayerStatus>> joinAGame(@Header(UserSession.SESSION_TOKEN_NAME) String token);

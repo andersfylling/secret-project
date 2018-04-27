@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -66,7 +67,9 @@ public class MainActivity
 
         // auth to game server
         session = new UserSession();
-        Call<JSend<UserSession>> call = service.authenticate();
+        PlayerDetails username = new PlayerDetails();
+        username.setUsername("andemann"); // TODO: get from settings
+        Call<JSend<UserSession>> call = service.authenticate(username);
         final MainActivity self = this;
         call.enqueue(new Callback<JSend<UserSession>>() {
             @Override
@@ -83,6 +86,8 @@ public class MainActivity
             @Override
             public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
                 // TODO: retry
+                Toast toast = Toast.makeText(self, "Unable to connect to game servers REST API", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
 
