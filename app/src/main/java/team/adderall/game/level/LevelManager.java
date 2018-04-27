@@ -25,6 +25,7 @@ public class LevelManager
         implements
         GamePainter
 {
+    private final static int FIXED_WIDTH = 1500;
     private List<Floor> levels;
 
     private LevelGenerator generator;
@@ -112,7 +113,7 @@ public class LevelManager
 
         // generate the levels
         for (int i = 1; i < this.height; i++) {
-            final Floor floor = this.generator.generateFloor(i, this.levels.get(i - 1), this.width);
+            final Floor floor = this.generator.generateFloor(i, this.levels.get(i - 1), FIXED_WIDTH);
             this.levels.add(floor);
         }
 
