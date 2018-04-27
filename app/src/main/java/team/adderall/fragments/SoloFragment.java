@@ -48,5 +48,9 @@ public class SoloFragment
 
         GameDetails result = GameDetails.READ_IN_FROM_INTENT(data);
         System.out.println(result.getHighscore());
+
+        Intent myIntent = new Intent(getContext(), ShowHighscore.class);
+        myIntent.putExtra("Highscore", result.getHighscore());
+        startActivity(myIntent);
     }
 }

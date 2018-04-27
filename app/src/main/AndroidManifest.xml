@@ -25,6 +25,9 @@
             android:name=".GameActivity"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+
+        <activity android:name=".fragments.ShowHighscore"></activity>
+
     </application>
 
 </manifest>
