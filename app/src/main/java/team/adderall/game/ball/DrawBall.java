@@ -28,7 +28,7 @@ public class DrawBall
     @Override
     public void paint(Canvas canvas)
     {
-        for(Player player : players.getAlivePlayersAsList()){
+        for(Player player : players.getAlivePlayers()){
             player.getBallManager().paint(canvas);
         }
     }

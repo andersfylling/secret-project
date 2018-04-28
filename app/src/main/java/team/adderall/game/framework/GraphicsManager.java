@@ -12,20 +12,20 @@ import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.context.GameContext;
 
-@GameComponent
-public class GamePaintWrapper
+@GameComponent("GraphicsManager")
+public class GraphicsManager
         extends
         View
         implements
         GamePainter
 {
-    private static final double SCROLLSPEED = 3;
+    private static final double SCROLLSPEED = 2;
     private final Activity activity;
     private final GamePainter[][] painters;
     private final GameState gameState;
     private ArrayList<GamePainter[]> gameObjects;
     private ArrayList<GamePainter[]> fixedPositionObjects;
-    private long lastRun =0;
+    private long lastRun;
 
 
     /**
@@ -35,21 +35,20 @@ public class GamePaintWrapper
      *                access the current theme, resources, etc.
      */
     @GameDepWire
-    public GamePaintWrapper(
-            @Inject("activity") final Activity activity,
-            @Inject(GameContext.PAINT) GamePainter[][] painters,
-            @Inject("GameState") GameState gameState
-    ) {
+    public GraphicsManager(@Inject("activity") final Activity activity,
+                           @Inject(GameContext.PAINT) GamePainter[][] painters,
+                           @Inject("GameState") GameState gameState)
+    {
         super(activity);
 
         this.activity = activity;
         this.painters = painters;
         this.gameState = gameState;
 
-        this.fixedPositionObjects = new ArrayList<GamePainter[]>();
-        this.gameObjects = new ArrayList<GamePainter[]>();
+        this.fixedPositionObjects = new ArrayList<>();
+        this.gameObjects = new ArrayList<>();
 
-        this.lastRun= System.nanoTime();
+        this.lastRun = System.nanoTime();
 
         /**
          * First element of the array is stationary objects
@@ -66,19 +65,21 @@ public class GamePaintWrapper
             i++;
         }
         // bind this view to the game activity for rendering/painting/drawing
-        final GamePaintWrapper self = this;
+        final GraphicsManager self = this;
         this.activity.runOnUiThread(() -> self.activity.setContentView(self));
     }
 
 
 
-    public void redraw() {
-        final GamePaintWrapper self = this;
+    public void redraw()
+    {
+        final GraphicsManager self = this;
         this.activity.runOnUiThread(self::invalidate);
     }
 
     @Override
-    protected void onDraw(final Canvas canvas) {
+    protected void onDraw(final Canvas canvas)
+    {
         super.onDraw(canvas);
         this.paint(canvas);
         this.paint(canvas,this.getScrollY());
@@ -90,7 +91,8 @@ public class GamePaintWrapper
      * Updates the Scroll Value
      * And saves the updated value in gameState
      */
-    private void updateScrollY() {
+    private void updateScrollY()
+    {
         setNewScrollValue();
         this.gameState.setyScaleValue(this.getScrollY());
     }
@@ -99,7 +101,8 @@ public class GamePaintWrapper
     /**
      * Draw objects that are a part of the game
      */
-    public void paint(final Canvas canvas) {
+    public void paint(final Canvas canvas)
+    {
         for (GamePainter[] layerPainters : this.gameObjects) {
             for (GamePainter painter : layerPainters) {
                 painter.paint(canvas);
@@ -112,7 +115,8 @@ public class GamePaintWrapper
     /**
      * Draw Objects that are fixed
      */
-    public void paint(Canvas canvas, float y) {
+    public void paint(Canvas canvas, float y)
+    {
         for (GamePainter[] layerPainters : this.fixedPositionObjects) {
             for (GamePainter painter : layerPainters) {
                 painter.paint(canvas,y);
@@ -124,7 +128,8 @@ public class GamePaintWrapper
      * Update the Scrolling of the Floors based on time since last update.
      * This way it should be quite similar when playing multiplayer.
      */
-    public void setNewScrollValue() {
+    public void setNewScrollValue()
+    {
         long now = System.nanoTime();
 
         double diff = (now - this.lastRun) / 10000000.0;

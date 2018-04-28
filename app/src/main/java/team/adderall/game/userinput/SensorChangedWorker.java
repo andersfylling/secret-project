@@ -1,4 +1,4 @@
-package team.adderall.game;
+package team.adderall.game.userinput;
 
 import android.hardware.SensorEvent;
 import android.os.Process;

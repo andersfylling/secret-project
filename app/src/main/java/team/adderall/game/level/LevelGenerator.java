@@ -19,7 +19,6 @@ public class LevelGenerator
         this.seed = seed;
         this.maxNum = maxNum + 1;
         this.aids = null;
-
     }
 
     public Floor generateFloor(final int floor, final Floor previousFloor, final int width) {

@@ -32,7 +32,7 @@ public class DrawHighScore
     @Override
     public void paint(Canvas canvas) {
         int y = (int) gameState.getyScaleValue();
-        for(Player player : players.getAlivePlayersAsList()){
+        for(Player player : players.getAlivePlayers()){
             player.getBallManager().drawHighScore(canvas,y);
         }
     }

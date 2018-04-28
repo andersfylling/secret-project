@@ -28,16 +28,16 @@ public class Side2SideTeleportation implements GameLogicInterface {
 
     @Override
     public void run() {
-        for(Player player : players.getAlivePlayersAsList()){
+        for(Player player : players.getAlivePlayers()){
             BallManager bm = player.getBallManager();
             Point p = bm.getPos();
 
             int radius = bm.getBall().getRadius();
-            if(p.x + radius < 0){
+            if(p.x <= 0){
                 p.set(p.x +width,p.y);
                 bm.setPos(p);
             }
-            else if(p.x - radius > width){
+            else if(p.x >= width){
                 p.set(p.x%width,p.y);
                 bm.setPos(p);
             }
