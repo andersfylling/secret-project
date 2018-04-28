@@ -41,10 +41,9 @@ public class Gravity
         for(Player player : players.getAlivePlayers()){
             BallManager b = player.getBallManager(); // holds position info
             double velocity = b.getVelocity();
+            velocity += acceleration;
 
             b.setY(b.getY() + (velocity * diff));
-
-            velocity += acceleration;
             b.setVelocity(velocity);
         }
     }
