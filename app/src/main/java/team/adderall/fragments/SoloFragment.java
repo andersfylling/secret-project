@@ -3,6 +3,7 @@ package team.adderall.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,5 +49,14 @@ public class SoloFragment
 
         GameDetails result = GameDetails.READ_IN_FROM_INTENT(data);
         System.out.println(result.getHighscore());
+
+        HighScoreFragment fragment = new HighScoreFragment();
+        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+
+        Bundle bundle = new Bundle();
+        bundle.putLong("Highscore", result.getHighscore());
+        fragment.setArguments(bundle);
+
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 }

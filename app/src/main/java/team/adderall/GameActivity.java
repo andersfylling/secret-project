@@ -33,6 +33,7 @@ public class GameActivity
     private SensorChangedWorker sensorChangedWorker;
     private SensorManager sensorManager;
     private Jumping jumping;
+    private static GameActivity self;
 
     private GameDetails details;
 
@@ -51,7 +52,7 @@ public class GameActivity
             finish();
             return;
         }
-
+        self = this;
 
         // initialize device sensor capabilities
         this.sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -198,5 +199,16 @@ public class GameActivity
 
         setResult(GameDetails.CODE_GAME_ENDED, returnIntent);
         finish();
+    }
+
+    /**
+     * TODO: change these...
+     */
+    public static GameActivity getActivity(){
+        return self;
+    }
+
+    public void weDied() {
+        onBackPressed();
     }
 }

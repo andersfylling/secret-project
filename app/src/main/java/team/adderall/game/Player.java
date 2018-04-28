@@ -56,7 +56,8 @@ public class Player {
     }
 
     public int getScore() {
-        return score;
+        return ballManager.getScore();
+        //return score;
     }
 
     public void setScore(int score) {

@@ -234,6 +234,10 @@ public class BallManager
         this.tracker.updateAidExtraScore(i);
     }
 
+    public int getScore() {
+        return this.tracker.getScore();
+    }
+
     public double getJumpForce() {
         return jumpForce;
     }
