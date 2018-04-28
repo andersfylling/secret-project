@@ -125,6 +125,13 @@ public class Multiplayer
 
         Player player = this.gamers.get(evt.getUserID());
         player.getBallManager().setPos(new Point(evt.getX(), evt.getY()));
+        boolean jumping = evt.isJumping();
+        if (jumping) {
+            if (player.getBallManager().getAtGround()) {
+                player.getBallManager().setVelocity(-13);
+            }
+            player.getBallManager().setAtGround(false);
+        }
     }
 
     /**

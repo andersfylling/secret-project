@@ -8,6 +8,7 @@ import team.adderall.game.framework.component.*;
 public class Jumping
     implements Runnable
 {
+    public final static int JUMP_VELOCITY = -17;
     private final Player player;
 
     @GameDepWire
@@ -20,7 +21,7 @@ public class Jumping
     @Override
     public void run() {
         if(this.player != null && this.player.getBallManager().getAtGround()) {
-            this.player.getBallManager().setVelocity(-17);
+            this.player.getBallManager().setVelocity(JUMP_VELOCITY);
             this.player.getBallManager().setAtGround(false);
         }
     }
