@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -96,6 +97,7 @@ public class MainActivity
             }
         });
 
+        updateMenuToSignedIn(false);
 
         LOGGER.setLevel(Level.INFO);
     }
@@ -146,8 +148,32 @@ public class MainActivity
     public void onGetGplayInteraction(GoogleSignInAccount acc) {
         this.gplay = acc;
         this.gplayAcc = new GooglePlay(this,acc);
+        if(acc != null) {
+            updateMenuToSignedIn(true);
+            updateUsername(acc.getDisplayName());
+        }
+        else{
+            this.gplayAcc = null;
+            updateMenuToSignedIn(false);
+            updateUsername("");
+
+        }
 
     }
+
+    private void updateUsername(String displayName) {
+        NavigationView nv = findViewById(R.id.nav_view);
+        TextView username = nv.getHeaderView(0).findViewById(R.id.headerName);
+        username.setText(displayName);
+    }
+
+    private void updateMenuToSignedIn(boolean b) {
+        String title = b == true?  "Logout" : "Login";
+        NavigationView nv = findViewById(R.id.nav_view);
+        MenuItem login =  nv.getMenu().getItem(4);
+        login.setTitle(title);
+    }
+
     @Override
     public void startGoogleHighscoreView() {
         showLeaderboard();
@@ -162,8 +188,19 @@ public class MainActivity
         return false;
     }
 
+    @Override
+    public boolean isLoggedIn() {
+        return isGplayLoggedIn();
+    }
+
     public void showLeaderboard() {
         int RC_LEADERBOARD_UI = 9004;
+
+        if(!isGplayLoggedIn()){
+            Toast.makeText(this.getApplicationContext(),
+                    "You need to be logged in to use this action", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         Games.getLeaderboardsClient(this, this.gplay)
                 .getLeaderboardIntent(getString(R.string.LeaderBoard))
@@ -175,4 +212,7 @@ public class MainActivity
                 });
     }
 
+    public boolean isGplayLoggedIn() {
+        return (gplayAcc != null);
+    }
 }
