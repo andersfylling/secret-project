@@ -165,6 +165,12 @@ public class MainActivity
     public void showLeaderboard() {
         int RC_LEADERBOARD_UI = 9004;
 
+        if(!isGplayLoggedIn()){
+            Toast.makeText(this.getApplicationContext(),
+                    "You need to be logged in to use this action", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Games.getLeaderboardsClient(this, this.gplay)
                 .getLeaderboardIntent(getString(R.string.LeaderBoard))
                 .addOnSuccessListener(new OnSuccessListener<Intent>() {
@@ -175,4 +181,7 @@ public class MainActivity
                 });
     }
 
+    public boolean isGplayLoggedIn() {
+        return (gplayAcc != null);
+    }
 }

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -60,6 +61,9 @@ public class HighScoreFragment
         highscoreist.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         highscoreist.setClickable(false);
 
+        Button showHighscoreList = view.findViewById(R.id.showHH);
+        showHighscoreList.setOnClickListener(e->openGooglePlayHighscoreList());
+
         HighscoreAdapter adp = new HighscoreAdapter(this.getContext(), highscoreObjList, CurrentScore);
         highscoreist.setAdapter(adp);
 
@@ -80,6 +84,11 @@ public class HighScoreFragment
         }
 
         return view;
+    }
+
+    private void openGooglePlayHighscoreList() {
+        FragmentListner fListner = (FragmentListner) this.getActivity();
+        fListner.startGoogleHighscoreView();
     }
 
 
@@ -109,9 +118,9 @@ public class HighScoreFragment
         for(HighScoreObject obj : highscoreObjList){
             if(!obj.getSynced()){
 
-                FragmentListner b = (FragmentListner) this.getActivity();
+                FragmentListner fListner = (FragmentListner) this.getActivity();
 
-                if(b.updatePlayersScore(obj.getScore()))
+                if(fListner.updatePlayersScore(obj.getScore()))
                     obj.setSynced(true);
             }
         }
