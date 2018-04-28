@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -115,15 +116,24 @@ public class HighScoreFragment
      * @param highscoreObjList
      */
     private void autoSync(ArrayList<HighScoreObject> highscoreObjList) {
-        for(HighScoreObject obj : highscoreObjList){
-            if(!obj.getSynced()){
 
-                FragmentListner fListner = (FragmentListner) this.getActivity();
+        FragmentListner fListner = (FragmentListner) this.getActivity();
 
-                if(fListner.updatePlayersScore(obj.getScore()))
-                    obj.setSynced(true);
+        if(fListner.isLoggedIn()) {
+
+            for (HighScoreObject obj : highscoreObjList) {
+                if (!obj.getSynced()) {
+
+                    if (fListner.updatePlayersScore(obj.getScore()))
+                        obj.setSynced(true);
+                }
             }
         }
+        else{
+            Toast.makeText(this.getContext(),
+                    "To autoSync highscores, you must be logged in",Toast.LENGTH_LONG).show();
+        }
+
     }
 
 

@@ -162,6 +162,11 @@ public class MainActivity
         return false;
     }
 
+    @Override
+    public boolean isLoggedIn() {
+        return isGplayLoggedIn();
+    }
+
     public void showLeaderboard() {
         int RC_LEADERBOARD_UI = 9004;
 

@@ -9,4 +9,6 @@ public interface FragmentListner {
     public void startGoogleHighscoreView();
 
     public boolean updatePlayersScore(long score);
+
+    public boolean isLoggedIn();
 }
