@@ -190,7 +190,7 @@ public class BallManager
     }
 
     public void setPos(double x, double y) {
-
+        tracker.setposition(x, y);
     }
 
     public void doGravity() {
