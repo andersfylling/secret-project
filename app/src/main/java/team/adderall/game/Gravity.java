@@ -18,7 +18,7 @@ public class Gravity
     implements GameLogicInterface
 {
     private final Players players;
-    private double GRAVITY = 9.8;
+    private double GRAVITY = 9.8 * 100;
     private double TERMINALVEL = 30;
     private long lastRun;
 
@@ -43,9 +43,6 @@ public class Gravity
             b.setY(b.getY() + (velocity * diff));
 
             velocity += acceleration;
-            if(velocity > TERMINALVEL) {
-                velocity = TERMINALVEL;
-            }
             b.setVelocity(velocity);
         }
     }
