@@ -15,7 +15,7 @@ import team.adderall.game.level.Floor;
 import team.adderall.game.level.LevelManager;
 
 @GameComponent
-@GameLogic(wave = 2)
+@GameLogic(wave = 3)
 public class Collision
         implements GameLogicInterface {
     private final Players players;
@@ -61,24 +61,27 @@ public class Collision
 
         for(Player player: players.getAlivePlayers()) {
             BallManager bm = player.getBallManager();
-            Point pos = bm.getPos();
+            int x1 = (int) bm.getX();
+            int y1 = (int) bm.getY();
             for (Floor floor : level.getFloors()) {
-                Rect collide = floor.checkColition(height - (y * thickness), pos, thickness);
+                Rect collide = floor.checkColition(height - (y * thickness), x1, y1, thickness);
 
                 if (collide != null) {
-                    bm.setPos(getNoneIntercetCord(getRect(pos), collide));
+                    Point p = getNoneIntercetCord(getRect(x1, y1), collide);
+                    bm.setPos(p.x, p.y);
                     bm.setVelocity(0);
 
-                    if(this.hitOnTop)
+                    if(this.hitOnTop) {
                         bm.setAtGround(true);
+                    }
                 }
             }
         }
 
     }
 
-    private Rect getRect(Point p){
-        Rect ball = new Rect(p.x - 45, p.y - 45, p.x + 45, p.y + 45);
-        return ball;
+    private Rect getRect(int x, int y)
+    {
+        return new Rect(x - 45, y - 45, x + 45, y + 45);
     }
 }

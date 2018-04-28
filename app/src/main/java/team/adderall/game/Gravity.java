@@ -13,41 +13,35 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 
 @GameComponent
-@GameLogic(wave = 1)
+@GameLogic(wave = 2)
 public class Gravity
     implements GameLogicInterface
 {
+    public final static double METER = 100;
+    public final static double GRAVITY = 9.8 * METER;
+
     private final Players players;
-    private double GRAVITY = 9.8;
-    private double TERMINALVEL = 30;
-    private long lastRun;
+    private DeltaTime deltaTime;
 
     @GameDepWire
-    public Gravity(@Inject("players") Players p) {
+    public Gravity(@Inject("deltaTime") DeltaTime deltaTime,
+                   @Inject("players") Players p)
+    {
         this.players = p;
-        this.lastRun = System.nanoTime();
+        this.deltaTime = deltaTime;
     }
 
     @Override
     public void run() {
-        long now = System.nanoTime();
-
-        double diff = (now - this.lastRun) / 1000000000.0;
-        this.lastRun = now;
+        double diff = deltaTime.getDiff(TimeUnit.SECONDS);
         double acceleration = GRAVITY * diff;
 
         for(Player player : players.getAlivePlayers()){
             BallManager b = player.getBallManager(); // holds position info
             double velocity = b.getVelocity();
-
-            Point pos = b.getPos();
-            pos.set(pos.x, pos.y + (int)(velocity * (diff * GameLoop.FPS)));
-            b.setPos(pos);
-
             velocity += acceleration;
-            if(velocity > TERMINALVEL) {
-                velocity = TERMINALVEL;
-            }
+
+            b.setY(b.getY() + (velocity * diff));
             b.setVelocity(velocity);
         }
     }

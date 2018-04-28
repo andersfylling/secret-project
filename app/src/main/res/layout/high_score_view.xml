@@ -7,15 +7,22 @@
     <TextView
         android:id="@+id/result"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:text="text " />
 
     <ListView
         android:id="@+id/highscore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/result"
-        />
+        android:layout_below="@+id/result"
+        android:layout_above="@+id/showHH" />
+
+    <Button
+        android:id="@+id/showHH"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Show Global Highscore List" />
 
 
 </RelativeLayout>
