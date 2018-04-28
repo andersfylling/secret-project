@@ -13,7 +13,7 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 
 @GameComponent
-@GameLogic(wave = 3)
+@GameLogic(wave = 4)
 public class Side2SideTeleportation implements GameLogicInterface {
     private final Players players;
     private int width;

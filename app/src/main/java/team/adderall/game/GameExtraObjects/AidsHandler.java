@@ -18,7 +18,7 @@ import team.adderall.game.level.LevelManager;
 
 
 @GameComponent
-@GameLogic(wave = 2)
+@GameLogic(wave = 3)
 public class AidsHandler
         implements
         GameLogicInterface

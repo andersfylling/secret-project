@@ -21,7 +21,7 @@ import team.adderall.game.framework.component.Inject;
 import static java.security.AccessController.getContext;
 
 @GameComponent
-@GameLogic(wave = 3)
+@GameLogic(wave = 4)
 public class KillPlayerWhenBelowScreen
         implements GameLogicInterface
 {
