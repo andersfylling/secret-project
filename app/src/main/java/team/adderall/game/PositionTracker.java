@@ -4,29 +4,30 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import team.adderall.game.highscore.HighScore;
 
 
 public class PositionTracker
 {
     private static final double SPEEDREDUCTION = 0.2;
     private final int movementThreshold;
-    private team.adderall.game.HighScore highScore = null;
+    private HighScore highScore = null;
     private boolean blocked;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private double verticalSpeed = 0;
     // used to verify if the object has moved
-    private int oldX;
-    private int oldY;
+    private double oldX;
+    private double oldY;
 
     // Not constant, as we might want to use it for something cool later on.
-    double gravity = 9.8;
-    private int terminalVel = 10;
+    private double gravity = 9.8;
+    private double terminalVel = 10;
 
     private long oldTime;
     private boolean colide = false;
-    private int newx;
-    private int newy;
+    private double newx;
+    private double newy;
 
 
 
@@ -43,7 +44,7 @@ public class PositionTracker
 
     private void reset() {
         this.blocked = false;
-        this.highScore  = new team.adderall.game.HighScore();
+        this.highScore  = new HighScore();
 
         this.x = 0;
         this.y = 0;
@@ -53,7 +54,7 @@ public class PositionTracker
         this.oldY = this.y;
     }
 
-    public void addToPosition(int xDiff, int yDiff) {
+    public void addToPosition(double xDiff, double yDiff) {
         this.x += xDiff;
         this.y += yDiff; // y is reversed
     }
@@ -86,11 +87,9 @@ public class PositionTracker
         return diff/1000*60;
     }
 
-    public void updatePosition(int x, int y) {
-
+    public void updatePosition(double x, double y) {
         this.x = x;
         this.y = y;
-
     }
 
     public void updateOldPosition() {
@@ -105,8 +104,8 @@ public class PositionTracker
             this.y = this.oldY;
         }
 
-        int xDiff = this.oldX - this.x;
-        int yDiff = this.oldY - this.y;
+        double xDiff = this.oldX - this.x;
+        double yDiff = this.oldY - this.y;
 
         if (this.movementThreshold == 0) {
             return xDiff != 0 || yDiff != 0;
@@ -118,19 +117,19 @@ public class PositionTracker
         }
     }
 
-    public int getX() {
+    public double getX() {
         return this.x;
     }
 
-    public int getY() {
+    public double getY() {
         return this.y;
     }
 
-    public int getOldX() {
+    public double getOldX() {
         return this.oldX;
     }
 
-    public int getOldY() {
+    public double getOldY() {
         return this.oldY;
     }
 
@@ -152,44 +151,45 @@ public class PositionTracker
      * TODO: should it be +=, and should I have some limits. So a user cant chain jumps together?
      * @param newVelocity
      */
-    public void addVelocity(int newVelocity) {
+    public void addVelocity(double newVelocity) {
         this.verticalSpeed = newVelocity;
     }
 
-    public void colided(Rect squere) {
-        setPosThatDoesNotCrashWith(squere);
+    public Rect getRect()
+    {
+        final int margin = 45;
 
-    }
-    public Rect getRect(){
-        Rect ball = new Rect(this.getX() -45, this.getY()-45, this.getX() + 45, this.getY()+45);
-        return ball;
-    }
+        int left    = (int) this.getX() - margin;
+        int top     = (int) this.getY() - margin;
+        int right   = (int) this.getX() + margin;
+        int bottom  = (int) this.getY() + margin;
 
-    public void setPosThatDoesNotCrashWith(Rect squere) {
-        //Collision c = new Collision();
-        //Point newCord = c.getNoneIntercetCord(getRect(),squere);
-        //setposition(newCord);
+        return new Rect(left, top, right, bottom);
     }
 
-    public void setposition(Point position) {
-        this.x = position.x;
-        this.y = position.y;
+    public void setposition(double x, double y) {
+        this.x = x;
+        this.y = y;
         highScore.potensiallySetHighestXValue(y);
     }
 
     public void drawHighScore(Canvas canvas, float y) {
-        if(this.highScore != null)
+        if(this.highScore != null) {
             this.highScore.paint(canvas, y);
+        }
     }
 
     public void updateAidExtraScore(int i) {
-        if(this.highScore != null)
+        if(this.highScore != null) {
             this.highScore.updateAidExtraScore(i);
+        }
     }
 
     public int getScore() {
-        if(this.highScore != null)
-           return this.highScore.getScaledHighScore();
-        return 0;
+        return highScore == null ? 0 : highScore.getScaledHighScore();
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 }

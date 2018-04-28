@@ -24,8 +24,8 @@ public class Packet {
     private final long extraOffset = 50;
 
     private final int type;
-    private final int x;
-    private final int y;
+    private final double x;
+    private final double y;
     private final boolean jumping;
     private final long userID;
     private final long gameID;
@@ -41,7 +41,7 @@ public class Packet {
      * @param userID
      * @param gameID
      */
-    public Packet(int type, int x, int y, boolean jumping, long userID, long gameID) {
+    public Packet(int type, double x, double y, boolean jumping, long userID, long gameID) {
         this.type = type;
         this.x = x;
         this.y = y;
@@ -91,11 +91,11 @@ public class Packet {
         return type;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -114,8 +114,8 @@ public class Packet {
     public long getAsLong() {
         if (type == TYPE_PLAYER_MOVED) {
             long packetType = getType();
-            long x = getX();
-            long y = getY();
+            long x = (long) getX();
+            long y = (long) getY();
             long jumping = isJumping() ? 1L : 0L;
             long userID = getUserID();
             long gameID = getGameID();
@@ -137,6 +137,6 @@ public class Packet {
             jumping = "`ground`";
         }
 
-        return String.format(Locale.ENGLISH, "packet(%d){x:%d, y:%d, %s, user: %d, game: %d}", getType(), getX(), getY(), jumping, getUserID(), getGameID());
+        return String.format(Locale.ENGLISH, "packet(%d){x:%d, y:%d, %s, user: %d, game: %d}", getType(), (long) getX(), (long) getY(), jumping, getUserID(), getGameID());
     }
 }

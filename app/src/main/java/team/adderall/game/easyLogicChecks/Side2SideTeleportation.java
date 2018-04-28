@@ -13,7 +13,7 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 
 @GameComponent
-@GameLogic(wave = 3)
+@GameLogic(wave = 4)
 public class Side2SideTeleportation implements GameLogicInterface {
     private final Players players;
     private int width;
@@ -30,16 +30,14 @@ public class Side2SideTeleportation implements GameLogicInterface {
     public void run() {
         for(Player player : players.getAlivePlayers()){
             BallManager bm = player.getBallManager();
-            Point p = bm.getPos();
+            double x = bm.getX();
 
             int radius = bm.getBall().getRadius();
-            if(p.x <= 0){
-                p.set(p.x +width,p.y);
-                bm.setPos(p);
+            if(x <= 0){
+                bm.setPos(x+width, bm.getY());
             }
-            else if(p.x >= width){
-                p.set(p.x%width,p.y);
-                bm.setPos(p);
+            else if(x >= width){
+                bm.setPos(x%width, bm.getY());
             }
         }
     }

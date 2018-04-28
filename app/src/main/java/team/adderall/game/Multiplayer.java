@@ -124,7 +124,7 @@ public class Multiplayer
         }
 
         Player player = this.gamers.get(evt.getUserID());
-        player.getBallManager().setPos(new Point(evt.getX(), evt.getY()));
+        player.getBallManager().setPos(evt.getX(), evt.getY());
     }
 
     /**
@@ -148,8 +148,8 @@ public class Multiplayer
 
         BallManager bm = this.gamer.getBallManager();
         boolean jumping = bm.getVelocity() < 0;
-        int x = bm.getPos().x;
-        int y = bm.getPos().y;
+        double x = bm.getX();
+        double y = bm.getY();
 
         // TODO: refactor
         Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, this.gamer.getUserID(), this.gameID);
