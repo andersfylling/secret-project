@@ -37,7 +37,9 @@ public class Gravity
             double diff = (now - this.lastRun) / 1000000000.0;
             this.lastRun = now;
 
-            double velocity = b.getVelocity() + GRAVITY * diff;
+
+            double velocity = b.getVelocity() + (GRAVITY * diff);
+
             if(velocity > (int)TERMINALVEL){
                 velocity = (int)TERMINALVEL;
             }

@@ -23,7 +23,7 @@ public class GooglePlay {
      */
     public void updatePlayersScore(long score){
         Games.getLeaderboardsClient(this.context, this.account)
-                .submitScore(Resources.getSystem().getString(R.string.LeaderBoard), score);
+                .submitScore(this.context.getString(R.string.LeaderBoard), score);
 
     }
 
