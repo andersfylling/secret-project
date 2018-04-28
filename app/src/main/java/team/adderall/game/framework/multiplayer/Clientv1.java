@@ -57,6 +57,9 @@ public class Clientv1
 
     @Override
     public void close() {
+        if (listener.isInterrupted()) {
+            return;
+        }
         listen = false;
         listener.interrupt();
         socket.close();

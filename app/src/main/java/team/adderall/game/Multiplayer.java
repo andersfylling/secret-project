@@ -38,6 +38,7 @@ public class Multiplayer
     private final long gameID;
 
     private long lastUpdate;
+    private boolean singleplayer;
 
     private Client client;
 
@@ -54,6 +55,8 @@ public class Multiplayer
         this.players = players;
         this.gamer = this.players.getActive();
         this.gamers = new HashMap<>();
+
+        singleplayer = !gameDetails.isMultiplayer();
 
         // don't populate or register listeners if this is not a real online game
         if (this.deactivated()) {
@@ -129,6 +132,11 @@ public class Multiplayer
      */
     @Override
     public void run() {
+        // TODO: improve
+        if (singleplayer) {
+            return;
+        }
+
         if (this.lastUpdate + TIMEOUT > System.currentTimeMillis()) {
             return;
         }
