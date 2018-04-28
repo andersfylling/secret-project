@@ -10,14 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import team.adderall.game.highscore.UserP;
-
-/**
- * Created by Cim on 15/4/18.
- */
 
 public class GoogleSignInActivity extends Activity{
     private GoogleSignInClient mGoogleSignInClient;
@@ -63,7 +56,6 @@ public class GoogleSignInActivity extends Activity{
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            //updatePlayersScore();
             /**
              * We are now signed in and can test out e.g updatePlayerScore()
              */
@@ -79,30 +71,6 @@ public class GoogleSignInActivity extends Activity{
         }
     }
 
-    /**
-     * Demo on how we can update the application score.
-     */
-    private void updatePlayersScore(){
-        //Test that one can write to the leaderboard.
-        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
-                .submitScore(getString(R.string.LeaderBoard), 1337);
-        showLeaderboard();
 
-    }
-    private static final int RC_LEADERBOARD_UI = 9004;
-
-    /**
-     * https://developers.google.com/games/services/android/leaderboards
-     */
-    private void showLeaderboard() {
-        Games.getLeaderboardsClient(this, GoogleSignIn.getLastSignedInAccount(this))
-                .getLeaderboardIntent(getString(R.string.LeaderBoard))
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_LEADERBOARD_UI);
-                    }
-                });
-    }
 
 }

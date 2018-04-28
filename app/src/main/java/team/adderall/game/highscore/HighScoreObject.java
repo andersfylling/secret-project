@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class HighScoreObject implements Serializable,Comparable {
     private final long score;
-    private final boolean synced;
+    private boolean synced;
     private final long time;
 
     public HighScoreObject(long score, boolean synced){
@@ -26,4 +26,11 @@ public class HighScoreObject implements Serializable,Comparable {
         return score;
     }
 
+    public void setSynced(boolean synced) {
+        this.synced = synced;
+    }
+
+    public boolean getSynced() {
+        return this.synced;
+    }
 }

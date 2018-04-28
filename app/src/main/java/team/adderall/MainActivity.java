@@ -1,6 +1,7 @@
 package team.adderall;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,9 +15,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.games.Games;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import team.adderall.game.highscore.GooglePlay;
 
 public class MainActivity
         extends AppCompatActivity implements FragmentListner
@@ -24,6 +29,7 @@ public class MainActivity
     private final static Logger LOGGER = Logger.getLogger(MainActivity.class.getName());
     private DrawerLayout mDrawerLayout;
     private GoogleSignInAccount gplay;
+    private GooglePlay gplayAcc = null;
 
 
     @Override
@@ -102,6 +108,34 @@ public class MainActivity
     @Override
     public void onGetGplayInteraction(GoogleSignInAccount acc) {
         this.gplay = acc;
+        this.gplayAcc = new GooglePlay(this,acc);
 
     }
+    @Override
+    public void startGoogleHighscoreView() {
+        showLeaderboard();
+    }
+
+    @Override
+    public boolean updatePlayersScore(long score) {
+        if(gplayAcc != null){
+            gplayAcc.updatePlayersScore(score);
+            return true;
+        }
+        return false;
+    }
+
+    public void showLeaderboard() {
+        int RC_LEADERBOARD_UI = 9004;
+
+        Games.getLeaderboardsClient(this, this.gplay)
+                .getLeaderboardIntent(getString(R.string.LeaderBoard))
+                .addOnSuccessListener(new OnSuccessListener<Intent>() {
+                    @Override
+                    public void onSuccess(Intent intent) {
+                        startActivityForResult(intent, RC_LEADERBOARD_UI);
+                    }
+                });
+    }
+
 }

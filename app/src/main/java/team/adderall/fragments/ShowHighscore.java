@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import team.adderall.FragmentListner;
 import team.adderall.R;
+import team.adderall.game.highscore.GooglePlay;
 import team.adderall.game.highscore.HighScoreObject;
 import team.adderall.game.highscore.HighscoreAdapter;
 
@@ -25,6 +28,7 @@ public class ShowHighscore extends Activity {
 
     SharedPreferences shared;
     long CurrentScore = 0;
+    private GoogleSignInAccount account;
 
 
     private void saveHighscoreList(){
@@ -60,8 +64,11 @@ public class ShowHighscore extends Activity {
         if (b != null) {
             CurrentScore = (long) b.get("Highscore");
             highscoreObjList.add(new HighScoreObject(CurrentScore,false));
-            saveHighscoreList();
         }
+
+        autoSync(highscoreObjList);
+        saveHighscoreList();
+
 
         Collections.sort(highscoreObjList);
         Collections.reverse(highscoreObjList);
@@ -86,6 +93,22 @@ public class ShowHighscore extends Activity {
 
         }
 
+    }
+
+    /**
+     * Automatically update the global highscore list with any unsynced elements.
+     * @param highscoreObjList
+     */
+    private void autoSync(ArrayList<HighScoreObject> highscoreObjList) {
+        for(HighScoreObject obj : highscoreObjList){
+            if(!obj.getSynced()){
+
+                FragmentListner b = (FragmentListner) this;
+
+                if(b.updatePlayersScore(obj.getScore()))
+                    obj.setSynced(true);
+            }
+        }
     }
 
 }

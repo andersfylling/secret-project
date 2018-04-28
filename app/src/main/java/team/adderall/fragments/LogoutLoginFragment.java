@@ -13,7 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import team.adderall.FragmentListner;
 import team.adderall.GoogleSignInActivity;
 import team.adderall.R;
-import team.adderall.game.highscore.UserP;
 
 public class LogoutLoginFragment
         extends Fragment
@@ -39,11 +38,12 @@ public class LogoutLoginFragment
 
 
                 b.onGetGplayInteraction(result);
+                //b.startGoogleHighscoreView();
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
-    }//onActivityResult
+    }
 }
