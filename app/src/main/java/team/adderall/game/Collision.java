@@ -37,7 +37,7 @@ public class Collision
         int newX = x.centerX();
         int newY = x.centerY();
 
-        if(x.top  <= y.top) {
+        if(x.top <= y.top) {
             newY = y.top -x.height()/2;
             this.hitOnTop = true;
         }else if(x.bottom >= y.bottom) {
@@ -59,7 +59,7 @@ public class Collision
         this.hitOnTop = false;
         int y = 0;
 
-        for(Player player: players.getAlivePlayersAsList()) {
+        for(Player player: players.getAlivePlayers()) {
             BallManager bm = player.getBallManager();
             Point pos = bm.getPos();
             for (Floor floor : level.getFloors()) {

@@ -1,4 +1,4 @@
-package team.adderall.game;
+package team.adderall.game.userinput;
 
 public interface SensorEvtListener {
     void onSensorEvt(SensorEvt evt);

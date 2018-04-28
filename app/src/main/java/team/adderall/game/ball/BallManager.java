@@ -9,8 +9,8 @@ import android.graphics.Rect;
 
 
 import team.adderall.game.PositionTracker;
-import team.adderall.game.SensorEvt;
-import team.adderall.game.SensorEvtListener;
+import team.adderall.game.userinput.SensorEvt;
+import team.adderall.game.userinput.SensorEvtListener;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 
@@ -45,6 +45,7 @@ public class BallManager
     private double speed;
 
     private double velocity;
+    private double jumpForce;
 
     // Ball details
     private Ball ball;
@@ -72,6 +73,7 @@ public class BallManager
         this.ball = new Ball(RADIUS);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
+        tracker.setposition(new Point(100, 0));
 
         this.painter = new Paint();
         this.painter.setColor(Color.parseColor(ball.getColour()));
@@ -87,6 +89,7 @@ public class BallManager
         this.activePlayer = true;
 
         this.velocity = 0;
+        jumpForce = 0;
     }
 
     /**
@@ -97,6 +100,7 @@ public class BallManager
         this.ball = new Ball(RADIUS);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
+        tracker.setposition(new Point(100, 0));
 
         this.painter = new Paint();
         this.painter.setColor(Color.parseColor(ball.getColour()));
@@ -232,5 +236,13 @@ public class BallManager
 
     public int getScore() {
         return this.tracker.getScore();
+    }
+
+    public double getJumpForce() {
+        return jumpForce;
+    }
+
+    public void setJumpForce(double jumpForce) {
+        this.jumpForce = jumpForce;
     }
 }

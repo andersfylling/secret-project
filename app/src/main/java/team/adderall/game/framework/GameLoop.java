@@ -2,19 +2,9 @@ package team.adderall.game.framework;
 
 import android.os.Process;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
-import team.adderall.game.framework.context.GameContext;
 
 @GameComponent("GameLoop")
 public class GameLoop
@@ -28,7 +18,7 @@ public class GameLoop
     //private final ExecutorService logicerThreadPool;
     private GameLogicInterface[][] logics; // populated by GameLogicManager at runtime
     private final GameLogicManager gameLogicManager;
-    private final GamePaintWrapper painter;
+    private final GraphicsManager painter;
 
     private UpdateRateCounter lps;
     private UpdateRateCounter fps;
@@ -39,7 +29,7 @@ public class GameLoop
     @GameDepWire
     public GameLoop(
             @Inject("gameLogicManager") final GameLogicManager gameLogicManager,
-            @Inject("gamePaintWrapper") final GamePaintWrapper gamePaintWrapper
+            @Inject("GraphicsManager") final GraphicsManager gamePaintWrapper
     ) {
         this.gameLogicManager = gameLogicManager;
         this.painter = gamePaintWrapper;

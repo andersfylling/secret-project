@@ -11,8 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
@@ -22,6 +21,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import team.adderall.game.highscore.GooglePlay;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import team.adderall.network.GameService;
+import team.adderall.network.JSend;
+import team.adderall.network.PlayerDetails;
+import team.adderall.network.UserSession;
 
 public class MainActivity
         extends AppCompatActivity implements FragmentListner
@@ -30,6 +38,10 @@ public class MainActivity
     private DrawerLayout mDrawerLayout;
     private GoogleSignInAccount gplay;
     private GooglePlay gplayAcc = null;
+
+    private GameService service;
+    private UserSession session;
+    private MenuItemHandler menuItemHandler;
 
 
     @Override
@@ -40,7 +52,8 @@ public class MainActivity
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new MenuItemHandler(mDrawerLayout, this));
+        menuItemHandler = new MenuItemHandler(mDrawerLayout, this, this::registerBundleContent);
+        navigationView.setNavigationItemSelectedListener(menuItemHandler);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,23 +63,47 @@ public class MainActivity
 
         mDrawerLayout.addDrawerListener(new MenuSlideHandler());
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.0.87:3173/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        service = retrofit.create(GameService.class);
+
+        // auth to game server
+        session = new UserSession();
+        PlayerDetails username = new PlayerDetails();
+        username.setUsername("andemann"); // TODO: get from settings
+        Call<JSend<UserSession>> call = service.authenticate(username);
+        final MainActivity self = this;
+        call.enqueue(new Callback<JSend<UserSession>>() {
+            @Override
+            public void onResponse(Call<JSend<UserSession>> call, Response<JSend<UserSession>> response) {
+                self.session.setToken(response.body().getData().getToken());
+
+                NavigationView navigationView = findViewById(R.id.nav_view);
+
+                Menu menuNav = navigationView.getMenu();
+                MenuItem navLobby = menuNav.findItem(R.id.nav_lobby);
+                navLobby.setEnabled(true);
+            }
+
+            @Override
+            public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
+                // TODO: retry
+                Toast toast = Toast.makeText(self, "Unable to connect to game servers REST API", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        });
+
+
         LOGGER.setLevel(Level.INFO);
     }
 
-    /**
-     * Set default menu entry highlighted
-     * @param menu
-     * @return
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        // null pointer exception
-        //menu.findItem(R.id.nav_lobby).setChecked(true);
-
-        return true;
+    // called whenever a new fragment is started
+    private void registerBundleContent(Bundle bundle) {
+        bundle.putString(UserSession.SESSION_TOKEN_NAME, this.session.getToken());
     }
-
 
     /**
      * Show and hide side menu

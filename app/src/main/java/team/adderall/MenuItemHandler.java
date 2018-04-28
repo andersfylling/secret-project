@@ -1,5 +1,6 @@
 package team.adderall;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -17,13 +18,15 @@ import team.adderall.fragments.SoloFragment;
 public class MenuItemHandler
         implements NavigationView.OnNavigationItemSelectedListener
 {
+    private final FragmentChange fragmentChange;
     private DrawerLayout mDrawerLayout;
     private AppCompatActivity activity;
     private final String appName;
 
-    public MenuItemHandler(DrawerLayout mDrawerLayout, AppCompatActivity activity) {
+    public MenuItemHandler(DrawerLayout mDrawerLayout, AppCompatActivity activity, FragmentChange fragmentChange) {
         this.mDrawerLayout = mDrawerLayout;
         this.activity = activity;
+        this.fragmentChange = fragmentChange;
         this.appName = activity.getString(R.string.app_name);
     }
 
@@ -69,7 +72,13 @@ public class MenuItemHandler
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
+            return true;
         }
+
+        // setup bundle and get content from MainActivity
+        Bundle data = new Bundle();
+        this.fragmentChange.trigger(data);
+        fragment.setArguments(data);
 
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = activity.getSupportFragmentManager();

@@ -10,10 +10,11 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import team.adderall.game.GameDetails;
-import team.adderall.game.Jumping;
-import team.adderall.game.SensorChangedWorker;
+import team.adderall.game.userinput.Jumping;
+import team.adderall.game.userinput.SensorChangedWorker;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.configuration.GameConfiguration;
@@ -28,7 +29,7 @@ public class GameActivity
         SensorEventListener
 {
 
-    private GameInitializer gameInitializer;
+    private GameInitializer gameSession;
     private SensorChangedWorker sensorChangedWorker;
     private SensorManager sensorManager;
     private Jumping jumping;
@@ -37,7 +38,8 @@ public class GameActivity
     private GameDetails details;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -56,30 +58,31 @@ public class GameActivity
         this.sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         this.addDeviceSensorListeners();
 
-        this.gameInitializer = new GameInitializer(
+        this.gameSession = new GameInitializer(
                 team.adderall.game.Config.class,
                 team.adderall.game.highscore.Config.class,
                 team.adderall.game.ball.Config.class,
-                team.adderall.game.GameExtraObjects.Config.class
+                team.adderall.game.GameExtraObjects.Config.class,
+                team.adderall.game.level.Config.class
         );
-        this.gameInitializer.loadEssentials(); // add GameContext
-        this.gameInitializer.addGameConfigurationActivities(this); // link this instance
+        this.gameSession.loadEssentials(); // add GameContext
+        this.gameSession.addGameConfigurationActivities(this); // link this instance
     }
 
     @Override
-    public void onAttachedToWindow() {
+    public void onAttachedToWindow()
+    {
         super.onAttachedToWindow();
-        this.gameInitializer.load(()-> {
+        this.gameSession.load(()-> {
             System.out.println("######### finished loading game");
-            this.gameInitializer.start();
+            this.gameSession.start();
         });
         System.out.println("######### loading game objects");
     }
 
     @GameComponent("SensorChangedWorker")
-    public SensorChangedWorker setSensorChangedWorker(
-            @Inject("display") Display display
-    ) {
+    public SensorChangedWorker setSensorChangedWorker(@Inject("display") Display display)
+    {
         // use display to get screen orientation to manipulate x,z,y changes on sensor events
         this.sensorChangedWorker = new SensorChangedWorker(display);
         this.sensorChangedWorker.start(); // start thread
@@ -88,12 +91,14 @@ public class GameActivity
     }
 
     @GameComponent("activity")
-    public Activity activity() {
+    public Activity activity()
+    {
         return this;
     }
 
     @GameComponent("display")
-    public Display display() {
+    public Display display()
+    {
         final WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
         if (wm == null) {
             return null;
@@ -121,7 +126,8 @@ public class GameActivity
 
 
     // TODO: move to a different class(!)
-    private void addDeviceSensorListeners() {
+    private void addDeviceSensorListeners()
+    {
         if (this.sensorManager == null) {
             return;
         }
@@ -130,7 +136,8 @@ public class GameActivity
         final int maxReportLatency = SensorManager.SENSOR_DELAY_GAME;
         this.sensorManager.registerListener(this, orientation, maxReportLatency);
     }
-    private void removeDeviceSensorListeners() {
+    private void removeDeviceSensorListeners()
+    {
         if (this.sensorManager == null) {
             return;
         }
@@ -139,7 +146,8 @@ public class GameActivity
     }
 
     @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
+    public void onSensorChanged(SensorEvent sensorEvent)
+    {
         if (this.sensorChangedWorker == null) {
             return;
         }
@@ -148,14 +156,16 @@ public class GameActivity
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {}
+    public void onAccuracyChanged(Sensor sensor, int i)
+    {}
 
 
     /**
      * On any touch event on the screen.
      */
     @Override
-    public void onUserInteraction() {
+    public void onUserInteraction()
+    {
         super.onUserInteraction();
         if (this.jumping != null) {
             this.jumping.run();
@@ -164,24 +174,27 @@ public class GameActivity
 
 
     @Override
-    public void onResume(){
+    public void onResume()
+    {
         super.onResume();
         this.addDeviceSensorListeners();
     }
 
     @Override
-    public void onPause(){
+    public void onPause()
+    {
         super.onPause();
         this.removeDeviceSensorListeners();
         //TODO: pause game loop, and unpause it in onResume()
     }
 
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         Intent returnIntent = new Intent();
         this.details.writeToIntent(returnIntent);
         this.removeDeviceSensorListeners();
-        gameInitializer.close(); // close all @GameComponents
+        gameSession.close(); // close all @GameComponents
 
 
         setResult(GameDetails.CODE_GAME_ENDED, returnIntent);

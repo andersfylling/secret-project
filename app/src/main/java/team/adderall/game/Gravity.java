@@ -2,8 +2,11 @@ package team.adderall.game;
 
 import android.graphics.Point;
 
+import java.util.concurrent.TimeUnit;
+
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
+import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.GameLogic;
@@ -15,11 +18,9 @@ public class Gravity
     implements GameLogicInterface
 {
     private final Players players;
-    private double verticalSpeed;
     private double GRAVITY = 9.8;
     private double TERMINALVEL = 30;
     private long lastRun;
-
 
     @GameDepWire
     public Gravity(@Inject("players") Players p) {
@@ -27,28 +28,27 @@ public class Gravity
         this.lastRun = System.nanoTime();
     }
 
-
     @Override
     public void run() {
-        for(Player player : players.getAlivePlayersAsList()){
-            BallManager b = player.getBallManager();
-            long now = System.nanoTime();
+        long now = System.nanoTime();
 
-            double diff = (now - this.lastRun) / 1000000000.0;
-            this.lastRun = now;
+        double diff = (now - this.lastRun) / 1000000000.0;
+        this.lastRun = now;
+        double acceleration = GRAVITY * diff;
 
-
-            double velocity = b.getVelocity() + (GRAVITY * diff);
-
-            if(velocity > (int)TERMINALVEL){
-                velocity = (int)TERMINALVEL;
-            }
-            b.setVelocity(velocity);
+        for(Player player : players.getAlivePlayers()){
+            BallManager b = player.getBallManager(); // holds position info
+            double velocity = b.getVelocity();
 
             Point pos = b.getPos();
-            pos.set(pos.x, pos.y + (int)(velocity));
+            pos.set(pos.x, pos.y + (int)(velocity * (diff * GameLoop.FPS)));
             b.setPos(pos);
+
+            velocity += acceleration;
+            if(velocity > TERMINALVEL) {
+                velocity = TERMINALVEL;
+            }
+            b.setVelocity(velocity);
         }
     }
-
 }

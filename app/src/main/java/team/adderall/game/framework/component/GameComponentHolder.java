@@ -88,7 +88,7 @@ public class GameComponentHolder
      * @see GameComponentHolder#createDependencyTree
      */
     private void populateDependencyTree(@NonNull final List<GameComponentHolder> components,
-                                       @NonNull final String root)
+                                        @NonNull final String root)
     {
         for (GameComponentHolder dependency : components) {
             final String depName = dependency.getName();
@@ -137,7 +137,8 @@ public class GameComponentHolder
     /**
      * Initialize component and every dependency recursively.
      */
-    public void initialize(@NonNull final List<GameComponentHolder> components) {
+    public void initialize(@NonNull final List<GameComponentHolder> components)
+    {
         if (this.instance != null) {
             return;
         }
@@ -208,7 +209,8 @@ public class GameComponentHolder
      * @param name of the potential dependency
      * @return
      */
-    public boolean dependsOnComponent(@NonNull final String name, boolean checkOnlyMains) {
+    public boolean dependsOnComponent(@NonNull final String name, boolean checkOnlyMains)
+    {
         boolean dependent = false;
         List<String> dependencies;
         if (checkOnlyMains) {
@@ -254,7 +256,8 @@ public class GameComponentHolder
         return this.name;
     }
 
-    public String toStringWithDependencies() {
+    public String toStringWithDependencies()
+    {
         String content = this.name + "{";
         for (String dependency : this.requiredDependencies) {
             content += dependency + ",";
@@ -264,7 +267,8 @@ public class GameComponentHolder
         return content;
     }
 
-    public String toStringWithAllDependencies() {
+    public String toStringWithAllDependencies()
+    {
         String content = this.name + "{";
         for (String dependency : this.dependencies) {
             content += dependency + ",";
