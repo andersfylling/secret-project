@@ -19,13 +19,13 @@ public class GraphicsManager
         implements
         GamePainter
 {
-    private static final double SCROLLSPEED = 0.1;
+    private static final double SCROLLSPEED = 2;
     private final Activity activity;
     private final GamePainter[][] painters;
     private final GameState gameState;
     private ArrayList<GamePainter[]> gameObjects;
     private ArrayList<GamePainter[]> fixedPositionObjects;
-    private long lastRun =0;
+    private long lastRun;
 
 
     /**
@@ -48,7 +48,7 @@ public class GraphicsManager
         this.fixedPositionObjects = new ArrayList<>();
         this.gameObjects = new ArrayList<>();
 
-        this.lastRun= System.nanoTime();
+        this.lastRun = System.nanoTime();
 
         /**
          * First element of the array is stationary objects
