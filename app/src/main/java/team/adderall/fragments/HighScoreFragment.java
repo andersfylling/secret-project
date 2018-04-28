@@ -32,7 +32,7 @@ public class HighScoreFragment
     ArrayList<HighScoreObject> highscoreObjList;
 
     SharedPreferences shared;
-    long CurrentScore = 0;
+    long CurrentScore = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +70,9 @@ public class HighScoreFragment
         int id = adp.getIdFor(CurrentScore);
         if(id == 0) {
             result.setText("WUUT!! New Highscore. You Rock! ");
+        }
+        else if(id == -1){
+            result.setVisibility(View.INVISIBLE);
         }
         else{
             result.setText("Congrats on position " + Long.toString(id + 1));
