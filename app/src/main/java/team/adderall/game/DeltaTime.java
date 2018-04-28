@@ -80,7 +80,7 @@ public class DeltaTime
         return dT / multiplier;
     }
 
-    public double getRoundedDiff(TimeUnit timeUnit) {
+    public long getRoundedDiff(TimeUnit timeUnit) {
         return timeUnit.convert(dT, TimeUnit.NANOSECONDS);
     }
 
