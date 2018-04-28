@@ -41,7 +41,7 @@ public class Gravity
             double velocity = b.getVelocity();
 
             Point pos = b.getPos();
-            pos.set(pos.x, pos.y + (int)(velocity * (diff * GameLoop.FPS)));
+            pos.set(pos.x, pos.y + (int)(velocity / (diff * 120)));
             b.setPos(pos);
 
             velocity += acceleration;
