@@ -71,8 +71,9 @@ public class Collision
                     bm.setPos(p.x, p.y);
                     bm.setVelocity(0);
 
-                    if(this.hitOnTop)
+                    if(this.hitOnTop) {
                         bm.setAtGround(true);
+                    }
                 }
             }
         }
