@@ -45,16 +45,13 @@ public class HighScoreFragment
         highscoreObjList = new ArrayList<>();
         getHighscoreList();
 
-        Bundle b = savedInstanceState;
-
-        if (b != null) {
-            CurrentScore = (long) b.get("Highscore");
-            highscoreObjList.add(new HighScoreObject(CurrentScore,false));
+        CurrentScore = getArguments().getLong("Highscore",-1);
+        if(CurrentScore != -1) {
+            highscoreObjList.add(new HighScoreObject(CurrentScore, false));
         }
 
         autoSync(highscoreObjList);
         saveHighscoreList();
-
 
         Collections.sort(highscoreObjList);
         Collections.reverse(highscoreObjList);
@@ -78,7 +75,6 @@ public class HighScoreFragment
             result.setText("Congrats on position " + Long.toString(id + 1));
 
         }
-
 
         return view;
     }

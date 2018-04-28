@@ -97,6 +97,11 @@ public class GameDetails
     }
 
     public long getHighscore() {
+        for(Player p: players.values()){
+            if(p.isActivePlayer()){
+                return p.getScore();
+            }
+        }
         return highscore;
     }
 

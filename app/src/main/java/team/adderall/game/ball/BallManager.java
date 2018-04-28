@@ -229,4 +229,8 @@ public class BallManager
     public void updateAidExtraScore(int i) {
         this.tracker.updateAidExtraScore(i);
     }
+
+    public int getScore() {
+        return this.tracker.getScore();
+    }
 }

@@ -186,4 +186,10 @@ public class PositionTracker
         if(this.highScore != null)
             this.highScore.updateAidExtraScore(i);
     }
+
+    public int getScore() {
+        if(this.highScore != null)
+           return this.highScore.getScaledHighScore();
+        return 0;
+    }
 }
