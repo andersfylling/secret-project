@@ -15,7 +15,7 @@ import team.adderall.game.level.Floor;
 import team.adderall.game.level.LevelManager;
 
 @GameComponent
-@GameLogic(wave = 2)
+@GameLogic(wave = 3)
 public class Collision
         implements GameLogicInterface {
     private final Players players;

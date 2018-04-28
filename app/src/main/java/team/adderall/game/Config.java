@@ -36,7 +36,8 @@ import team.adderall.game.userinput.SensorChangedWorker;
         PlayerDeathListHandler.class,
         Side2SideTeleportation.class,
         Multiplayer.class,
-        Jumping.class
+        Jumping.class,
+        DeltaTime.class
 })
 public class Config
 {
@@ -91,15 +92,6 @@ public class Config
 
         return canvasSize;
     }
-
-
-//    @GameComponent("level")
-//    public LevelManager level(@Inject("players") Players players,
-//                              @Inject("GameDetails") GameDetails gameDetails,
-//                              @Inject("canvasSize") Point canvasSize)
-//    {
-//        return new LevelManager(canvasSize,10,10,100, gameDetails.getGameSeed());
-//    }
 
     // FPS counter / draws per second
     @GameComponent("FPS")

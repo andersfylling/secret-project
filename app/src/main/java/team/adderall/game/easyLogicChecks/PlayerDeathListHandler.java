@@ -11,7 +11,7 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 
 @GameComponent
-@GameLogic(wave = 3)
+@GameLogic(wave = 4)
 public class PlayerDeathListHandler
      implements GameLogicInterface
 {
