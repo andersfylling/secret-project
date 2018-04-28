@@ -1,10 +1,5 @@
 package team.adderall;
 
-import android.content.ClipData;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,14 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +19,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import team.adderall.game.GameDetails;
+import team.adderall.network.GameService;
+import team.adderall.network.JSend;
+import team.adderall.network.PlayerDetails;
+import team.adderall.network.UserSession;
 
 public class MainActivity
         extends AppCompatActivity

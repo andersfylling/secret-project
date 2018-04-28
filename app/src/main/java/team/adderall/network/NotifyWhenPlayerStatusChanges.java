@@ -1,4 +1,4 @@
-package team.adderall;
+package team.adderall.network;
 
 @FunctionalInterface
 public interface NotifyWhenPlayerStatusChanges {

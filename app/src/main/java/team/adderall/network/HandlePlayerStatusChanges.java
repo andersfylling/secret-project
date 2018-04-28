@@ -1,14 +1,11 @@
-package team.adderall;
+package team.adderall.network;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import java.util.MissingFormatArgumentException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import team.adderall.fragments.LobbyFragment;
 
 public class HandlePlayerStatusChanges
         extends

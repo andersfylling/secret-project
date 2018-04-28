@@ -1,4 +1,4 @@
-package team.adderall;
+package team.adderall.network;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

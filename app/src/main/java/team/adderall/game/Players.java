@@ -64,7 +64,7 @@ public class Players
         this.active = null;
     }
 
-    public Player getActive() {
+    public synchronized Player getActive() {
         if (this.active == null) {
             for (Player player : players) {
                 if (player.isActivePlayer()) {
@@ -80,7 +80,7 @@ public class Players
         return this.players.size();
     }
 
-    public void setToDead(Player player) {
+    public synchronized void setToDead(Player player) {
         int index = this.alivePlayers.indexOf(player);
         if (index > -1) {
             this.alivePlayers.remove(index);

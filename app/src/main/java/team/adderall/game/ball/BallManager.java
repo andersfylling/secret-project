@@ -45,6 +45,7 @@ public class BallManager
     private double speed;
 
     private double velocity;
+    private double jumpForce;
 
     // Ball details
     private Ball ball;
@@ -88,6 +89,7 @@ public class BallManager
         this.activePlayer = true;
 
         this.velocity = 0;
+        jumpForce = 0;
     }
 
     /**
@@ -230,5 +232,13 @@ public class BallManager
     }
     public void updateAidExtraScore(int i) {
         this.tracker.updateAidExtraScore(i);
+    }
+
+    public double getJumpForce() {
+        return jumpForce;
+    }
+
+    public void setJumpForce(double jumpForce) {
+        this.jumpForce = jumpForce;
     }
 }

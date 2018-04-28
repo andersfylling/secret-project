@@ -1,4 +1,4 @@
-package team.adderall;
+package team.adderall.network;
 
 public class JSend<T> {
     private String status;

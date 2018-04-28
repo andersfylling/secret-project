@@ -1,4 +1,4 @@
-package team.adderall;
+package team.adderall.network;
 
 import java.io.Serializable;
 import android.os.Parcel;

@@ -2,8 +2,11 @@ package team.adderall.game;
 
 import android.graphics.Point;
 
+import java.util.concurrent.TimeUnit;
+
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
+import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.GameLogic;
@@ -27,22 +30,25 @@ public class Gravity
 
     @Override
     public void run() {
+        long now = System.nanoTime();
+
+        double diff = (now - this.lastRun) / 1000000000.0;
+        this.lastRun = now;
+        double acceleration = GRAVITY * diff;
+
         for(Player player : players.getAlivePlayers()){
-            BallManager b = player.getBallManager();
-            long now = System.nanoTime(); // inaccurate af
-
-            double diff = (now - this.lastRun) / 1000000000.0;
-            this.lastRun = now;
-
-            double velocity = b.getVelocity() + GRAVITY * diff;
-            if(velocity > (int)TERMINALVEL){
-                velocity = (int)TERMINALVEL;
-            }
-            b.setVelocity(velocity);
+            BallManager b = player.getBallManager(); // holds position info
+            double velocity = b.getVelocity();
 
             Point pos = b.getPos();
-            pos.set(pos.x, pos.y + (int)(velocity));
+            pos.set(pos.x, pos.y + (int)(velocity * (diff * GameLoop.FPS)));
             b.setPos(pos);
+
+            velocity += acceleration;
+            if(velocity > TERMINALVEL) {
+                velocity = TERMINALVEL;
+            }
+            b.setVelocity(velocity);
         }
     }
 }
