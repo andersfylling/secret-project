@@ -20,11 +20,13 @@ public class DeltaTime
 {
     private long last;
     private long dT;
+    private long speed;
 
     @GameDepWire
     public DeltaTime() {
         last = System.nanoTime() - 1000000;
         dT = 0;
+        speed = 1;
     }
 
 
@@ -42,8 +44,15 @@ public class DeltaTime
     @Override
     public void run() {
         long now = System.nanoTime();
+
         dT = now - last;
+        dT *= speed;
+
         last = now;
+    }
+
+    public void setSpeed(long speed) {
+        this.speed = speed;
     }
 
     public long getDiff() {
