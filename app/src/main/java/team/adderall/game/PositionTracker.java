@@ -192,10 +192,4 @@ public class PositionTracker
     public void setY(double y) {
         this.y = y;
     }
-
-    public int getScore() {
-        if(this.highScore != null)
-           return this.highScore.getScaledHighScore();
-        return 0;
-    }
 }

@@ -17,8 +17,10 @@ import team.adderall.game.framework.component.Inject;
 public class Gravity
     implements GameLogicInterface
 {
+    public final static double METER = 100;
+
     private final Players players;
-    private double GRAVITY = 9.8 * 100;
+    private double GRAVITY = 9.8 * METER;
     private double TERMINALVEL = 30;
     private long lastRun;
 
