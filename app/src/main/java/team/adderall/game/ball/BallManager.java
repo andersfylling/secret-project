@@ -73,7 +73,7 @@ public class BallManager
         this.ball = new Ball(RADIUS);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
-        tracker.setposition(new Point(100, 0));
+        tracker.setposition(100, 0);
 
         this.painter = new Paint();
         this.painter.setColor(Color.parseColor(ball.getColour()));
@@ -100,7 +100,7 @@ public class BallManager
         this.ball = new Ball(RADIUS);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
-        tracker.setposition(new Point(100, 0));
+        tracker.setposition(100, 0);
 
         this.painter = new Paint();
         this.painter.setColor(Color.parseColor(ball.getColour()));
@@ -146,7 +146,7 @@ public class BallManager
      */
     public void paint(Canvas canvas) {
         // draw the ball
-        canvas.drawCircle(this.tracker.getX(), this.tracker.getY(), this.ball.getRadius(), this.painter);
+        canvas.drawCircle((int) tracker.getX(), (int) tracker.getY(), this.ball.getRadius(), this.painter);
         // update the tracker
         this.tracker.updateOldPosition();
 
@@ -171,10 +171,6 @@ public class BallManager
 
     }
 
-    //public void setDeathZone(DeathZone deathZone) {
-    //    this.deathZone = deathZone;
-    //}
-
     public int getState() {
         return state;
     }
@@ -183,16 +179,17 @@ public class BallManager
         this.state = state;
     }
 
-    public Point getPos() {
-        Point point = new Point(this.tracker.getX(),this.tracker.getY());
-        return point;
+    public double getX() {
+        return tracker.getX();
     }
-    public void setPos(Point point){
-        this.tracker.setposition(point);
+    public double getY() {
+        return tracker.getY();
+    }
+    public void setY(double y) {
+        tracker.setY(y);
     }
 
-    public void colided(Rect squere) {
-        this.tracker.colided(squere);
+    public void setPos(double x, double y) {
 
     }
 

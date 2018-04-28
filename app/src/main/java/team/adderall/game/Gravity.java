@@ -31,18 +31,16 @@ public class Gravity
     @Override
     public void run() {
         long now = System.nanoTime();
-
         double diff = (now - this.lastRun) / 1000000000.0;
         this.lastRun = now;
+
         double acceleration = GRAVITY * diff;
 
         for(Player player : players.getAlivePlayers()){
             BallManager b = player.getBallManager(); // holds position info
             double velocity = b.getVelocity();
 
-            Point pos = b.getPos();
-            pos.set(pos.x, pos.y + (int)(velocity * (diff * GameLoop.FPS)));
-            b.setPos(pos);
+            b.setY(b.getY() + (velocity * diff));
 
             velocity += acceleration;
             if(velocity > TERMINALVEL) {

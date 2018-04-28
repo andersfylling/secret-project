@@ -73,11 +73,11 @@ public class Floor
         return null;
     }
 
-    public int aidColision(Point pos){
+    public int aidColision(int x, int y){
         for (Line line : this.lines) {
             Rect aid = getAid(line.getFloorType()%TYPE_SOLID,line.getX1(),this.y,line.getX2());
             if (aid == null) continue;
-            Rect ball = new Rect(pos.x -45, pos.y-45, pos.x + 45, pos.y+45);
+            Rect ball = new Rect(x -45, y-45, x + 45, y+45);
             if(ball.intersect(aid)){
                 /**
                  * Return aid type,
@@ -94,11 +94,11 @@ public class Floor
         return -1;
     }
 
-    public Rect checkColition(int y, Point pos, int thickness){
+    public Rect checkColition(int y, int x1, int y1, int thickness){
         for (Line line : this.lines) {
             if(line.getFloorType() < TYPE_SOLID) continue;
             Rect squere = new Rect(line.getX1(), this.y, line.getX2(), this.y +thickness);
-            Rect ball = new Rect(pos.x -45, pos.y-45, pos.x + 45, pos.y+45);
+            Rect ball = new Rect(x1 -45, y1-45, x1 + 45, y1+45);
 
             if(ball.intersect(squere)){
                 return squere;

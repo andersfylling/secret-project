@@ -58,10 +58,11 @@ public class AidsHandler
         Player p = this.players.getActive();
         BallManager player = p.getBallManager();
 
-        Point pos = player.getPos();
+        double x = player.getX();
+        double y = player.getY();
 
         for (Floor floor : level.getFloors()) {
-            int type = floor.aidColision(pos);
+            int type = floor.aidColision((int) x, (int) y);
 
             if (type != -1) {
                 /**
