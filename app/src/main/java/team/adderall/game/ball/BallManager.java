@@ -25,9 +25,6 @@ public class BallManager
 {
     // defaults
     // |
-    // +- movement speed / sensitivity
-    private final static double SPEED = 1.75;
-    // |
     // +- ball radius
     private final static int RADIUS = 45;
     // |
@@ -40,10 +37,7 @@ public class BallManager
 
 
     // behavior
-    private double speed;
-
     private double velocity;
-    private double jumpForce;
 
     // Ball details
     private Ball ball;
@@ -82,12 +76,10 @@ public class BallManager
         this.deathPainter.setTextSize(75);
         this.deathPainter.setTextAlign(Paint.Align.CENTER);
 
-        this.speed = SPEED;
         this.state = STATE_ALIVE;
         this.activePlayer = true;
 
         this.velocity = 0;
-        jumpForce = 0;
     }
 
     /**
@@ -109,17 +101,10 @@ public class BallManager
         this.deathPainter.setTextSize(75);
         this.deathPainter.setTextAlign(Paint.Align.CENTER);
 
-        this.speed = SPEED;
         this.state = STATE_ALIVE;
         this.activePlayer = activePlayer;
 
         this.velocity = 0;
-    }
-
-
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
     }
 
     public void moveBallTo(int x, int y) {
@@ -220,13 +205,5 @@ public class BallManager
 
     public int getScore() {
         return this.tracker.getScore();
-    }
-
-    public double getJumpForce() {
-        return jumpForce;
-    }
-
-    public void setJumpForce(double jumpForce) {
-        this.jumpForce = jumpForce;
     }
 }
