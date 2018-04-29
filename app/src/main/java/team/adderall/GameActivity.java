@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import team.adderall.game.GameDetails;
+import team.adderall.game.UserInputHolder;
 import team.adderall.game.userinput.Jumping;
 import team.adderall.game.userinput.SensorChangedWorker;
 import team.adderall.game.framework.component.GameDepWire;
@@ -30,9 +31,8 @@ public class GameActivity
 {
 
     private GameInitializer gameSession;
-    private SensorChangedWorker sensorChangedWorker;
     private SensorManager sensorManager;
-    private Jumping jumping;
+    private UserInputHolder userInputHolder;
     private static GameActivity self;
 
     private GameDetails details;
@@ -56,7 +56,6 @@ public class GameActivity
 
         // initialize device sensor capabilities
         this.sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        this.addDeviceSensorListeners();
 
         this.gameSession = new GameInitializer(
                 team.adderall.game.Config.class,
@@ -78,16 +77,6 @@ public class GameActivity
             this.gameSession.start();
         });
         System.out.println("######### loading game objects");
-    }
-
-    @GameComponent("SensorChangedWorker")
-    public SensorChangedWorker setSensorChangedWorker(@Inject("display") Display display)
-    {
-        // use display to get screen orientation to manipulate x,z,y changes on sensor events
-        this.sensorChangedWorker = new SensorChangedWorker(display);
-        this.sensorChangedWorker.start(); // start thread
-
-        return this.sensorChangedWorker;
     }
 
     @GameComponent("activity")
@@ -119,40 +108,29 @@ public class GameActivity
     }
 
     @GameDepWire
-    public void setJumping(@Inject("jumping") Jumping jumping)
+    public void setUserInputHolder(@Inject("userInputHolder") UserInputHolder userInputHolder)
     {
-        this.jumping = jumping;
+        this.userInputHolder = userInputHolder;
+        this.addDeviceSensorListeners();
     }
 
 
     // TODO: move to a different class(!)
     private void addDeviceSensorListeners()
     {
-        if (this.sensorManager == null) {
-            return;
-        }
-
         final Sensor orientation = this.sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
         final int maxReportLatency = SensorManager.SENSOR_DELAY_GAME;
         this.sensorManager.registerListener(this, orientation, maxReportLatency);
     }
     private void removeDeviceSensorListeners()
     {
-        if (this.sensorManager == null) {
-            return;
-        }
-
         this.sensorManager.unregisterListener(this);
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent)
     {
-        if (this.sensorChangedWorker == null) {
-            return;
-        }
-
-        this.sensorChangedWorker.push(sensorEvent);
+        userInputHolder.requestXAxisMovement(sensorEvent);
     }
 
     @Override
@@ -167,9 +145,7 @@ public class GameActivity
     public void onUserInteraction()
     {
         super.onUserInteraction();
-        if (this.jumping != null) {
-            this.jumping.run();
-        }
+        this.userInputHolder.requestJump();
     }
 
 
@@ -177,7 +153,7 @@ public class GameActivity
     public void onResume()
     {
         super.onResume();
-        this.addDeviceSensorListeners();
+        //this.addDeviceSensorListeners();
     }
 
     @Override

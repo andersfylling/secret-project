@@ -22,8 +22,6 @@ import team.adderall.game.framework.component.GameDepWire;
  */
 @GameComponent
 public class BallManager
-        implements
-        SensorEvtListener
 {
     // defaults
     // |
@@ -152,25 +150,6 @@ public class BallManager
 
     }
 
-    /**
-     * Listen for tilt and what not
-     */
-    @Override
-    public void onSensorEvt(SensorEvt evt) {
-        if (this.state == STATE_DEAD) {
-            return;
-        }
-
-        int xChange = (int) ((-evt.getX()) * this.speed);
-        int yChange = (int) ((evt.getY()) * this.speed);
-
-
-        // update ball position
-        // yDiff is 0 as we currently are only moving along one axis.
-        this.tracker.addToPosition(xChange, 0);
-
-    }
-
     public int getState() {
         return state;
     }
@@ -187,6 +166,14 @@ public class BallManager
     }
     public void setY(double y) {
         tracker.setY(y);
+    }
+    public void addToY(double y)
+    {
+    }
+
+    public void addToX(double x)
+    {
+        tracker.addToPosition(x, 0);
     }
 
     public void setPos(double x, double y) {

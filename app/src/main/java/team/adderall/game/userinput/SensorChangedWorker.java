@@ -13,6 +13,7 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 
+@Deprecated
 @GameComponent("SensorChangedWorker")
 public class SensorChangedWorker
         extends Thread
