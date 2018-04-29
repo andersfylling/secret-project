@@ -19,11 +19,15 @@ public class Jumping
         this.player = players.getActive();
     }
 
+    public static void jump(Player player) {
+        if(player != null && player.getBallManager().getAtGround()) {
+            player.getBallManager().setVelocity(JUMP_VELOCITY * Gravity.METER);
+            player.getBallManager().setAtGround(false);
+        }
+    }
+
     @Override
     public void run() {
-        if(this.player != null && this.player.getBallManager().getAtGround()) {
-            this.player.getBallManager().setVelocity(JUMP_VELOCITY * Gravity.METER);
-            this.player.getBallManager().setAtGround(false);
-        }
+        jump(this.player);
     }
 }

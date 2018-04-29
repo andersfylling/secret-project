@@ -60,8 +60,6 @@ public class LobbyFragment
                 .build();
         service = retrofit.create(GameService.class);
 
-        statusChanges = new HandlePlayerStatusChanges(session, service, this::updatePlayerStatus);
-
         // button listener
         Button button = view.findViewById(R.id.button_start_lobby_game);
         button.setOnClickListener(this::joinGame);
@@ -75,8 +73,11 @@ public class LobbyFragment
         return view;
     }
 
-    public void joinGame(final View v) {
-        statusChanges.execute();
+    public synchronized void joinGame(final View v) {
+        if (statusChanges == null) {
+            statusChanges = new HandlePlayerStatusChanges(session, service, this::updatePlayerStatus);
+            statusChanges.execute();
+        }
     }
 
     public void updatePlayerStatus(PlayerStatus playerStatus) {
@@ -91,7 +92,14 @@ public class LobbyFragment
         int port = playerStatus.getGameServerPort() == null ? 0 : playerStatus.getGameServerPort();
         if (!inGame && addr != null && !addr.isEmpty() && port > 0) {
             this.startGameActivity(playerStatus);
+            stopLongPolling();
+        }
+    }
+
+    private void stopLongPolling() {
+        if (statusChanges != null) {
             statusChanges.cancel(false);
+            statusChanges = null;
         }
     }
 
@@ -100,6 +108,7 @@ public class LobbyFragment
             return;
         }
         inGame = true;
+        stopLongPolling();
 
         GameDetails config = new GameDetails(STAT_MULTIPLAYER);
         config.setGameSeed(542352);
@@ -153,7 +162,7 @@ public class LobbyFragment
         super.onPause();
         usernames.clear();
         playersAdapter.notifyDataSetChanged();
-        statusChanges.cancel(false);
+        stopLongPolling();
     }
 
 }

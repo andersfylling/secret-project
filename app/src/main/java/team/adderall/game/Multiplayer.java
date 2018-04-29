@@ -17,6 +17,7 @@ import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.multiplayer.Client;
 import team.adderall.game.framework.multiplayer.Clientv1;
 import team.adderall.game.framework.multiplayer.Packet;
+import team.adderall.game.userinput.Jumping;
 
 /**
  * Sends updates about main player and keep other players up to date.
@@ -128,7 +129,7 @@ public class Multiplayer
         boolean jumping = evt.isJumping();
         if (jumping) {
             if (player.getBallManager().getAtGround()) {
-                player.getBallManager().setVelocity(-13);
+                player.getBallManager().setVelocity(Jumping.JUMP_VELOCITY * Gravity.METER);
             }
             player.getBallManager().setAtGround(false);
         }
