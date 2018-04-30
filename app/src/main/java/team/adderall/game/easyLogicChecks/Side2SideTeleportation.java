@@ -2,6 +2,9 @@ package team.adderall.game.easyLogicChecks;
 
 import android.graphics.Point;
 
+import com.google.android.gms.games.Game;
+
+import team.adderall.game.GameState;
 import team.adderall.game.Player;
 import team.adderall.game.Players;
 import team.adderall.game.ball.Ball;
@@ -19,20 +22,19 @@ public class Side2SideTeleportation implements GameLogicInterface {
     private int width;
 
     @GameDepWire
-    public Side2SideTeleportation(@Inject("players") Players players,
-                                  @Inject("canvasSize") Point canvasSize)
+    public Side2SideTeleportation(@Inject("players") Players players)
     {
         this.players = players;
-        this.width = canvasSize.x;
+        this.width = GameState.FIXED_WIDTH;
     }
 
     @Override
     public void run() {
+
         for(Player player : players.getAlivePlayers()){
             BallManager bm = player.getBallManager();
             double x = bm.getX();
 
-            int radius = bm.getBall().getRadius();
             if(x <= 0){
                 bm.setPos(x+width, bm.getY());
             }
