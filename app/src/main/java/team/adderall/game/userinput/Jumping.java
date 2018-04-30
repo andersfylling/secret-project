@@ -1,5 +1,6 @@
 package team.adderall.game.userinput;
 
+import team.adderall.game.GameState;
 import team.adderall.game.Gravity;
 import team.adderall.game.Player;
 import team.adderall.game.Players;
@@ -21,7 +22,7 @@ public class Jumping
     @Override
     public void run() {
         if(this.player != null && this.player.getBallManager().getAtGround()) {
-            this.player.getBallManager().setVelocity(-11 * Gravity.METER);
+            this.player.getBallManager().setVelocity(GameState.FIXED_JUMP * Gravity.METER);
             this.player.getBallManager().setAtGround(false);
         }
     }
