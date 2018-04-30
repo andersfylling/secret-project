@@ -1,9 +1,5 @@
 package team.adderall.game.level;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,19 +13,30 @@ import team.adderall.game.GameState;
 
 public class Floor
 {
+    /**
+     * Floor types
+     */
     public final static int TYPE_AIR = 0;
-    public final static int TYPE_COIN = 1;
-    public static final int TYPE_SUPERCOIN = 2;
     public final static int TYPE_SOLID = 10;
 
     public final static int TYPE_LOWEST_INDEX = TYPE_AIR;
     public final static int TYPE_HIGHEST_INDEX = TYPE_SOLID;
+
+    /**
+     * Aid types
+     */
+    public final static int TYPE_COIN = 1;
+    public static final int TYPE_SUPERCOIN = 2;
 
 
     private List<Line> lines;
     int y = 0;
     Paint p;
 
+    /**
+     * Floor
+     * @param lines
+     */
     public Floor(final List<Line> lines) {
         this.lines = lines;
         this.p = new Paint();
@@ -37,10 +44,33 @@ public class Floor
 
     }
 
+    /**
+     * Get lines
+     * @return lines
+     */
     public List<Line> getLines() {
         return lines;
     }
 
+    /**
+     * Get the basetype for a given floortype
+     * Written generically in case we add more basetypes
+     * @param floortype
+     */
+    private int getBaseType(int floortype){
+        floortype = (int)Math.floor((double)floortype/(double)TYPE_SOLID);
+        floortype *=TYPE_SOLID;
+
+        return floortype;
+    }
+
+    /**
+     * Paint
+     * @param canvas
+     * @param painters
+     * @param y
+     * @param scale
+     */
     public void paint(Canvas canvas, Paint[] painters, int y, float scale) {
         this.y = y;
         for (Line line : this.lines) {
@@ -49,9 +79,7 @@ public class Floor
             int x1 = (int) (line.getX1()*scale);
             int x2 = (int) (line.getX2()*scale);
 
-            int floorType = line.getFloorType();
-            floorType = floorType/TYPE_SOLID;
-            floorType *=10;
+            int floorType = getBaseType(line.getFloorType());
 
             final Paint painter = painters[floorType];
             if (painter == null) {
@@ -73,6 +101,14 @@ public class Floor
         }
     }
 
+    /**
+     * Get a given Aid
+     * @param floorType
+     * @param x
+     * @param y
+     * @param x1
+     * @return Rect aid, or NULL
+     */
     private Rect getAid(int floorType,int x, int y, int x1) {
         if(floorType!= 0)
         {
@@ -85,6 +121,12 @@ public class Floor
         return null;
     }
 
+    /**
+     * Check collision between Ball and Aids
+     * @param x
+     * @param y
+     * @return
+     */
     public int aidColision(int x, int y){
         for (Line line : this.lines) {
             Rect aid = getAid(line.getFloorType()%TYPE_SOLID,line.getX1(),this.y,line.getX2());
@@ -99,9 +141,8 @@ public class Floor
                  * And change florType
                  * Then the aidCollisionHandler would perform the aid importance
                  */
-                int floortype = line.getFloorType()/TYPE_SOLID;
+                int floortype = getBaseType(line.getFloorType());
                 int realtype = line.getFloorType() %TYPE_SOLID;
-                floortype = floortype * TYPE_SOLID;
                 line.setFloorType(floortype);
                 return realtype;
             }
@@ -109,6 +150,14 @@ public class Floor
         return -1;
     }
 
+    /**
+     * Check colission between ball and lines
+     * @param y
+     * @param x1
+     * @param y1
+     * @param thickness
+     * @return
+     */
     public Rect checkColition(int y, int x1, int y1, int thickness){
         for (Line line : this.lines) {
             if(line.getFloorType() < TYPE_SOLID) continue;
