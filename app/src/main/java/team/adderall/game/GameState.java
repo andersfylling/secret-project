@@ -14,6 +14,12 @@ public class GameState
      */
     public static final int FIXED_HEIGHT = 1000;
     public static final int FIXED_WIDTH = 1500;
+    public static final int FIXED_BALL_RADIUS = 25;
+    public static final int FIXED_AID_LENGTH = 50;
+    public static final int FIXED_AID_HEIGHT = 2*FIXED_AID_LENGTH;
+    public static final int FIXED_THICKNESS = 50;
+    public static final int FIXED_JUMP = -8;
+
 
     private float yScaleValue=0;
     private float xscale = 0;

@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
+import com.google.android.gms.games.Game;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,7 @@ public class LevelManager
         this.width = canvasSize.x;
         this.height = canvasSize.y;
 
-        this.thickness = 100;//thickness;
+        this.thickness = GameState.FIXED_THICKNESS;//100;//thickness;
 
         this.generator = new LevelGenerator(gameDetails.getGameSeed(), Floor.TYPE_HIGHEST_INDEX);
         this.levels = new ArrayList<>();

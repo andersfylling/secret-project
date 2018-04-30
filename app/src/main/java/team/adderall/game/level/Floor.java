@@ -13,6 +13,8 @@ import android.graphics.Rect;
 
 import java.util.List;
 
+import team.adderall.game.GameState;
+
 public class Floor
 {
     public final static int TYPE_AIR = 0;
@@ -75,7 +77,10 @@ public class Floor
         if(floorType!= 0)
         {
             int mid = (x1 +x)/2;
-            return new Rect(mid-50,y-100,mid+50,y);
+            return new Rect(mid-GameState.FIXED_AID_LENGTH,
+                    y-GameState.FIXED_AID_HEIGHT,
+                    mid+GameState.FIXED_AID_LENGTH,
+                    y);
         }
         return null;
     }
@@ -84,7 +89,10 @@ public class Floor
         for (Line line : this.lines) {
             Rect aid = getAid(line.getFloorType()%TYPE_SOLID,line.getX1(),this.y,line.getX2());
             if (aid == null) continue;
-            Rect ball = new Rect(x -45, y-45, x + 45, y+45);
+            Rect ball = new Rect(x - GameState.FIXED_BALL_RADIUS,
+                    y-GameState.FIXED_BALL_RADIUS,
+                    x + GameState.FIXED_BALL_RADIUS,
+                    y+GameState.FIXED_BALL_RADIUS);
             if(ball.intersect(aid)){
                 /**
                  * Return aid type,
@@ -105,7 +113,11 @@ public class Floor
         for (Line line : this.lines) {
             if(line.getFloorType() < TYPE_SOLID) continue;
             Rect squere = new Rect(line.getX1(), this.y, line.getX2(), this.y +thickness);
-            Rect ball = new Rect(x1 -45, y1-45, x1 + 45, y1+45);
+
+            Rect ball = new Rect(x1 -GameState.FIXED_BALL_RADIUS,
+                    y1-GameState.FIXED_BALL_RADIUS,
+                    x1 + GameState.FIXED_BALL_RADIUS,
+                    y1+GameState.FIXED_BALL_RADIUS);
 
             if(ball.intersect(squere)){
                 return squere;

@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 
+import team.adderall.game.GameState;
 import team.adderall.game.PositionTracker;
 import team.adderall.game.userinput.SensorEvt;
 import team.adderall.game.userinput.SensorEvtListener;
@@ -26,7 +27,7 @@ public class BallManager
     // defaults
     // |
     // +- ball radius
-    private final static int RADIUS = 45;
+    private final static int RADIUS = GameState.FIXED_BALL_RADIUS;
     // |
     // +- movement threshold
     private final static int MOVEMENT_THRESHOLD = 0;
