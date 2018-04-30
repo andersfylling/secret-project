@@ -126,10 +126,11 @@ public class BallManager
     /**
      * Paint / draw the ball
      * @param canvas
+     * @param v
      */
-    public void paint(Canvas canvas) {
+    public void paint(Canvas canvas, float scale) {
         // draw the ball
-        canvas.drawCircle((int) tracker.getX(), (int) tracker.getY(), this.ball.getRadius(), this.painter);
+        canvas.drawCircle((int) tracker.getX() * scale, (int) tracker.getY(), this.ball.getRadius() * scale, this.painter);
         // update the tracker
         this.tracker.updateOldPosition();
 

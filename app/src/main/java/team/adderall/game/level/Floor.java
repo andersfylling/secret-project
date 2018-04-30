@@ -39,25 +39,32 @@ public class Floor
         return lines;
     }
 
-    public void paint(Canvas canvas, Paint[] painters, int y) {
+    public void paint(Canvas canvas, Paint[] painters, int y, float scale) {
         this.y = y;
         for (Line line : this.lines) {
+
+            // Scale the cordinates to fit the screen size
+            int x1 = (int) (line.getX1()*scale);
+            int x2 = (int) (line.getX2()*scale);
+
             int floorType = line.getFloorType();
             floorType = floorType/TYPE_SOLID;
-            if(floorType == 1) floorType = 10;
+            floorType *=10;
 
             final Paint painter = painters[floorType];
             if (painter == null) {
                 continue;
             }
-            canvas.drawLine(line.getX1(), y, line.getX2(), y, painter);
+            canvas.drawLine(x1, y, x2, y, painter);
 
-            Rect aid = getAid(line.getFloorType()%TYPE_SOLID,line.getX1(),y,line.getX2());
+            Rect aid = getAid(line.getFloorType()%TYPE_SOLID,x1,y,x2);
+
             if(aid != null) {
                 final Paint Aidpainter = painters[line.getFloorType()%TYPE_SOLID];
                 if (Aidpainter == null) {
                     continue;
                 }
+
                 canvas.drawRect(aid,Aidpainter);
 
             }
