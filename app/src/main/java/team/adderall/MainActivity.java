@@ -1,7 +1,9 @@
 package team.adderall;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -50,7 +52,7 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentLocalLanguage();
+        updateLanguage();
         setContentView(R.layout.activity_main);
 
         String test = getResources().getString(R.string.username);
@@ -106,19 +108,6 @@ public class MainActivity
         LOGGER.setLevel(Level.INFO);
     }
 
-    /**
-     * Should read in from shared pref
-     * and then set the language.
-     */
-    private void setCurrentLocalLanguage() {
-        Resources res = this.getApplicationContext().getResources();
-        // Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        android.content.res.Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale("no")); // API 17+ only.
-        // Use conf.locale = new Locale(...) if targeting lower versions
-        res.updateConfiguration(conf, dm);
-    }
 
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
@@ -211,6 +200,28 @@ public class MainActivity
         return isGplayLoggedIn();
     }
 
+    @Override
+    /**
+     * Read in  language from shared pref
+     * and then set the language.
+     */
+    public void updateLanguage() {
+
+        Resources res = this.getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String language = shared.getString("languagekey","en");
+        conf.setLocale(new Locale(language));
+        res.updateConfiguration(conf, dm);
+
+    }
+
+    /**
+     * Show leaderboard
+     * return void
+     */
     public void showLeaderboard() {
         int RC_LEADERBOARD_UI = 9004;
 
@@ -230,6 +241,10 @@ public class MainActivity
                 });
     }
 
+    /**
+     * Is gplay logged in
+     * @return booled isLoggedIn
+     */
     public boolean isGplayLoggedIn() {
         return (gplayAcc != null);
     }
