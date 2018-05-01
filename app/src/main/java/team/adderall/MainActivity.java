@@ -1,7 +1,9 @@
 package team.adderall;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,6 +52,7 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        updateLanguage();
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -65,7 +70,7 @@ public class MainActivity
         mDrawerLayout.addDrawerListener(new MenuSlideHandler());
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.87:3173/api/")
+                .baseUrl(getString(R.string.baseUrl))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -92,7 +97,7 @@ public class MainActivity
             @Override
             public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
                 // TODO: retry
-                Toast toast = Toast.makeText(self, "Unable to connect to game servers REST API", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(self, R.string.RestApiUnableToConnect, Toast.LENGTH_LONG);
                 toast.show();
             }
         });
@@ -101,6 +106,7 @@ public class MainActivity
 
         LOGGER.setLevel(Level.INFO);
     }
+
 
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
@@ -168,7 +174,7 @@ public class MainActivity
     }
 
     private void updateMenuToSignedIn(boolean b) {
-        String title = b == true?  "Logout" : "Login";
+        String title = b == true?  getString(R.string.logout) : getString(R.string.login);
         NavigationView nv = findViewById(R.id.nav_view);
         MenuItem login =  nv.getMenu().getItem(4);
         login.setTitle(title);
@@ -193,12 +199,34 @@ public class MainActivity
         return isGplayLoggedIn();
     }
 
+    @Override
+    /**
+     * Read in  language from shared pref
+     * and then set the language.
+     */
+    public void updateLanguage() {
+
+        Resources res = this.getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String language = shared.getString("languagekey","en");
+        conf.setLocale(new Locale(language));
+        res.updateConfiguration(conf, dm);
+
+    }
+
+    /**
+     * Show leaderboard
+     * return void
+     */
     public void showLeaderboard() {
         int RC_LEADERBOARD_UI = 9004;
 
         if(!isGplayLoggedIn()){
             Toast.makeText(this.getApplicationContext(),
-                    "You need to be logged in to use this action", Toast.LENGTH_SHORT).show();
+                    R.string.needToLogIn, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -212,6 +240,10 @@ public class MainActivity
                 });
     }
 
+    /**
+     * Is gplay logged in
+     * @return booled isLoggedIn
+     */
     public boolean isGplayLoggedIn() {
         return (gplayAcc != null);
     }

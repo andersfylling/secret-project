@@ -1,9 +1,9 @@
 package team.adderall;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -81,7 +81,7 @@ public class MenuItemHandler
         fragment.setArguments(data);
 
         // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        android.app.FragmentManager fragmentManager = activity.getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // Set action bar title
