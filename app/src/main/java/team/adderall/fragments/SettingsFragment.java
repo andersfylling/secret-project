@@ -1,6 +1,5 @@
 package team.adderall.fragments;
 
-import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -43,7 +42,7 @@ public class SettingsFragment
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         FragmentListner fl = (FragmentListner) this.getActivity();
-        fl.updateLanguage();
+        fl.askForUpdateLanguage();
     }
 
 }
