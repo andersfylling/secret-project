@@ -1,13 +1,14 @@
 package team.adderall.network;
 
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class UserSession
-{
+public class UserSession {
     public final static String SESSION_TOKEN_NAME = "x-session-token";
 
     @SerializedName(SESSION_TOKEN_NAME)
@@ -36,4 +37,5 @@ public class UserSession
     public boolean isEmpty() {
         return this.token.equals("");
     }
+
 }

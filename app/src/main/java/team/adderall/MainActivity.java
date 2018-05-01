@@ -101,8 +101,23 @@ public class MainActivity
                 toast.show();
             }
         });
+        Bundle bundle = getIntent().getExtras();
 
-        updateMenuToSignedIn(false);
+        if(bundle!= null){
+            String token = bundle.getString("sessionToken");
+            if(token != null)
+                this.session = new  UserSession(token);
+            this.gplay = bundle.getParcelable("gplay");
+        }
+
+        if(this.gplay == null) {
+            updateMenuToSignedIn(false);
+        }
+        else{
+            updateMenuToSignedIn(true);
+            this.gplayAcc = new GooglePlay(this, this.gplay);
+
+        }
 
         LOGGER.setLevel(Level.INFO);
     }
@@ -224,7 +239,12 @@ public class MainActivity
      * Restart MainActivity
      */
     private void restart() {
+
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        Bundle mBundle = new Bundle();
+        onSaveInstanceState(mBundle);
+        intent.putExtras(mBundle);
+
         startActivity(intent);
         finish();
     }
@@ -259,4 +279,12 @@ public class MainActivity
     public boolean isGplayLoggedIn() {
         return (gplayAcc != null);
     }
+
+
+    protected void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putParcelable("gplay", this.gplay);
+        bundle.putString("sessionToken", this.session.getToken());
+    }
+
 }
