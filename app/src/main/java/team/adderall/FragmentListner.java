@@ -33,5 +33,5 @@ public interface FragmentListner {
     /**
      * Update used language
      */
-    public void updateLanguage();
+    public void askForUpdateLanguage();
 }

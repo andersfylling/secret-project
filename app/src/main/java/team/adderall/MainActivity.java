@@ -200,6 +200,11 @@ public class MainActivity
     }
 
     @Override
+    public void askForUpdateLanguage(){
+        updateLanguage();
+        this.restart();
+
+    }
     /**
      * Read in  language from shared pref
      * and then set the language.
@@ -213,6 +218,15 @@ public class MainActivity
         String language = shared.getString("languagekey","en");
         conf.setLocale(new Locale(language));
         res.updateConfiguration(conf, dm);
+    }
+
+    /**
+     * Restart MainActivity
+     */
+    private void restart() {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
