@@ -22,8 +22,13 @@ public class HighscoreAdapter extends BaseAdapter {
         this.currentScore = currentScore;
 
         array = new ArrayList<>();
-        for(HighScoreObject obj :highscoreObjList)
-            array.add(obj.getScore());
+        for(HighScoreObject obj :highscoreObjList) {
+            if (array.size() == 0)
+                array.add(obj.getScore());
+            if (array.get(array.size() - 1) != obj.getScore())
+                array.add(obj.getScore());
+        }
+
     }
 
     @Override
