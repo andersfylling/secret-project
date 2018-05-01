@@ -15,8 +15,10 @@
     <string name="logout">Logg ut</string>
     <string name="login">Logg inn</string>
     <string name="RestApiUnableToConnect">" Kan ikke koble til REST API for spillservere"</string>
-    <string name="baseUrl">http://10.0.0.87:3173/api/</string>
+
     <string name="newHighscore">WUUT !! Ny high score. Du rocker!</string>
     <string name="newNotHighscore">"Gratulerer med %s. plass! "</string>
     <string name="ToAutoSyncEnable">For å auto synkronisere highscores må du være logget inn</string>
+    <string name="title_language_list">"Velg riktig språk "</string>
+    <string name="button_start_game">"Start spill "</string>
 </resources>
