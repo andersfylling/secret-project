@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ballspill</string>
+    <string name="play_game_button">start spill</string>
+    <string name="username">Anonym bruker</string>
+    <string name="menu_lobby">Lobby</string>
+    <string name="nav_solo">Solo</string>
+    <string name="nav_high_score">High score</string>
+    <string name="nav_settings">"innstillinger "</string>
+    <string name="nav_logout_login">Logg ut</string>
+    <string name="hello_blank_fragment">Hei tomt fragment</string>
+    <string name="button_join_game">"Bli med i spillet "</string>
+    <string name="players_in_lobby">"Spillere i lobbyen "</string>
+    <string name="needToLogIn">Du må være logget inn for å bruke denne funksjonen</string>
+    <string name="logout">Logg ut</string>
+    <string name="login">Logg inn</string>
+    <string name="RestApiUnableToConnect">" Kan ikke koble til REST API for spillservere"</string>
+    <string name="baseUrl">http://10.0.0.87:3173/api/</string>
+    <string name="newHighscore">WUUT !! Ny high score. Du rocker!</string>
+    <string name="newNotHighscore">"Gratulerer med %s. plass! "</string>
+    <string name="ToAutoSyncEnable">For å auto synkronisere highscores må du være logget inn</string>
+</resources>
