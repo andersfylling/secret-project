@@ -43,7 +43,7 @@ public class DrawKillScreen implements GamePainter {
             return;
         }
 
-        int extraY = (int) gameState.getyScaleValue();
+        int extraY = (int) gameState.getyScrollValue();
         this.painter.setColor(Color.BLACK);
         this.painter.setAlpha(200);
 

@@ -19,7 +19,7 @@ public class GraphicsManager
         implements
         GamePainter
 {
-    private static final double SCROLLSPEED = 3;
+    private static final double SCROLLSPEED = 1;
     private final Activity activity;
     private final GamePainter[][] painters;
     private final GameState gameState;
@@ -94,7 +94,7 @@ public class GraphicsManager
     private void updateScrollY()
     {
         setNewScrollValue();
-        this.gameState.setyScaleValue(this.getScrollY());
+        this.gameState.setyScrollValue(this.getScrollY());
     }
 
     @Override

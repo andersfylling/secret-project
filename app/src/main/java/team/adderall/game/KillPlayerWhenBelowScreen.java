@@ -43,20 +43,26 @@ public class KillPlayerWhenBelowScreen
 
 
     @Override
+    /**
+     * Kill a player when they are below the screen.
+     */
     public void run() {
-        double realDeathLine = gameState.getyScaleValue() + this.deathLine;
+        double realDeathLine = gameState.getyScrollValue() + this.deathLine;
         for (Player player : this.players.getAlivePlayers()) {
             BallManager b = player.getBallManager();
             if (b.getY() > realDeathLine) {
                 b.setState(BallManager.STATE_DEAD);
                 if(b.isActivePlayer()) {
-                    showHighScore();
+                    tellGameActivityThatWeDied();
                 }
             }
         }
     }
 
-    private void showHighScore() {
+    /**
+     * Tell Game activity that the current active player, is dead.
+     */
+    private void tellGameActivityThatWeDied() {
         GameActivity gm = GameActivity.getActivity();
         if(gm != null){
             gm.weDied();
