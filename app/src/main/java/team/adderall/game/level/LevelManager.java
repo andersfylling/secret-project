@@ -58,16 +58,9 @@ public class LevelManager
      */
     @GameDepWire
     public LevelManager(@Inject("canvasSize") Point canvasSize,
-                        //int pointsInWidth,
-                        //int minimumLevelsReady,
-                        //int thickness,
-                        //long gameSeed
                         @Inject("GameDetails") GameDetails gameDetails,
                         @Inject("GameState") GameState gameState)
     {
-        //this.levelsOnScreen = minimumLevelsReady;
-        //this.blocksInWidth = pointsInWidth;
-
         this.gameState = gameState;
         this.width = canvasSize.x;
         this.height = canvasSize.y;
@@ -149,13 +142,12 @@ public class LevelManager
         int counter = 0;
         //starValue++;
         for (Floor floor : this.levels) {
-            floor.paint(canvas, this.painters, this.height - (counter * this.thickness) + (int)(starValue * 0),gameState.getxScale());
+            floor.paint(canvas, this.painters, this.height - (counter * this.thickness),gameState.getxScale());
 
             // TODO: ... xD
             counter++; // next level
             counter++; // add some spacing between levels for the ball to roll
-            counter++; // add some space for jumping between levels
-            counter += 2;
+            counter += 2; // add some space for jumping between levels
         }
     }
 
