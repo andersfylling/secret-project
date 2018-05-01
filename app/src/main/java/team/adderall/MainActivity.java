@@ -103,17 +103,22 @@ public class MainActivity
         });
         Bundle bundle = getIntent().getExtras();
 
-        if(bundle!= null){
+        if(bundle!= null)
+        {
             String token = bundle.getString("sessionToken");
             if(token != null)
-                this.session = new  UserSession(token);
+            {
+                this.session = new UserSession(token);
+            }
             this.gplay = bundle.getParcelable("gplay");
         }
 
-        if(this.gplay == null) {
+        if(this.gplay == null)
+        {
             updateMenuToSignedIn(false);
         }
-        else{
+        else
+        {
             updateMenuToSignedIn(true);
             this.gplayAcc = new GooglePlay(this, this.gplay);
 
