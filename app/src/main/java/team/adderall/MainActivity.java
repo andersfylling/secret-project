@@ -55,7 +55,6 @@ public class MainActivity
         updateLanguage();
         setContentView(R.layout.activity_main);
 
-        String test = getResources().getString(R.string.username);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
