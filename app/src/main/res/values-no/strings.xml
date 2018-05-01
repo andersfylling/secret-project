@@ -15,7 +15,6 @@
     <string name="logout">Logg ut</string>
     <string name="login">Logg inn</string>
     <string name="RestApiUnableToConnect">" Kan ikke koble til REST API for spillservere"</string>
-
     <string name="newHighscore">WUUT !! Ny high score. Du rocker!</string>
     <string name="newNotHighscore">"Gratulerer med %s. plass! "</string>
     <string name="ToAutoSyncEnable">For å auto synkronisere highscores må du være logget inn</string>

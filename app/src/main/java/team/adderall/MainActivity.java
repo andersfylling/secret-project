@@ -55,7 +55,6 @@ public class MainActivity
         updateLanguage();
         setContentView(R.layout.activity_main);
 
-        String test = getResources().getString(R.string.username);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -206,7 +205,6 @@ public class MainActivity
      * and then set the language.
      */
     public void updateLanguage() {
-
         Resources res = this.getApplicationContext().getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         android.content.res.Configuration conf = res.getConfiguration();
@@ -215,7 +213,6 @@ public class MainActivity
         String language = shared.getString("languagekey","en");
         conf.setLocale(new Locale(language));
         res.updateConfiguration(conf, dm);
-
     }
 
     /**

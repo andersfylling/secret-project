@@ -24,9 +24,14 @@ public class HighscoreAdapter extends BaseAdapter {
         array = new ArrayList<>();
         for(HighScoreObject obj :highscoreObjList) {
             if (array.size() == 0)
+            {
                 array.add(obj.getScore());
+            }
+
             if (array.get(array.size() - 1) != obj.getScore())
+            {
                 array.add(obj.getScore());
+            }
         }
 
     }
