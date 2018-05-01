@@ -39,7 +39,8 @@ import team.adderall.game.userinput.SensorChangedWorker;
         Jumping.class,
         DeltaTime.class,
         UserInputHolder.class,
-        UserInputDelegator.class
+        UserInputDelegator.class,
+        BlockOffTopOfScreen.class
 })
 public class Config
 {
