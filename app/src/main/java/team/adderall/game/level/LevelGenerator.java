@@ -20,6 +20,13 @@ public class LevelGenerator
     private final int maxNum;
     private ArrayList<Aid> aids;
 
+    /**
+     * Used to make sure that a ball can pass each level
+     */
+    private static int EXTRA_GAP = GameState.FIXED_BALL_RADIUS/5;
+    private static int MINIMUM_GAP = GameState.FIXED_BALL_RADIUS * 2;
+    private static int GAP = MINIMUM_GAP + EXTRA_GAP;
+
     public LevelGenerator(final long seed, final int maxNum) {
         this.seed = seed;
         this.maxNum = maxNum + 1;
@@ -34,6 +41,9 @@ public class LevelGenerator
      * @return floor
      */
     public Floor generateFloor(final int floor, final Floor previousFloor, final int width) {
+
+
+
         if (previousFloor == null) {
             throw new NullPointerException("list is null");
         }
@@ -69,9 +79,9 @@ public class LevelGenerator
              */
             if(types[counter] == Floor.TYPE_AIR)
             {
-                if (nextX - previousX < GameState.FIXED_BALL_RADIUS * 2)
+                if (nextX - previousX < GAP)
                 {
-                    nextX = previousX + (GameState.FIXED_BALL_RADIUS * 2);
+                    nextX = previousX + GAP;
                 }
             }
 
