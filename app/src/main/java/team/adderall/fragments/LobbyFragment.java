@@ -55,7 +55,7 @@ public class LobbyFragment
         // build service
         // TODO: need some way to handle one shared instance
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.87:3173/api/")
+                .baseUrl(getString(R.string.baseUrl))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(GameService.class);

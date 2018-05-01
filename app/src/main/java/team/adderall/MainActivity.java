@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,8 +50,10 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCurrentLocalLanguage();
         setContentView(R.layout.activity_main);
 
+        String test = getResources().getString(R.string.username);
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -65,7 +69,7 @@ public class MainActivity
         mDrawerLayout.addDrawerListener(new MenuSlideHandler());
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.87:3173/api/")
+                .baseUrl(getString(R.string.baseUrl))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -92,7 +96,7 @@ public class MainActivity
             @Override
             public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
                 // TODO: retry
-                Toast toast = Toast.makeText(self, "Unable to connect to game servers REST API", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(self, R.string.RestApiUnableToConnect, Toast.LENGTH_LONG);
                 toast.show();
             }
         });
@@ -100,6 +104,20 @@ public class MainActivity
         updateMenuToSignedIn(false);
 
         LOGGER.setLevel(Level.INFO);
+    }
+
+    /**
+     * Should read in from shared pref
+     * and then set the language.
+     */
+    private void setCurrentLocalLanguage() {
+        Resources res = this.getApplicationContext().getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale("no")); // API 17+ only.
+        // Use conf.locale = new Locale(...) if targeting lower versions
+        res.updateConfiguration(conf, dm);
     }
 
     // called whenever a new fragment is started
@@ -168,7 +186,7 @@ public class MainActivity
     }
 
     private void updateMenuToSignedIn(boolean b) {
-        String title = b == true?  "Logout" : "Login";
+        String title = b == true?  getString(R.string.logout) : getString(R.string.login);
         NavigationView nv = findViewById(R.id.nav_view);
         MenuItem login =  nv.getMenu().getItem(4);
         login.setTitle(title);
@@ -198,7 +216,7 @@ public class MainActivity
 
         if(!isGplayLoggedIn()){
             Toast.makeText(this.getApplicationContext(),
-                    "You need to be logged in to use this action", Toast.LENGTH_SHORT).show();
+                    R.string.needToLogIn, Toast.LENGTH_SHORT).show();
             return;
         }
 

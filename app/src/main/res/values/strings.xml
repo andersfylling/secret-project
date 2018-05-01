@@ -12,4 +12,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_join_game">Join game</string>
     <string name="players_in_lobby">Players in lobby</string>
+    <string name="needToLogIn">You need to be logged in to use this action</string>
+    <string name="logout">Log out</string>
+    <string name="login">Login</string>
+    <string name="RestApiUnableToConnect">Unable to connect to game servers REST API</string>
+    <string name="baseUrl">http://10.0.0.87:3173/api/</string>
+    <string name="newHighscore">WUUT!! New Highscore. You Rock!</string>
+    <string name="newNotHighscore">Congrats on position %s</string>
+    <string name="ToAutoSyncEnable">To autoSync highscores, you must be logged in</string>
 </resources>

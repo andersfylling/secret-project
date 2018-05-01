@@ -12,6 +12,10 @@ public class SettingsFragment
         extends Fragment
 {
     @Override
+    /**
+     * Add settings for setting local language
+     * And save it to shared pref.
+     */
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.settings_view, container, false);
