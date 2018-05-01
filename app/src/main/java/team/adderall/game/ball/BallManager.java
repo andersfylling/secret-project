@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 
 
+import team.adderall.game.GameState;
 import team.adderall.game.PositionTracker;
 import team.adderall.game.userinput.SensorEvt;
 import team.adderall.game.userinput.SensorEvtListener;
@@ -22,16 +23,11 @@ import team.adderall.game.framework.component.GameDepWire;
  */
 @GameComponent
 public class BallManager
-        implements
-        SensorEvtListener
 {
     // defaults
     // |
-    // +- movement speed / sensitivity
-    private final static double SPEED = 1.75;
-    // |
     // +- ball radius
-    private final static int RADIUS = 45;
+    private final static int RADIUS = GameState.FIXED_BALL_RADIUS;
     // |
     // +- movement threshold
     private final static int MOVEMENT_THRESHOLD = 0;
@@ -42,10 +38,7 @@ public class BallManager
 
 
     // behavior
-    private double speed;
-
     private double velocity;
-    private double jumpForce;
 
     // Ball details
     private Ball ball;
@@ -84,12 +77,10 @@ public class BallManager
         this.deathPainter.setTextSize(75);
         this.deathPainter.setTextAlign(Paint.Align.CENTER);
 
-        this.speed = SPEED;
         this.state = STATE_ALIVE;
         this.activePlayer = true;
 
         this.velocity = 0;
-        jumpForce = 0;
     }
 
     /**
@@ -111,17 +102,10 @@ public class BallManager
         this.deathPainter.setTextSize(75);
         this.deathPainter.setTextAlign(Paint.Align.CENTER);
 
-        this.speed = SPEED;
         this.state = STATE_ALIVE;
         this.activePlayer = activePlayer;
 
         this.velocity = 0;
-    }
-
-
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
     }
 
     public void moveBallTo(int x, int y) {
@@ -143,31 +127,13 @@ public class BallManager
     /**
      * Paint / draw the ball
      * @param canvas
+     * @param v
      */
-    public void paint(Canvas canvas) {
+    public void paint(Canvas canvas, float scale) {
         // draw the ball
-        canvas.drawCircle((int) tracker.getX(), (int) tracker.getY(), this.ball.getRadius(), this.painter);
+        canvas.drawCircle((int) tracker.getX() * scale, (int) tracker.getY(), this.ball.getRadius() * scale, this.painter);
         // update the tracker
         this.tracker.updateOldPosition();
-
-    }
-
-    /**
-     * Listen for tilt and what not
-     */
-    @Override
-    public void onSensorEvt(SensorEvt evt) {
-        if (this.state == STATE_DEAD) {
-            return;
-        }
-
-        int xChange = (int) ((-evt.getX()) * this.speed);
-        int yChange = (int) ((evt.getY()) * this.speed);
-
-
-        // update ball position
-        // yDiff is 0 as we currently are only moving along one axis.
-        this.tracker.addToPosition(xChange, 0);
 
     }
 
@@ -187,6 +153,14 @@ public class BallManager
     }
     public void setY(double y) {
         tracker.setY(y);
+    }
+    public void addToY(double y)
+    {
+    }
+
+    public void addToX(double x)
+    {
+        tracker.addToPosition(x, 0);
     }
 
     public void setPos(double x, double y) {
@@ -233,13 +207,5 @@ public class BallManager
 
     public int getScore() {
         return this.tracker.getScore();
-    }
-
-    public double getJumpForce() {
-        return jumpForce;
-    }
-
-    public void setJumpForce(double jumpForce) {
-        this.jumpForce = jumpForce;
     }
 }

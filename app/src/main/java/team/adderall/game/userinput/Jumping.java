@@ -1,5 +1,6 @@
 package team.adderall.game.userinput;
 
+import team.adderall.game.GameState;
 import team.adderall.game.Gravity;
 import team.adderall.game.Player;
 import team.adderall.game.Players;

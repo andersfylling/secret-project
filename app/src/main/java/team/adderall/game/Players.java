@@ -12,7 +12,6 @@ import team.adderall.game.userinput.SensorEvtListener;
 
 @GameComponent
 public class Players
-    implements SensorEvtListener
 {
     private final List<Player> players;
     private List<Player> alivePlayers;
@@ -48,16 +47,6 @@ public class Players
 
     public List<Player> getDeadPlayers() {
         return deadPlayers;
-    }
-
-    // rewrite
-    @Override
-    public void onSensorEvt(SensorEvt evt) {
-        if (this.active == null) {
-            return;
-        }
-
-        this.getActive().getBallManager().onSensorEvt(evt);
     }
 
     public void invalidateActive() {

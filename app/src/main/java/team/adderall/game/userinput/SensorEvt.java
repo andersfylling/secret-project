@@ -1,5 +1,6 @@
 package team.adderall.game.userinput;
 
+@Deprecated
 public class SensorEvt {
     public final static int INDEX_X = 0;
     public final static int INDEX_Y = 1;

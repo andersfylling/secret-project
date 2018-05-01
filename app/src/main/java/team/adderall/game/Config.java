@@ -37,7 +37,9 @@ import team.adderall.game.userinput.SensorChangedWorker;
         Side2SideTeleportation.class,
         Multiplayer.class,
         Jumping.class,
-        DeltaTime.class
+        DeltaTime.class,
+        UserInputHolder.class,
+        UserInputDelegator.class
 })
 public class Config
 {
@@ -147,9 +149,8 @@ public class Config
     }
 
     @GameDepWire
-    public void bindSensorsToPlayers(@Inject("players") Players players,
-                                     @Inject("SensorChangedWorker") SensorChangedWorker handler)
+    public void setInitialGameSpeed(@Inject("deltaTime") DeltaTime dt)
     {
-        handler.addListener(players::onSensorEvt);
+        dt.setSpeed(1.75); // TODO: use GameDetails
     }
 }

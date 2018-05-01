@@ -82,6 +82,9 @@ public class Collision
 
     private Rect getRect(int x, int y)
     {
-        return new Rect(x - 45, y - 45, x + 45, y + 45);
+        return new Rect(x - GameState.FIXED_BALL_RADIUS,
+                y - GameState.FIXED_BALL_RADIUS,
+                x + GameState.FIXED_BALL_RADIUS,
+                y + GameState.FIXED_BALL_RADIUS);
     }
 }

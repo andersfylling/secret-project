@@ -20,7 +20,7 @@ public class DeltaTime
 {
     private long last;
     private long dT;
-    private long speed;
+    private double speed;
 
     @GameDepWire
     public DeltaTime() {
@@ -51,8 +51,11 @@ public class DeltaTime
         last = now;
     }
 
-    public void setSpeed(long speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
+    }
+    public double getSpeed() {
+        return speed;
     }
 
     public long getDiff() {
