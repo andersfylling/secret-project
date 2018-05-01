@@ -54,11 +54,7 @@ public class SettingsFragment
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             FragmentListner fl = (FragmentListner) this.getActivity();
             fl.updateLanguage();
-            try {
-                //getActivity().getFragmentManager().beginTransaction().detach(this);
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            }
+
         }
 
     }
