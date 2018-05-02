@@ -3,8 +3,8 @@
     <string name="app_name">ballspill</string>
     <string name="play_game_button">start spill</string>
     <string name="username">Anonym bruker</string>
-    <string name="menu_lobby">Lobby</string>
-    <string name="nav_solo">Solo</string>
+    <string name="menu_lobby">Multi player</string>
+    <string name="nav_solo">Single player</string>
     <string name="nav_high_score">Toppliste</string>
     <string name="nav_settings">"innstillinger "</string>
     <string name="nav_logout_login">Logg ut</string>

@@ -2,8 +2,8 @@
     <string name="app_name">ballgame</string>
     <string name="play_game_button">start game</string>
     <string name="username">Anonymous</string>
-    <string name="menu_lobby">Multiplayer</string>
-    <string name="nav_solo">Solo</string>
+    <string name="menu_lobby">Multi player</string>
+    <string name="nav_solo">Single player</string>
     <string name="nav_high_score">High score</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_logout_login">Log out</string>
