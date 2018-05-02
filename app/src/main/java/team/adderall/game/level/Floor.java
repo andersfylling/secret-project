@@ -23,7 +23,7 @@ public class Floor
     public final static int TYPE_HIGHEST_INDEX = TYPE_SOLID;
 
     /**
-     * Aid types
+     * Buff types
      */
     public final static int TYPE_COIN = 1;
     public static final int TYPE_SUPERCOIN = 2;
@@ -102,7 +102,7 @@ public class Floor
     }
 
     /**
-     * Get a given Aid
+     * Get a given Buff
      * @param floorType
      * @param x
      * @param y

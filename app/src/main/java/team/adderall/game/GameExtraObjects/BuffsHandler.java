@@ -1,7 +1,6 @@
 package team.adderall.game.GameExtraObjects;
 
 import android.graphics.Color;
-import android.graphics.Point;
 
 import java.util.ArrayList;
 
@@ -19,36 +18,36 @@ import team.adderall.game.level.LevelManager;
 
 @GameComponent
 @GameLogic(wave = 3)
-public class AidsHandler
+public class BuffsHandler
         implements
         GameLogicInterface
 {
     private final Players players;
     private final LevelManager level;
-    private ArrayList<Aid> aids;
+    private ArrayList<Buff> buffs;
 
     @GameDepWire
-    public AidsHandler(@Inject("players") Players p,
-                       @Inject("level") LevelManager level)
+    public BuffsHandler(@Inject("players") Players p,
+                        @Inject("level") LevelManager level)
     {
         this.players = p;
         this.level = level;
-        this.aids = new ArrayList<>();
+        this.buffs = new ArrayList<>();
 
         /**
-         * Initialise Aid types
+         * Initialise Buff types
          */
-        Aid singleCoin = new ExtraPointAid(1,5,5, Color.YELLOW);
-        aids.add(singleCoin);
+        Buff singleCoin = new ExtraPointBuff(1,5,5, Color.YELLOW);
+        buffs.add(singleCoin);
 
-        Aid superCoin = new ExtraPointAid(2,500,20, Color.WHITE);
-        aids.add(superCoin);
-        level.setAids(aids);
+        Buff superCoin = new ExtraPointBuff(2,500,20, Color.WHITE);
+        buffs.add(superCoin);
+        level.setBuffs(buffs);
     }
 
 
-    public ArrayList<Aid> getAids(){
-        return this.aids;
+    public ArrayList<Buff> getBuffs(){
+        return this.buffs;
     }
 
 
@@ -68,9 +67,9 @@ public class AidsHandler
                 /**
                  * Handle aid objectives here.
                  */
-                for (Aid aid : this.aids) {
-                    if (aid.getType() == type) {
-                        aid.handleCollision(player);
+                for (Buff buff : this.buffs) {
+                    if (buff.getType() == type) {
+                        buff.handleCollision(player);
                     }
                 }
             }

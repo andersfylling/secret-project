@@ -5,8 +5,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-import com.google.android.gms.games.Game;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +13,9 @@ import java.util.List;
  */
 
 import team.adderall.game.GameDetails;
-import team.adderall.game.GameExtraObjects.Aid;
+import team.adderall.game.GameExtraObjects.Buff;
 import team.adderall.game.GameState;
 import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.UpdateRateCounter;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
@@ -46,7 +43,7 @@ public class LevelManager
     private Paint blockPainter;
     private Paint spacePainter;
     int starValue = 0;
-    private ArrayList<Aid> aids;
+    private ArrayList<Buff> buffs;
 
     /**
      * @param width              width of drawable area
@@ -99,15 +96,15 @@ public class LevelManager
 
 
     /**
-     * Get the Aids list from the AidsHandler.
-     * Also generete the floors now that we have the correct Aid Types
+     * Get the Aids list from the BuffsHandler.
+     * Also generete the floors now that we have the correct Buff Types
      * After that we would also initialise all the correct painters.
-     * @param aids
+     * @param buffs
      */
-    public void setAids(ArrayList<Aid> aids)
+    public void setBuffs(ArrayList<Buff> buffs)
     {
-        this.aids = aids;
-        this.generator.setAids(aids);
+        this.buffs = buffs;
+        this.generator.setBuffs(buffs);
 
         this.gameState.setxScale((float)this.width/(float)GameState.FIXED_WIDTH);
         this.gameState.setyScale((float)this.height/(float)GameState.FIXED_HEIGHT);
@@ -128,10 +125,10 @@ public class LevelManager
             this.levels.add(floor);
         }
 
-        // Initialise all the correct painters for aids
-        for (Aid aid : aids) {
-            int type = aid.getType();
-            this.painters[type] = aid.getPainter();
+        // Initialise all the correct painters for buffs
+        for (Buff buff : buffs) {
+            int type = buff.getType();
+            this.painters[type] = buff.getPainter();
         }
 
     }

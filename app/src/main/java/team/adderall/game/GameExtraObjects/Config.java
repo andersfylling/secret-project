@@ -5,6 +5,6 @@ import team.adderall.game.framework.configuration.GameConfiguration;
 
 @GameConfiguration
 @GameComponents({
-        AidsHandler.class
+        BuffsHandler.class
 })
 public class Config {}
