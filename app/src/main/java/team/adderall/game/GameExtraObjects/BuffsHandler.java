@@ -54,26 +54,27 @@ public class BuffsHandler
 
     @Override
     public void run() {
-        Player p = this.players.getActive();
-        BallManager player = p.getBallManager();
+        for (Player p : players.getAlivePlayers()) {
+            BallManager player = p.getBallManager();
 
-        double x = player.getX();
-        double y = player.getY();
+            double x = player.getX();
+            double y = player.getY();
 
-        for (Floor floor : level.getFloors()) {
-            int type = floor.aidColision((int) x, (int) y);
+            for (Floor floor : level.getFloors()) {
+                int type = floor.aidColision((int) x, (int) y);
 
-            if (type != -1) {
-                /**
-                 * Handle aid objectives here.
-                 */
-                for (Buff buff : this.buffs) {
-                    if (buff.getType() == type) {
-                        buff.handleCollision(player);
+                if (type != -1) {
+                    /**
+                     * Handle aid objectives here.
+                     */
+                    for (Buff buff : this.buffs) {
+                        if (buff.getType() == type) {
+                            buff.handleCollision(player);
+                        }
                     }
                 }
-            }
 
+            }
         }
     }
 }
