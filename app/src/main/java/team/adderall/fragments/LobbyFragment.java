@@ -33,11 +33,18 @@ import team.adderall.network.UserSession;
 import team.adderall.game.GameDetails;
 import team.adderall.game.Player;
 
-// TODO: separate view and controller
+/**
+ * TODO: separate view and controller
+ */
 public class LobbyFragment
         extends
         Fragment
 {
+    private final static String DEFAULT_USERNAME = "anonymous";
+    private final static String KEY_USERNAME = "username"; // TODO: move to a static class
+
+    private final static String MSG_CANNOT_CONNECT = "Unable to connect to game servers REST API";
+
     public final static boolean STAT_MULTIPLAYER = true;
     private static final int NOT_CONNECTED = -1;
     private static final int CONNECTED = 0;
@@ -64,16 +71,20 @@ public class LobbyFragment
     private TextView playersTitle;
     private PlayerDetails username;
 
-
+    /**
+     * Setup the view and try to auto authenticate with the game server.
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.lobby_view, container, false);
         inGame = false;
-
-
-
 
         // build service
         // TODO: need some way to handle one shared instance
@@ -88,9 +99,9 @@ public class LobbyFragment
         username = new PlayerDetails();
 
         Bundle extras = getArguments();
-        String name = "anonymous";
+        String name = DEFAULT_USERNAME;
         if (extras != null) {
-            name = extras.getString("username");
+            name = extras.getString(KEY_USERNAME);
         }
         username.setUsername(name);
 
@@ -117,6 +128,10 @@ public class LobbyFragment
         return view;
     }
 
+    /**
+     * Connect to the game server and get a auth token.
+     * @param v
+     */
     private void connect(final View v) {
         progressBar.setVisibility(View.VISIBLE);
         Call<JSend<UserSession>> call = service.authenticate(username);
@@ -134,7 +149,7 @@ public class LobbyFragment
             @Override
             public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
                 // TODO: retry
-                Toast toast = Toast.makeText(self.getContext(), "Unable to connect to game servers REST API", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(self.getContext(), MSG_CANNOT_CONNECT, Toast.LENGTH_LONG);
                 toast.show();
                 self.lobbyStatus.setText("not connected");
                 progressBar.setVisibility(View.GONE);
@@ -144,8 +159,12 @@ public class LobbyFragment
         });
     }
 
-    // TODO: new endpoint to check lobby status
-    // TODO: new endpoint to check user status
+    /**
+     * Runs a background task with long polling to stay up to date
+     * with lobby changes.
+     *
+     * @param v
+     */
     public synchronized void joinLobby(final View v) {
         if (statusChanges == null) {
             statusChanges = new HandlePlayerStatusChanges(session, service, this::updatePlayerStatus);
@@ -153,6 +172,11 @@ public class LobbyFragment
         }
     }
 
+    /**
+     * Request to leave the lobby from the server.
+     *
+     * @param v
+     */
     public void leaveLobby(final View v) {
         stopLongPolling();
         button.setEnabled(false);
@@ -196,6 +220,11 @@ public class LobbyFragment
         updateButton();
     }
 
+    /**
+     * Triggered after each long polling request about the lobby is returned.
+     *
+     * @param playerStatus
+     */
     public void updatePlayerStatus(PlayerStatus playerStatus) {
         lobbyStatus.setText(playerStatus.getMessage());
         if (playerStatus.getSituation() > SEARCHING_FOR_LOBBY) {
@@ -218,6 +247,10 @@ public class LobbyFragment
         }
     }
 
+    /**
+     * Used whenever you're leaving a lobby.
+     * When in a lobby long polling is used to keep up to date with changes.
+     */
     private void stopLongPolling() {
         if (statusChanges != null) {
             statusChanges.cancel(false);
@@ -225,6 +258,10 @@ public class LobbyFragment
         }
     }
 
+    /**
+     * Make the button state based such that he cannot
+     * execute any unexpected commands/requests.
+     */
     private void updateButton() {
         switch (state) {
             case NOT_CONNECTED:
@@ -248,6 +285,10 @@ public class LobbyFragment
         }
     }
 
+    /**
+     * Lobby has closed and the game will now start.
+     * @param playerStatus
+     */
     public synchronized void startGameActivity(PlayerStatus playerStatus) {
         if (inGame) {
             return;
@@ -256,13 +297,14 @@ public class LobbyFragment
         System.out.println("starting game");
         stopLongPolling();
 
+        // game settings
         GameDetails config = new GameDetails(STAT_MULTIPLAYER);
-        //config.setGameSeed(542352);
         config.setGameSeed(playerStatus.getGameSeed());
         config.setGameID(playerStatus.getGameId());
         config.setGameServer(playerStatus.getGameServerAddr());
         config.setGameServerPort(playerStatus.getGameServerPort());
 
+        // active player
         Player player = new Player();
         player.setActivePlayer(true);
         player.setUserID(playerStatus.getUserId());
@@ -290,7 +332,7 @@ public class LobbyFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode != GameDetails.CODE_GAME_ENDED){
-            throw new RuntimeException("omg wtf happened?");
+            throw new RuntimeException("what happened?");
         }
 
         GameDetails result = GameDetails.READ_IN_FROM_INTENT(data);

@@ -1,7 +1,9 @@
 package team.adderall.game.framework.multiplayer;
 
-import java.nio.ByteBuffer;
-
+/**
+ * Used for outgoing packets.
+ * @see GamePacketResponse for incoming packets.
+ */
 public class GamePacket
 {
     public final static int BUFFER_SIZE = 32;

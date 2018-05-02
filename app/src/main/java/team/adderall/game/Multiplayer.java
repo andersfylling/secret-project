@@ -1,16 +1,12 @@
 package team.adderall.game;
 
 import android.app.Activity;
-import android.graphics.Point;
-
-import com.google.android.gms.games.Game;
-
-import java.math.BigInteger;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+import team.adderall.Closer;
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
@@ -21,8 +17,6 @@ import team.adderall.game.framework.multiplayer.Client;
 import team.adderall.game.framework.multiplayer.Clientv1;
 import team.adderall.game.framework.multiplayer.GamePacket;
 import team.adderall.game.framework.multiplayer.GamePacketResponse;
-import team.adderall.game.framework.multiplayer.Packet;
-import team.adderall.game.userinput.Jumping;
 
 /**
  * Sends updates about main player and keep opponents up to date.
@@ -30,7 +24,9 @@ import team.adderall.game.userinput.Jumping;
 @GameComponent
 @GameLogic(wave=100)
 public class Multiplayer
-    implements GameLogicInterface
+        implements
+        GameLogicInterface,
+        Closer
 {
     public final static long NOT_REAL_GAME_ID = 0;
     private final static long TIMEOUT = 5;
@@ -56,6 +52,14 @@ public class Multiplayer
 
     private final UserInputHolder userInputHolder;
 
+    /**
+     * Constructor
+     *
+     * @param players
+     * @param holder
+     * @param activity
+     * @param gameDetails
+     */
     @GameDepWire
     public Multiplayer(@Inject("players") Players players,
                        @Inject("userInputHolder") UserInputHolder holder,
@@ -107,18 +111,21 @@ public class Multiplayer
         this.client.receive(this::eventHandler);
         try {
             this.client.configure(gameDetails.getGameServer(), gameDetails.getGameServerPort());
+            this.client.connect();
+
+            // register player
+            authenticate();
         } catch (UnknownHostException e) {
             System.err.println(e.getMessage());
         }
-        this.client.connect();
-
-        // register player
-        GamePacket packet = GamePacket.AuthenticateBuilder(sequence++, (int) gamer.getUserID(), (int) gameID)
-                .token(gamer.getGameToken())
-                .build();
-        client.send(packet);
     }
 
+    /**
+     * Remove the player if it dies or loses to trim out those extra network packets.
+     *
+     * @param player
+     * @param action
+     */
     public void playerUpdate(Player player, int action) {
         switch (action) {
             case PlayerChange.LOST:
@@ -128,34 +135,46 @@ public class Multiplayer
         }
     }
 
+    /**
+     * Remove a player/gamer. Anyone removed, which still transmits packets
+     * will be ignored.
+     *
+     * @param key
+     */
     private void removeGamer(long key) {
-        if (this.gamers.containsKey(key)) {
-            this.gamers.remove(key);
+        if (this.gamers.containsKey((int) key)) {
+            this.gamers.remove((int) key);
         }
     }
 
+    /**
+     * Multi player isn't used in single player mode.
+     *
+     * @return
+     */
     public boolean deactivated() {
         return !this.onlineGame;
     }
 
+    /**
+     * Verify the incoming event contains new up to date information.
+     * @param evt
+     */
     public void eventHandler(final GamePacketResponse evt) {
 
         // check if there was an issue with the params
+        // or auth try
         boolean err = false;
         if (evt.type() == GamePacket.TYPE_UNKNOWN_GAME_ID) {
-            System.out.println("UNKNOWN GAME ID");
             err = true;
         }
         else if (evt.type() == GamePacket.TYPE_UNKNOWN_USER_ID) {
-            System.out.println("UNKNOWN USER ID");
             err = true;
         }
         else if (evt.type() == GamePacket.TYPE_ATHENTICATION_FAILED) {
-            System.out.println("AUTH FAILED");
             failedAuthTries++;
             if (failedAuthTries > 30) {
                 client.close();
-                System.out.println("UNABLE TO AUTHENTICATE");
                 activity.onBackPressed();
             }
             err = true;
@@ -184,29 +203,41 @@ public class Multiplayer
             return; // TODO: update oneself to completely sync units
         }
 
+        // make sure this doesn't regard a dead player
         Player player = this.gamers.get(evt.userID());
         if (player.getBallManager().getState() == BallManager.STATE_DEAD) {
             return;
         }
 
+        // Dispatch event based on type
+        //
+
         // handle movements
         if (evt.type() == GamePacket.TYPE_MOVEMENT) {
             handleMovementEvent(evt);
         }
-
     }
 
-    public void authenticate() {
+    /**
+     * Using the session token, authenticate to the UDP server.
+     * The UDP server stores both IP and port, to make sure no one steals
+     * your game session.
+     */
+    public void authenticate()
+    {
         GamePacket packet = GamePacket.AuthenticateBuilder(sequence++, (int) gamer.getUserID(), (int) gameID)
                 .token(gamer.getGameToken())
                 .build();
         client.send(packet);
     }
 
-    public void handleMovementEvent(final GamePacketResponse evt) {
-
-        //System.out.println("player[" + Long.toString(evt.getUserID()) + "]{air:" + (evt.isJumping() ? "true" : "false") + ", xDiff:" + Double.toString(movementXDiff) + "}");
-
+    /**
+     * Handle enemy movements.
+     *
+     * @param evt network event containing enemy position
+     */
+    public void handleMovementEvent(final GamePacketResponse evt)
+    {
         userInputHolder.requestMPXAxisMovement(evt.userID(), evt.x());
 
         boolean jumping = evt.inAir();
@@ -216,7 +247,7 @@ public class Multiplayer
     }
 
     /**
-     * Send out info about main player
+     * Send out info about active player
      */
     @Override
     public void run() {
@@ -247,6 +278,10 @@ public class Multiplayer
         client.send(packet);
     }
 
+    /**
+     * Kill the socket connection
+     */
+    @Override
     public void close() {
         client.close();
     }

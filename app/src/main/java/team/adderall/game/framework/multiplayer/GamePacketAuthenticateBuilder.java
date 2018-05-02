@@ -2,10 +2,11 @@ package team.adderall.game.framework.multiplayer;
 
 import java.nio.ByteBuffer;
 
+/**
+ * For building authentication packets for the UDP server.
+ */
 public class GamePacketAuthenticateBuilder
 {
-
-    // movement related
     private final static int INDEX_TOKEN = 12;
 
     private ByteBuffer buffer;
