@@ -255,6 +255,7 @@ public class LobbyFragment
             return;
         }
         inGame = true;
+        System.out.println("starting game");
         stopLongPolling();
 
         GameDetails config = new GameDetails(STAT_MULTIPLAYER);
