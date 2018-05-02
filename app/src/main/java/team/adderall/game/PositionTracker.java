@@ -1,7 +1,6 @@
 package team.adderall.game;
 
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.graphics.Rect;
 
 import team.adderall.game.highscore.HighScore;

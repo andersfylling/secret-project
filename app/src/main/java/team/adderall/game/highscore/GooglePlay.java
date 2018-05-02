@@ -1,7 +1,6 @@
 package team.adderall.game.highscore;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;

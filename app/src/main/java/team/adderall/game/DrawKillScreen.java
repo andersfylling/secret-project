@@ -47,7 +47,7 @@ public class DrawKillScreen implements GamePainter {
         this.painter.setColor(Color.BLACK);
         this.painter.setAlpha(200);
 
-        canvas.drawRect(0, 0 + extraY, canvas.getWidth(), canvas.getHeight()+ extraY, this.painter);
+        canvas.drawRect(0, extraY, canvas.getWidth(), canvas.getHeight()+ extraY, this.painter);
         canvas.drawText("YOU ARE DEAD", canvas.getWidth() / 2,  (canvas.getHeight() / 2) + extraY, this.textPainter);
     }
 

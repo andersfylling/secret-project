@@ -32,7 +32,6 @@
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
 
-        <activity android:name=".fragments.ShowHighscore"></activity>
         <activity
             android:name=".GoogleSignInActivity"
             android:screenOrientation="landscape"

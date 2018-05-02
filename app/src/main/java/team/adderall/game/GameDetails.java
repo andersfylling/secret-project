@@ -79,7 +79,7 @@ public class GameDetails
         }
 
         String json = intent.getStringExtra(GameDetails.INTENT_KEY);
-        GameDetails content = null;
+        GameDetails content;
         try{
             content = new Gson().fromJson(json, GameDetails.class);
         } catch(IllegalStateException | JsonSyntaxException e) {

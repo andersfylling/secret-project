@@ -19,7 +19,6 @@ import team.adderall.game.framework.component.Inject;
 import team.adderall.game.highscore.DrawHighScore;
 import team.adderall.game.level.LevelManager;
 import team.adderall.game.userinput.Jumping;
-import team.adderall.game.userinput.SensorChangedWorker;
 
 /**
  * Reference this class in the GameActivity when initializing the game.

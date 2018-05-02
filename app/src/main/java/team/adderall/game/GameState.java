@@ -1,10 +1,8 @@
 package team.adderall.game;
 
-import team.adderall.game.Players;
-import team.adderall.game.ball.BallManager;
+
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
 
 @GameComponent("GameState")
 public class GameState
@@ -31,7 +29,7 @@ public class GameState
     }
 
     /**
-     * Y value for how much the layers window have scrolled
+     * Set Y value for how much the layers window have scrolled
      * @param y
      */
     public void setyScrollValue(float y){
@@ -39,8 +37,7 @@ public class GameState
     }
 
     /**
-     * Y value for how much the layers window have scrolled
-     * @param y
+     * Get Y value for how much the layers window have scrolled
      */
     public float getyScrollValue(){
         return yScrollValue;

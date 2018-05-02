@@ -3,7 +3,6 @@ package team.adderall.game;
 
 import android.graphics.Rect;
 
-import team.adderall.game.framework.component.GameComponent;
 
 /**
  * Anyone that crosses this border dies.

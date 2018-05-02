@@ -7,8 +7,6 @@ import java.util.Map;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
-import team.adderall.game.userinput.SensorEvt;
-import team.adderall.game.userinput.SensorEvtListener;
 
 @GameComponent
 public class Players

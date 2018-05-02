@@ -17,12 +17,12 @@ public class HighscoreAdapter extends BaseAdapter {
     private ArrayList<Long> array;
     private Context context;
 
-    public HighscoreAdapter(Context context, ArrayList<HighScoreObject> highscoreObjList, long currentScore) {
+    public HighscoreAdapter(Context context, ArrayList<HighScoreLogEntry> highscoreObjList, long currentScore) {
         this.context = context;
         this.currentScore = currentScore;
 
         array = new ArrayList<>();
-        for(HighScoreObject obj :highscoreObjList) {
+        for(HighScoreLogEntry obj :highscoreObjList) {
             if (array.size() == 0)
             {
                 array.add(obj.getScore());
@@ -76,10 +76,9 @@ public class HighscoreAdapter extends BaseAdapter {
 
         TextView view = newView.findViewById(R.id.highscore_number);
 
-        view.setText("Position: "
-                + (position + 1) + ") ");
+        view.setText(context.getString(R.string.highscore_posistion,Integer.toString(position + 1)));
 
-        ((TextView) newView.findViewById(R.id.highscore_score)).setText("Score: "+ txt);
+        ((TextView) newView.findViewById(R.id.highscore_score)).setText(context.getString(R.string.highscore_score, txt));
 
         return newView;
     }

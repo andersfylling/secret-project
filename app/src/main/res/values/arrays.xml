@@ -4,7 +4,7 @@
         <item>English</item>
         <item>Norwegian</item>
     </string-array>
-    <string-array name="supported_languagesCodes">
+    <string-array name="supported_languagesCodes" translatable="false">
         <item>default</item>
         <item>en</item>
         <item>no</item>

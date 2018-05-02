@@ -1,13 +1,8 @@
 package team.adderall.game.easyLogicChecks;
 
-import android.graphics.Point;
-
-import com.google.android.gms.games.Game;
-
 import team.adderall.game.GameState;
 import team.adderall.game.Player;
 import team.adderall.game.Players;
-import team.adderall.game.ball.Ball;
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;

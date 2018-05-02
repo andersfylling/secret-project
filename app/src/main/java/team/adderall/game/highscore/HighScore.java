@@ -4,16 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import team.adderall.game.ball.BallManager;
-import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 17/4/18.
- */
 public class HighScore {
     /**
      * Declare different values the person would be scored on
@@ -23,7 +14,7 @@ public class HighScore {
     private Paint painter = null;
 
 
-    public void HighScore(){
+    public HighScore(){
         // TODO: Does it not call this?
         this.reset();
 

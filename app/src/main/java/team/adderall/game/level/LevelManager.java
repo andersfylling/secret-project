@@ -8,10 +8,6 @@ import android.graphics.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 import team.adderall.game.GameDetails;
 import team.adderall.game.GameExtraObjects.Buff;
 import team.adderall.game.GameState;
@@ -46,12 +42,10 @@ public class LevelManager
     private ArrayList<Buff> buffs;
 
     /**
-     * @param width              width of drawable area
-     * @param height             height of drawable area
-     * @param pointsInWidth      n1-n2 = line, n2-n3: space, n3-n4: line, etc.
-     * @param minimumLevelsReady how many levels/floors should always be predefined
-     * @param thickness          how thick should each floor/line/level be
-     * @param gameSeed           affects floor/level generation
+     * Level manager constructor
+     * @param canvasSize
+     * @param gameDetails
+     * @param gameState
      */
     @GameDepWire
     public LevelManager(@Inject("canvasSize") Point canvasSize,
@@ -62,7 +56,7 @@ public class LevelManager
         this.width = canvasSize.x;
         this.height = canvasSize.y;
 
-        this.thickness = GameState.FIXED_THICKNESS;//100;//thickness;
+        this.thickness = GameState.FIXED_THICKNESS;
 
         this.generator = new LevelGenerator(gameDetails.getGameSeed(), Floor.TYPE_HIGHEST_INDEX);
         this.levels = new ArrayList<>();

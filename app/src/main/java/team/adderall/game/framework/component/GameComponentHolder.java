@@ -307,7 +307,7 @@ public class GameComponentHolder
         }
         Constructor c = (Constructor) constructor;
 
-        Object instance = null;
+        Object instance;
         if (dependencies.length == 0) {
             instance = c.newInstance();
         } else {
@@ -339,7 +339,7 @@ public class GameComponentHolder
 
         Method m = (Method) method;
 
-        Object instance = null;
+        Object instance;
         if (dependencies.length == 0) {
             instance = m.invoke(classInstance);
         } else {

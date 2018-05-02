@@ -1,7 +1,6 @@
 package team.adderall.fragments;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,7 +21,7 @@ import java.util.List;
 
 import team.adderall.FragmentListner;
 import team.adderall.R;
-import team.adderall.game.highscore.HighScoreObject;
+import team.adderall.game.highscore.HighScoreLogEntry;
 import team.adderall.game.highscore.HighscoreAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -31,7 +30,7 @@ public class HighScoreFragment
         extends Fragment
 {
 
-    ArrayList<HighScoreObject> highscoreObjList;
+    ArrayList<HighScoreLogEntry> highscoreObjList;
 
     SharedPreferences shared;
     long CurrentScore = -1;
@@ -49,7 +48,7 @@ public class HighScoreFragment
 
         CurrentScore = getArguments().getLong("Highscore",-1);
         if(CurrentScore != -1) {
-            highscoreObjList.add(new HighScoreObject(CurrentScore, false));
+            highscoreObjList.add(new HighScoreLogEntry(CurrentScore, false));
         }
 
         autoSync(highscoreObjList);
@@ -104,7 +103,7 @@ public class HighScoreFragment
         Gson gson = new Gson();
         String json = gson.toJson(highscoreObjList);
         editor.putString("highscore1", json);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -114,7 +113,7 @@ public class HighScoreFragment
         Gson gson = new Gson();
         String json = shared.getString("highscore1", null);
         if(json != null) {
-            highscoreObjList = gson.fromJson(json, new TypeToken<List<HighScoreObject>>() {
+            highscoreObjList = gson.fromJson(json, new TypeToken<List<HighScoreLogEntry>>() {
             }.getType());
         }
     }
@@ -124,13 +123,13 @@ public class HighScoreFragment
      * Automatically update the global highscore list with any unsynced elements.
      * @param highscoreObjList
      */
-    private void autoSync(ArrayList<HighScoreObject> highscoreObjList) {
+    private void autoSync(ArrayList<HighScoreLogEntry> highscoreObjList) {
 
         FragmentListner fListner = (FragmentListner) this.getActivity();
 
         if(fListner.isLoggedIn()) {
 
-            for (HighScoreObject obj : highscoreObjList) {
+            for (HighScoreLogEntry obj : highscoreObjList) {
                 if (!obj.getSynced()) {
 
                     if (fListner.updatePlayersScore(obj.getScore()))

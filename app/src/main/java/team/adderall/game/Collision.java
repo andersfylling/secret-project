@@ -3,8 +3,6 @@ package team.adderall.game;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-import java.util.List;
-
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;

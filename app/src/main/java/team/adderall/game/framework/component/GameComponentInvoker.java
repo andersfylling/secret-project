@@ -1,6 +1,5 @@
 package team.adderall.game.framework.component;
 
-import java.lang.reflect.InvocationTargetException;
 
 @FunctionalInterface
 public interface GameComponentInvoker {
