@@ -257,8 +257,8 @@ public class LobbyFragment
         stopLongPolling();
 
         GameDetails config = new GameDetails(STAT_MULTIPLAYER);
-        config.setGameSeed(542352);
-        //config.setGameSeed(playerStatus.getGameSeed);
+        //config.setGameSeed(542352);
+        config.setGameSeed(playerStatus.getGameSeed());
         config.setGameID(playerStatus.getGameId());
         config.setGameServer(playerStatus.getGameServerAddr());
         config.setGameServerPort(playerStatus.getGameServerPort());
@@ -266,6 +266,7 @@ public class LobbyFragment
         Player player = new Player();
         player.setActivePlayer(true);
         player.setUserID(playerStatus.getUserId());
+        player.setName(username.getUsername());
         player.setGameToken(Long.parseLong(this.session.getToken()));
         config.addPlayer(player);
 

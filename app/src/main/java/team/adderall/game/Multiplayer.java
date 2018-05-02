@@ -25,7 +25,7 @@ import team.adderall.game.framework.multiplayer.Packet;
 import team.adderall.game.userinput.Jumping;
 
 /**
- * Sends updates about main player and keep other players up to date.
+ * Sends updates about main player and keep opponents up to date.
  */
 @GameComponent
 @GameLogic(wave=100)
@@ -33,7 +33,7 @@ public class Multiplayer
     implements GameLogicInterface
 {
     public final static long NOT_REAL_GAME_ID = 0;
-    private final static long TIMEOUT = 15;
+    private final static long TIMEOUT = 5;
 
     private final GameDetails gameDetails;
     private final Map<Integer, Player> gamers;
