@@ -32,12 +32,15 @@ public class Players
         this.listeners = new ArrayList<>();
 
         // add players
-        for (Map.Entry<Long, Player> entry : details.getPlayers().entrySet()) {
-            Player player = entry.getValue();
-            player.createBallManager(player.isActivePlayer());
+        for (Player player : details.getPlayers()) {
+            player.createBallManager();
 
             this.players.add(player);
             this.alivePlayers.add(player);
+
+            if (player.isActivePlayer()) {
+                this.active = player;
+            }
         }
     }
 

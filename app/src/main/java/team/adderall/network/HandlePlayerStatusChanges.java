@@ -54,10 +54,10 @@ public class HandlePlayerStatusChanges
                 this.cancel(false);
             }
 
-            if (counter > 30) {
-                this.cancel(false);
-            }
-            counter++;
+            //if (counter > 30) {
+            //    this.cancel(false);
+            //}
+            //counter++;
         }
 
         return null;

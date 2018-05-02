@@ -7,6 +7,6 @@ public interface Client {
     void connect();
     void close();
 
-    void send(final Packet packet);
+    void send(final GamePacket packet);
     void receive(final EventListener listener);
 }

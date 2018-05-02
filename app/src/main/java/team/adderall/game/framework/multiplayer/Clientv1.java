@@ -71,12 +71,12 @@ public class Clientv1
     }
 
     @Override
-    public void send(Packet packet) {
-        ByteBuffer buffer = ByteBuffer.allocate(8);
-        long data = packet.getAsLong();
-        buffer.putLong(data);
+    public void send(GamePacket packet) {
+        if (socket.isClosed()) {
+            return;
+        }
 
-        byte[] buf = buffer.array();
+        byte[] buf = packet.getBuffer();
 
         DatagramPacket p = new DatagramPacket(buf, buf.length, address, 3173);
         try {
@@ -86,6 +86,10 @@ public class Clientv1
         }
     }
 
+    public InetAddress getAddress() {
+        return address;
+    }
+
     @Override
     public void receive(EventListener listener) {
         this.listeners.add(listener);
@@ -93,7 +97,7 @@ public class Clientv1
 
     private void listenForEvents() {
         while (listen) {
-            byte[] buf = new byte[8];
+            byte[] buf = new byte[GamePacket.BUFFER_SIZE];
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
                 socket.receive(packet);
@@ -104,15 +108,11 @@ public class Clientv1
             }
 
             byte[] data = packet.getData();
+            GamePacketResponse response = new GamePacketResponse(data);
 
-            ByteBuffer buffer = ByteBuffer.allocate(8);
-            buffer.put(data);
-            buffer.flip();//need flip
-            long convertedData = buffer.getLong();
-            Packet event = new Packet(convertedData);
-
+            // TODO: thread
             for (EventListener listener : this.listeners) {
-                listener.trigger(event);
+                listener.trigger(response);
             }
         }
 

@@ -15,7 +15,7 @@ public class UserInputDelegator
     private UserInputHolder holder;
     private Jumping jumping;
     private DeltaTime deltaTime;
-    private Player player;
+    private Players players;
 
     @GameDepWire
     public UserInputDelegator(@Inject("userInputHolder") UserInputHolder h,
@@ -24,7 +24,7 @@ public class UserInputDelegator
                               @Inject("players") Players p)
     {
         holder = h;
-        player = p.getActive();
+        players = p;
         deltaTime = dt; // game speed
         jumping = j;
     }
@@ -43,20 +43,26 @@ public class UserInputDelegator
      */
     @Override
     public void run() {
-        jump();
-        movePlayer();
-    }
-
-    private void jump() {
-        boolean jump = holder.jumping();
-
-        if (jump) {
-            jumping.run();
+        for (Player player : players.getAlivePlayers()) {
+            jump(player);
+            movePlayer(player);
         }
     }
 
-    private void movePlayer() {
-        double movement = holder.xAxisMovement();
+    private void jump(Player player) {
+        boolean jump = holder.jumping((int) player.getUserID());
+
+        if (jump) {
+            if (player.isActivePlayer()) {
+                jumping.run();
+            } else {
+                Jumping.jump(player);
+            }
+        }
+    }
+
+    private void movePlayer(Player player) {
+        double movement = holder.xAxisMovement((int) player.getUserID());
         movement *= deltaTime.getSpeed();
         player.getBallManager().addToX(movement);
     }

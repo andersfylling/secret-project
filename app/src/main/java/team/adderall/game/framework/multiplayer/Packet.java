@@ -23,6 +23,7 @@ public class Packet {
     private final long gameIDOffset = 37;
     private final long extraOffset = 50;
 
+    private long sequence;
     private final int type;
     private final double x;
     private final double y;

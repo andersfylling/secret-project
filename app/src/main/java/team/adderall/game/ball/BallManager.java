@@ -86,9 +86,9 @@ public class BallManager
     /**
      * Constructor
      */
-    public BallManager(final boolean activePlayer) {
-
-        this.ball = new Ball(RADIUS);
+    public BallManager(final boolean activePlayer)
+    {
+        this.ball = new Ball(RADIUS, activePlayer ? "#F07030" : "#7070F0");
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
         tracker.setposition(100, 0);
@@ -98,7 +98,7 @@ public class BallManager
         this.painter.setStyle(Paint.Style.FILL);
 
         this.deathPainter = new Paint();
-        this.deathPainter.setColor(Color.RED);
+        this.deathPainter.setColor(Color.GRAY);
         this.deathPainter.setTextSize(75);
         this.deathPainter.setTextAlign(Paint.Align.CENTER);
 
@@ -167,9 +167,6 @@ public class BallManager
         tracker.setposition(x, y);
     }
 
-    public void doGravity() {
-        this.tracker.fallToTheGround();
-    }
     public void updatePlayerPos(){
         this.tracker.updatePlayerPos();
     }

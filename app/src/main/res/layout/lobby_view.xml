@@ -21,17 +21,39 @@
         />
     -->
 
+    <!-- status -->
+    <TextView
+        android:id="@+id/textView_lobby_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/menuItemEnabled"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:text="@string/connecting"/>
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_lobby_status"
+        android:layout_centerHorizontal="true" />
 
     <!-- players that have joined -->
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_players_title"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/listview_lobby_joined_players"
         android:layout_alignParentStart="true"
-        android:text="@string/players_in_lobby"
-        android:textAlignment="center" />
-
+        android:layout_marginBottom="-247dp"
+        android:textColor="@color/menuItemEnabled"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:text="@string/players_in_lobby" />
     <ListView
         android:id="@+id/listview_lobby_joined_players"
         android:layout_width="match_parent"
@@ -50,14 +72,6 @@
         android:layout_alignParentStart="true"
         android:gravity="center|bottom"
         android:text="@string/button_join_game" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="TextView" />
 
 
 </RelativeLayout>

@@ -64,39 +64,6 @@ public class MainActivity
 
         mDrawerLayout.addDrawerListener(new MenuSlideHandler());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.87:3173/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        service = retrofit.create(GameService.class);
-
-        // auth to game server
-        session = new UserSession();
-        PlayerDetails username = new PlayerDetails();
-        username.setUsername("andemann"); // TODO: get from settings
-        Call<JSend<UserSession>> call = service.authenticate(username);
-        final MainActivity self = this;
-        call.enqueue(new Callback<JSend<UserSession>>() {
-            @Override
-            public void onResponse(Call<JSend<UserSession>> call, Response<JSend<UserSession>> response) {
-                self.session.setToken(response.body().getData().getToken());
-
-                NavigationView navigationView = findViewById(R.id.nav_view);
-
-                Menu menuNav = navigationView.getMenu();
-                MenuItem navLobby = menuNav.findItem(R.id.nav_lobby);
-                navLobby.setEnabled(true);
-            }
-
-            @Override
-            public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
-                // TODO: retry
-                Toast toast = Toast.makeText(self, "Unable to connect to game servers REST API", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
-
         updateMenuToSignedIn(false);
 
         LOGGER.setLevel(Level.INFO);
@@ -104,7 +71,16 @@ public class MainActivity
 
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
-        bundle.putString(UserSession.SESSION_TOKEN_NAME, this.session.getToken());
+        String name = "ERROR";
+
+        if (gplay == null) {
+            NavigationView nv = findViewById(R.id.nav_view);
+            TextView username = nv.getHeaderView(0).findViewById(R.id.headerName);
+            name = username.getText().toString();
+        } else {
+            name = gplay.getDisplayName();
+        }
+        bundle.putString("username", name);
     }
 
     /**

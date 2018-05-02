@@ -50,6 +50,7 @@ public class KillPlayerWhenBelowScreen
             if (b.getY() > realDeathLine) {
                 b.setState(BallManager.STATE_DEAD);
                 if(b.isActivePlayer()) {
+                    System.out.println(b.getVelocity());
                     showHighScore();
                 }
             }

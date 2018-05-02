@@ -2,7 +2,7 @@
     <string name="app_name">ballgame</string>
     <string name="play_game_button">start game</string>
     <string name="username">Anonymous</string>
-    <string name="menu_lobby">Lobby</string>
+    <string name="menu_lobby">Multiplayer</string>
     <string name="nav_solo">Solo</string>
     <string name="nav_high_score">High score</string>
     <string name="nav_settings">Settings</string>
@@ -12,4 +12,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_join_game">Join game</string>
     <string name="players_in_lobby">Players in lobby</string>
+    <string name="not_connected">not connected</string>
+    <string name="connecting">connecting</string>
 </resources>

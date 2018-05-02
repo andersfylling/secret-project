@@ -130,6 +130,11 @@ public class GameActivity
     @Override
     public void onSensorChanged(SensorEvent sensorEvent)
     {
+        // when the app is closed due to connectivity issues
+        // this is still triggered, somehow.
+        if (userInputHolder == null) {
+            return;
+        }
         userInputHolder.requestXAxisMovement(sensorEvent);
     }
 
@@ -153,7 +158,7 @@ public class GameActivity
     public void onResume()
     {
         super.onResume();
-        //this.addDeviceSensorListeners();
+        this.addDeviceSensorListeners();
     }
 
     @Override

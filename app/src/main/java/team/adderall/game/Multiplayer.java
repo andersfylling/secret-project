@@ -1,6 +1,9 @@
 package team.adderall.game;
 
+import android.app.Activity;
 import android.graphics.Point;
+
+import com.google.android.gms.games.Game;
 
 import java.math.BigInteger;
 import java.net.SocketException;
@@ -16,6 +19,8 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.multiplayer.Client;
 import team.adderall.game.framework.multiplayer.Clientv1;
+import team.adderall.game.framework.multiplayer.GamePacket;
+import team.adderall.game.framework.multiplayer.GamePacketResponse;
 import team.adderall.game.framework.multiplayer.Packet;
 import team.adderall.game.userinput.Jumping;
 
@@ -28,12 +33,15 @@ public class Multiplayer
     implements GameLogicInterface
 {
     public final static long NOT_REAL_GAME_ID = 0;
-    private final static long TIMEOUT = 5;
+    private final static long TIMEOUT = 15;
 
     private final GameDetails gameDetails;
-    private final Map<Long, Player> gamers;
+    private final Map<Integer, Player> gamers;
     private final Player gamer;
     private final Players players;
+
+    private long sequence;
+    private long gameSequence;
 
     private final boolean onlineGame;
     private final long gameID;
@@ -41,10 +49,17 @@ public class Multiplayer
     private long lastUpdate;
     private boolean singleplayer;
 
+    private int failedAuthTries;
+
     private Client client;
+    private Activity activity;
+
+    private final UserInputHolder userInputHolder;
 
     @GameDepWire
     public Multiplayer(@Inject("players") Players players,
+                       @Inject("userInputHolder") UserInputHolder holder,
+                       @Inject("activity") Activity activity,
                        @Inject("GameDetails") GameDetails gameDetails)
     {
         this.gameDetails = gameDetails;
@@ -53,9 +68,17 @@ public class Multiplayer
         this.onlineGame = gameDetails.isMultiplayer() || gameDetails.getGameID() == NOT_REAL_GAME_ID;
         this.gameID = gameDetails.getGameID();
 
+        this.activity = activity;
+
         this.players = players;
         this.gamer = this.players.getActive();
         this.gamers = new HashMap<>();
+        userInputHolder = holder;
+
+        sequence = 1;
+        gameSequence = 1;
+
+        failedAuthTries = 0;
 
         singleplayer = !gameDetails.isMultiplayer();
 
@@ -65,7 +88,7 @@ public class Multiplayer
         }
 
         for (Player player : players.getAlivePlayers()) {
-            this.gamers.put(player.getUserID(), player);
+            this.gamers.put((int) player.getUserID(), player);
         }
 
         // listen for player updates (death, lost, win, etc. not moves from the udp server)
@@ -90,7 +113,9 @@ public class Multiplayer
         this.client.connect();
 
         // register player
-        Packet packet = new Packet(Packet.TYPE_REGISTER, players.getActive().getGameToken());
+        GamePacket packet = GamePacket.AuthenticateBuilder(sequence++, (int) gamer.getUserID(), (int) gameID)
+                .token(gamer.getGameToken())
+                .build();
         client.send(packet);
     }
 
@@ -113,25 +138,79 @@ public class Multiplayer
         return !this.onlineGame;
     }
 
-    public void eventHandler(final Packet evt) {
+    public void eventHandler(final GamePacketResponse evt) {
+
+        // check if there was an issue with the params
+        boolean err = false;
+        if (evt.type() == GamePacket.TYPE_UNKNOWN_GAME_ID) {
+            System.out.println("UNKNOWN GAME ID");
+            err = true;
+        }
+        else if (evt.type() == GamePacket.TYPE_UNKNOWN_USER_ID) {
+            System.out.println("UNKNOWN USER ID");
+            err = true;
+        }
+        else if (evt.type() == GamePacket.TYPE_ATHENTICATION_FAILED) {
+            System.out.println("AUTH FAILED");
+            failedAuthTries++;
+            if (failedAuthTries > 30) {
+                client.close();
+                System.out.println("UNABLE TO AUTHENTICATE");
+                activity.onBackPressed();
+            }
+        }
+        if (err) {
+            authenticate();
+            return;
+        }
+
+
+        // update sequence number
+        if (evt.sequence() > gameSequence) {
+            gameSequence = evt.sequence();
+        } else {
+            // ignore packets with "outdated info" (compared to what we already got)
+            return;
+        }
+
         // check if player exists
-        if (!this.gamers.containsKey(evt.getUserID())) {
+        if (!this.gamers.containsKey(evt.userID())) {
             return;
         }
 
         // check if the event is for this player
-        if (this.gamer.getUserID() == evt.getUserID()) {
+        if (this.gamer.getUserID() == evt.userID()) {
             return; // TODO: update oneself to completely sync units
         }
 
-        Player player = this.gamers.get(evt.getUserID());
-        player.getBallManager().setPos(evt.getX(), evt.getY());
-        boolean jumping = evt.isJumping();
+        Player player = this.gamers.get(evt.userID());
+        if (player.getBallManager().getState() == BallManager.STATE_DEAD) {
+            return;
+        }
+
+        // handle movements
+        if (evt.type() == GamePacket.TYPE_MOVEMENT) {
+            handleMovementEvent(evt);
+        }
+
+    }
+
+    public void authenticate() {
+        GamePacket packet = GamePacket.AuthenticateBuilder(sequence++, (int) gamer.getUserID(), (int) gameID)
+                .token(gamer.getGameToken())
+                .build();
+        client.send(packet);
+    }
+
+    public void handleMovementEvent(final GamePacketResponse evt) {
+
+        //System.out.println("player[" + Long.toString(evt.getUserID()) + "]{air:" + (evt.isJumping() ? "true" : "false") + ", xDiff:" + Double.toString(movementXDiff) + "}");
+
+        userInputHolder.requestMPXAxisMovement(evt.userID(), evt.x());
+
+        boolean jumping = evt.inAir();
         if (jumping) {
-            if (player.getBallManager().getAtGround()) {
-                player.getBallManager().setVelocity(Jumping.JUMP_VELOCITY * Gravity.METER);
-            }
-            player.getBallManager().setAtGround(false);
+            userInputHolder.requestJump(evt.userID());
         }
     }
 
@@ -144,28 +223,30 @@ public class Multiplayer
         if (singleplayer) {
             return;
         }
-
-        if (this.lastUpdate + TIMEOUT > System.currentTimeMillis()) {
-            return;
-        }
-        this.lastUpdate = System.currentTimeMillis();
-
-        if (this.gamer == null) {
+        if (gamer == null) {
             return;
         }
 
-        BallManager bm = this.gamer.getBallManager();
+        if (lastUpdate + TIMEOUT > System.currentTimeMillis()) {
+            return;
+        }
+        lastUpdate = System.currentTimeMillis();
+
+
+        BallManager bm = gamer.getBallManager();
         boolean jumping = bm.getVelocity() < 0;
         double x = bm.getX();
         double y = bm.getY();
 
-        // TODO: refactor
-        Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, this.gamer.getUserID(), this.gameID);
-
-        this.client.send(event);
+        GamePacket packet = GamePacket.MovementBuilder(sequence++, (int) gamer.getUserID(), (int) gameID)
+                .x(x)
+                .y(y)
+                .inAir(jumping)
+                .build();
+        client.send(packet);
     }
 
     public void close() {
-        this.client.close();
+        client.close();
     }
 }

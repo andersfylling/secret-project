@@ -19,7 +19,7 @@ public class GraphicsManager
         implements
         GamePainter
 {
-    private static final double SCROLLSPEED = 3;
+    private static final double SCROLLSPEED = 0;
     private final Activity activity;
     private final GamePainter[][] painters;
     private final GameState gameState;

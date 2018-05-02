@@ -9,4 +9,7 @@ public interface GameService {
 
     @GET("game")
     Call<JSend<PlayerStatus>> joinAGame(@Header(UserSession.SESSION_TOKEN_NAME) String token);
+
+    @GET("lobby/leave")
+    Call<JSend<PlayerStatus>> leaveLobby(@Header(UserSession.SESSION_TOKEN_NAME) String token);
 }
