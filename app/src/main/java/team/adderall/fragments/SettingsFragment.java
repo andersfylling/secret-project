@@ -1,19 +1,48 @@
 package team.adderall.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.preference.PreferenceFragment;
 
+
+import team.adderall.FragmentListner;
 import team.adderall.R;
 
 public class SettingsFragment
-        extends Fragment
-{
+        extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.settings_view, container, false);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        addPreferencesFromResource(R.xml.settings);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    /**
+     * on shared preference changed
+     * Tell mainactivity to set the new language as the current language.
+     */
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        FragmentListner fl = (FragmentListner) this.getActivity();
+        fl.askForUpdateLanguage();
+    }
+
 }

@@ -1,7 +1,9 @@
 package team.adderall;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,6 +11,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -18,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,14 +44,13 @@ public class MainActivity
     private GoogleSignInAccount gplay;
     private GooglePlay gplayAcc = null;
 
-    private GameService service;
-    private UserSession session;
     private MenuItemHandler menuItemHandler;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        updateLanguage();
         setContentView(R.layout.activity_main);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -64,10 +67,23 @@ public class MainActivity
 
         mDrawerLayout.addDrawerListener(new MenuSlideHandler());
 
-        updateMenuToSignedIn(false);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            this.gplay = bundle.getParcelable("gplay");
+        }
+
+        if(this.gplay == null) {
+            updateMenuToSignedIn(false);
+        }
+        else {
+            updateMenuToSignedIn(true);
+            this.gplayAcc = new GooglePlay(this, this.gplay);
+
+        }
 
         LOGGER.setLevel(Level.INFO);
     }
+
 
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
@@ -128,7 +144,7 @@ public class MainActivity
             updateMenuToSignedIn(true);
             updateUsername(acc.getDisplayName());
         }
-        else{
+        else {
             this.gplayAcc = null;
             updateMenuToSignedIn(false);
             updateUsername("");
@@ -144,7 +160,7 @@ public class MainActivity
     }
 
     private void updateMenuToSignedIn(boolean b) {
-        String title = b == true?  "Logout" : "Login";
+        String title = b ?  getString(R.string.logout) : getString(R.string.login);
         NavigationView nv = findViewById(R.id.nav_view);
         MenuItem login =  nv.getMenu().getItem(4);
         login.setTitle(title);
@@ -169,12 +185,52 @@ public class MainActivity
         return isGplayLoggedIn();
     }
 
+    @Override
+    public void askForUpdateLanguage(){
+        updateLanguage();
+        this.restart();
+
+    }
+    /**
+     * Read in  language from shared pref
+     * and then set the language.
+     */
+    public void updateLanguage() {
+        Resources res = this.getApplicationContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String language = shared.getString("languagekey","en");
+        conf.setLocale(new Locale(language));
+        res.updateConfiguration(conf, dm);
+
+    }
+
+    /**
+     * Restart MainActivity
+     */
+    private void restart() {
+
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        Bundle mBundle = new Bundle();
+        onSaveInstanceState(mBundle);
+        intent.putExtras(mBundle);
+
+        startActivity(intent);
+        finish();
+    }
+
+    /**
+     * Show leaderboard
+     * return void
+     */
     public void showLeaderboard() {
         int RC_LEADERBOARD_UI = 9004;
 
         if(!isGplayLoggedIn()){
             Toast.makeText(this.getApplicationContext(),
-                    "You need to be logged in to use this action", Toast.LENGTH_SHORT).show();
+                    R.string.needToLogIn, Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -188,7 +244,18 @@ public class MainActivity
                 });
     }
 
+    /**
+     * Is gplay logged in
+     * @return booled isLoggedIn
+     */
     public boolean isGplayLoggedIn() {
         return (gplayAcc != null);
     }
+
+
+    protected void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putParcelable("gplay", this.gplay);
+    }
+
 }

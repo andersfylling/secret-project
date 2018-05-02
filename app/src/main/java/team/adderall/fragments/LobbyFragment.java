@@ -1,9 +1,9 @@
 package team.adderall.fragments;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +78,7 @@ public class LobbyFragment
         // build service
         // TODO: need some way to handle one shared instance
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.0.87:3173/api/")
+                .baseUrl(getString(R.string.baseUrl))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(GameService.class);

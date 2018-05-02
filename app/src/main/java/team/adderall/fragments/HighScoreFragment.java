@@ -1,10 +1,10 @@
 package team.adderall.fragments;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,25 +74,31 @@ public class HighScoreFragment
 
         int id = adp.getIdFor(CurrentScore);
         if(id == 0) {
-            result.setText("WUUT!! New Highscore. You Rock! ");
+            result.setText(R.string.newHighscore);
         }
         else if(id == -1){
             result.setVisibility(View.INVISIBLE);
         }
         else{
-            result.setText("Congrats on position " + Long.toString(id + 1));
+            result.setText(getString(R.string.newNotHighscore,Long.toString(id + 1)));
 
         }
 
         return view;
     }
 
+    /**
+     * Open the global highscore list
+     */
     private void openGooglePlayHighscoreList() {
         FragmentListner fListner = (FragmentListner) this.getActivity();
         fListner.startGoogleHighscoreView();
     }
 
 
+    /**
+     * Save highscore list to sharedpreferences
+     */
     private void saveHighscoreList(){
         SharedPreferences.Editor editor = shared.edit();
         Gson gson = new Gson();
@@ -101,6 +107,9 @@ public class HighScoreFragment
         editor.commit();
     }
 
+    /**
+     * Get highscore list from shared
+     */
     private void getHighscoreList(){
         Gson gson = new Gson();
         String json = shared.getString("highscore1", null);
@@ -131,7 +140,7 @@ public class HighScoreFragment
         }
         else{
             Toast.makeText(this.getContext(),
-                    "To autoSync highscores, you must be logged in",Toast.LENGTH_LONG).show();
+                    R.string.ToAutoSyncEnable,Toast.LENGTH_LONG).show();
         }
 
     }

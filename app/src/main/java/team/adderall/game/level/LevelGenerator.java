@@ -1,19 +1,31 @@
 package team.adderall.game.level;
 
 
+import com.google.android.gms.games.Game;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import team.adderall.game.GameExtraObjects.AidsHandler;
 import team.adderall.game.GameExtraObjects.Aid;
+import team.adderall.game.GameState;
 
-
+/**
+ * This class handles level generation
+ */
 public class LevelGenerator
 {
     private final long seed;
     private final int maxNum;
     private ArrayList<Aid> aids;
+
+    /**
+     * Used to make sure that a ball can pass each level
+     */
+    private static int EXTRA_GAP = GameState.FIXED_BALL_RADIUS/5;
+    private static int MINIMUM_GAP = GameState.FIXED_BALL_RADIUS * 2;
+    private static int GAP = MINIMUM_GAP + EXTRA_GAP;
 
     public LevelGenerator(final long seed, final int maxNum) {
         this.seed = seed;
@@ -21,7 +33,17 @@ public class LevelGenerator
         this.aids = null;
     }
 
+    /**
+     * Generate floor
+     * @param floor
+     * @param previousFloor
+     * @param width
+     * @return floor
+     */
     public Floor generateFloor(final int floor, final Floor previousFloor, final int width) {
+
+
+
         if (previousFloor == null) {
             throw new NullPointerException("list is null");
         }
@@ -51,6 +73,18 @@ public class LevelGenerator
         int counter = 0;
         while (previousX < width) {
             int nextX = previousX + r.nextInt(width/3);
+
+            /**
+             * Make sure that airObjects has width bigger than fixed_Ball_radius
+             */
+            if(types[counter] == Floor.TYPE_AIR)
+            {
+                if (nextX - previousX < GAP)
+                {
+                    nextX = previousX + GAP;
+                }
+            }
+
             Line l = new Line(types[counter++], previousX, nextX > width ? width : nextX);
             l = potensiallyChangeline(l,r2);
             lines.add(l);
@@ -86,6 +120,11 @@ public class LevelGenerator
         return l;
     }
 
+    /**
+     * Generate Solid floor
+     * @param width
+     * @return floor
+     */
     public Floor generateSolidFloor(final int width) {
         List<Line> lines = new ArrayList<>();
         lines.add(new Line(Floor.TYPE_SOLID, 0, width));
@@ -93,6 +132,10 @@ public class LevelGenerator
         return new Floor(lines);
     }
 
+    /**
+     * Set Aids
+     * @param aids
+     */
     public void setAids(ArrayList<Aid> aids) {
         this.aids = aids;
     }

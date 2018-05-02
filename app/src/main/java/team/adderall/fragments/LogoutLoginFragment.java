@@ -1,10 +1,10 @@
 package team.adderall.fragments;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +40,7 @@ public class LogoutLoginFragment
         Toast.makeText(this.getContext(),"You are now " + status,Toast.LENGTH_LONG).show();
 
         SoloFragment fragment = new SoloFragment();
-        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+        android.app.FragmentManager fragmentManager = this.getActivity().getFragmentManager();
 
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 

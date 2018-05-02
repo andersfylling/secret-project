@@ -21,7 +21,7 @@ public class GameState
     public static final int FIXED_JUMP = -8;
 
 
-    private float yScaleValue=0;
+    private float yScrollValue=0;
     private float xscale = 0;
     private float yscale = 0;
 
@@ -34,16 +34,16 @@ public class GameState
      * Y value for how much the layers window have scrolled
      * @param y
      */
-    public void setyScaleValue(float y){
-        this.yScaleValue = y;
+    public void setyScrollValue(float y){
+        this.yScrollValue = y;
     }
 
     /**
      * Y value for how much the layers window have scrolled
      * @param y
      */
-    public float getyScaleValue(){
-        return yScaleValue;
+    public float getyScrollValue(){
+        return yScrollValue;
     }
 
 
