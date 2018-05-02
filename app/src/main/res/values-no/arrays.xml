@@ -1,10 +1,7 @@
 <resources>
     <string-array name="supported_languages">
+        <item>Standard</item>
         <item>Engelsk</item>
         <item>Norsk</item>
-    </string-array>
-    <string-array name="supported_languagesCodes">
-        <item>en</item>
-        <item>no</item>
     </string-array>
 </resources>

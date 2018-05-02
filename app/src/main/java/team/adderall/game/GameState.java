@@ -1,10 +1,8 @@
 package team.adderall.game;
 
-import team.adderall.game.Players;
-import team.adderall.game.ball.BallManager;
+
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
 
 @GameComponent("GameState")
 public class GameState
@@ -22,8 +20,8 @@ public class GameState
 
 
     private float yScrollValue=0;
-    private float xscale = 0;
-    private float yscale = 0;
+    private float xScale = 0;
+    private float yScale = 0;
 
 
     @GameDepWire
@@ -31,18 +29,17 @@ public class GameState
     }
 
     /**
-     * Y value for how much the layers window have scrolled
+     * Set Y value for how much the layers window have scrolled
      * @param y
      */
-    public void setyScrollValue(float y){
+    public void setYScrollValue(float y){
         this.yScrollValue = y;
     }
 
     /**
-     * Y value for how much the layers window have scrolled
-     * @param y
+     * Get Y value for how much the layers window have scrolled
      */
-    public float getyScrollValue(){
+    public float getYScrollValue(){
         return yScrollValue;
     }
 
@@ -51,32 +48,32 @@ public class GameState
      * Get the scale for x direction
      * @return float scale
      */
-    public float getxScale() {
-        return xscale;
+    public float getXScale() {
+        return xScale;
     }
 
     /**
      * Get the scale for y direction
      * @return float scale
      */
-    public float getyScale() {
-        return yscale;
+    public float getYScale() {
+        return yScale;
     }
 
     /**
      * set the scale for y direction
      * @return void
      */
-    public void setyScale(float y){
-        this.yscale = y;
+    public void setYScale(float y){
+        this.yScale = y;
     }
 
     /**
      * Get the scale for x direction
      * @return void
      */
-    public void setxScale(float x){
-        this.xscale = x;
+    public void setXScale(float x){
+        this.xScale = x;
     }
 
 }

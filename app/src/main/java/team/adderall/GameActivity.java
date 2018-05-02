@@ -10,12 +10,9 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import team.adderall.game.GameDetails;
 import team.adderall.game.UserInputHolder;
-import team.adderall.game.userinput.Jumping;
-import team.adderall.game.userinput.SensorChangedWorker;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.configuration.GameConfiguration;

@@ -1,13 +1,11 @@
 package team.adderall.game.framework;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameComponentHolder;
 import team.adderall.game.framework.component.GameDepWire;
 
 @GameComponent

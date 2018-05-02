@@ -30,17 +30,18 @@ public class LogoutLoginFragment
         }
         else{
             fListner.onGetGplayInteraction(null);
-            startMain(false);
+            startMain(false,null);
         }
 
         return inflater.inflate(R.layout.logout_login_view, container, false);
     }
-    private void startMain(boolean loggedIn){
-        String status = loggedIn == false ? "Logged out!" : "Logged In!";
-        Toast.makeText(this.getContext(),"You are now " + status,Toast.LENGTH_LONG).show();
+    private void startMain(boolean loggedIn,Bundle bundle){
+        String status = loggedIn == false ? getString(R.string.logged_out) : getString(R.string.logged_in);
+        Toast.makeText(this.getContext(),this.getContext().getString(R.string.you_are_now,status),Toast.LENGTH_LONG).show();
 
         SoloFragment fragment = new SoloFragment();
         android.app.FragmentManager fragmentManager = this.getActivity().getFragmentManager();
+        fragment.setArguments(bundle);
 
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
@@ -57,7 +58,10 @@ public class LogoutLoginFragment
 
 
                 b.onGetGplayInteraction(result);
-                startMain(true);
+                Bundle bundle = new Bundle();
+
+                b.getRegisterBundleContent(bundle);
+                startMain(true, bundle);
 
 
             }

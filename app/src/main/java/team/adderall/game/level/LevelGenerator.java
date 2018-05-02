@@ -1,14 +1,11 @@
 package team.adderall.game.level;
 
 
-import com.google.android.gms.games.Game;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import team.adderall.game.GameExtraObjects.AidsHandler;
-import team.adderall.game.GameExtraObjects.Aid;
+import team.adderall.game.GameExtraObjects.Buff;
 import team.adderall.game.GameState;
 
 /**
@@ -18,7 +15,7 @@ public class LevelGenerator
 {
     private final long seed;
     private final int maxNum;
-    private ArrayList<Aid> aids;
+    private ArrayList<Buff> buffs;
 
     /**
      * Used to make sure that a ball can pass each level
@@ -30,7 +27,7 @@ public class LevelGenerator
     public LevelGenerator(final long seed, final int maxNum) {
         this.seed = seed;
         this.maxNum = maxNum + 1;
-        this.aids = null;
+        this.buffs = null;
     }
 
     /**
@@ -103,16 +100,16 @@ public class LevelGenerator
     }
 
     /**
-     * Set the line to potensially be a Aid object also
+     * Set the line to potensially be a Buff object also
      * @param l
      * @param r2
      * @return
      */
     private Line potensiallyChangeline(Line l, Random r2) {
-        if(aids == null) return l;
+        if(buffs == null) return l;
 
-        int curPotensialObject = r2.nextInt(aids.size());
-        int curChance = aids.get(curPotensialObject).getChance();
+        int curPotensialObject = r2.nextInt(buffs.size());
+        int curChance = buffs.get(curPotensialObject).getChance();
 
         if(r2.nextInt(curChance) == 0){
             l.setFloorType(l.getFloorType()+curPotensialObject+1);
@@ -134,10 +131,10 @@ public class LevelGenerator
 
     /**
      * Set Aids
-     * @param aids
+     * @param buffs
      */
-    public void setAids(ArrayList<Aid> aids) {
-        this.aids = aids;
+    public void setBuffs(ArrayList<Buff> buffs) {
+        this.buffs = buffs;
     }
 }
 

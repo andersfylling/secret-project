@@ -94,7 +94,7 @@ public class GraphicsManager
     private void updateScrollY()
     {
         setNewScrollValue();
-        this.gameState.setyScrollValue(this.getScrollY());
+        this.gameState.setYScrollValue(this.getScrollY());
     }
 
     @Override

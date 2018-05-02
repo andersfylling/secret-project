@@ -41,7 +41,7 @@ public class BlockOffTopOfScreen
      */
     @Override
     public void run() {
-        double heightLimit = gameState.getyScrollValue();
+        double heightLimit = gameState.getYScrollValue();
         for (Player player : this.players.getAlivePlayers()) {
             BallManager b = player.getBallManager();
             if (b.getY() - b.getBall().getRadius() - SAFETY_MARGIN < heightLimit) {

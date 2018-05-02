@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,15 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import team.adderall.game.highscore.GooglePlay;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import team.adderall.network.GameService;
-import team.adderall.network.JSend;
-import team.adderall.network.PlayerDetails;
-import team.adderall.network.UserSession;
 
 public class MainActivity
         extends AppCompatActivity implements FragmentListner
@@ -87,7 +77,7 @@ public class MainActivity
 
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
-        String name = "ERROR";
+        String name;
 
         if (gplay == null) {
             NavigationView nv = findViewById(R.id.nav_view);
@@ -137,6 +127,11 @@ public class MainActivity
     }
 
     @Override
+    public void getRegisterBundleContent(Bundle bundle){
+        registerBundleContent(bundle);
+    }
+
+    @Override
     public void onGetGplayInteraction(GoogleSignInAccount acc) {
         this.gplay = acc;
         this.gplayAcc = new GooglePlay(this,acc);
@@ -150,13 +145,13 @@ public class MainActivity
             updateUsername("");
 
         }
-
     }
 
     private void updateUsername(String displayName) {
         NavigationView nv = findViewById(R.id.nav_view);
         TextView username = nv.getHeaderView(0).findViewById(R.id.headerName);
         username.setText(displayName);
+
     }
 
     private void updateMenuToSignedIn(boolean b) {
@@ -201,9 +196,11 @@ public class MainActivity
         android.content.res.Configuration conf = res.getConfiguration();
         SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String language = shared.getString("languagekey","en");
-        conf.setLocale(new Locale(language));
-        res.updateConfiguration(conf, dm);
+        String language = shared.getString("languagekey","default");
+        if(!language.equals("default")) {
+            conf.setLocale(new Locale(language));
+            res.updateConfiguration(conf, dm);
+        }
 
     }
 

@@ -1,7 +1,6 @@
 package team.adderall.game;
 
 import android.graphics.Canvas;
-import android.graphics.Point;
 import android.graphics.Rect;
 
 import team.adderall.game.highscore.HighScore;
@@ -150,9 +149,9 @@ public class PositionTracker
         highScore.potensiallySetHighestXValue(y);
     }
 
-    public void drawHighScore(Canvas canvas, float y) {
+    public void drawHighScore(Canvas canvas, float y, String name, int playerNumber) {
         if(this.highScore != null) {
-            this.highScore.paint(canvas, y);
+            this.highScore.paint(canvas, y, name, playerNumber);
         }
     }
 

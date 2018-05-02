@@ -4,16 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import team.adderall.game.ball.BallManager;
-import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
 
-/**
- * Created by Cim on 17/4/18.
- */
 public class HighScore {
     /**
      * Declare different values the person would be scored on
@@ -21,9 +12,10 @@ public class HighScore {
     private double highestXValue = 0; // highest x value?
     private int aidHighScore = 0;
     private Paint painter = null;
+    private static int HIGHSCORE_DELIMINATOR = 50;
 
 
-    public void HighScore(){
+    public HighScore(){
         // TODO: Does it not call this?
         this.reset();
 
@@ -46,14 +38,17 @@ public class HighScore {
      * Should these things be painted on a seperat view? on top of the other view.
      * So that we wont need to update the y position?
      * @param canvas
+     * @param name
+     * @param playerNumber
      */
-    public void paint(Canvas canvas,float y) {
-        final String text = "HighScore: " + Integer.toString(getScaledHighScore());
+    public void paint(Canvas canvas, float y, String name, int playerNumber) {
+        final String text = name + " " + Integer.toString(getScaledHighScore());
+
         if(this.painter == null){
             this.reset();
-
         }
-        canvas.drawText(text, 50, y+200, this.painter);
+
+        canvas.drawText(text, 50, y+200 + (playerNumber * HIGHSCORE_DELIMINATOR), this.painter);
     }
 
     private void reset() {

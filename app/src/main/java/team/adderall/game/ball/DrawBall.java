@@ -5,11 +5,9 @@ import android.graphics.Canvas;
 import team.adderall.game.GameState;
 import team.adderall.game.Player;
 import team.adderall.game.Players;
-import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 
 @GameComponent
@@ -36,7 +34,7 @@ public class DrawBall
     public void paint(Canvas canvas)
     {
         for(Player player : players.getAlivePlayers()){
-            player.getBallManager().paint(canvas, gameState.getxScale());
+            player.getBallManager().paint(canvas, gameState.getXScale());
         }
     }
 
