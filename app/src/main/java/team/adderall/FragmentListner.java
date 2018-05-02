@@ -41,5 +41,5 @@ public interface FragmentListner {
      * Used to get an up to date bundle with things needed to pass between fragments
      * @param bundle
      */
-    public void getregisterBundleContent(Bundle bundle);
+    public void getRegisterBundleContent(Bundle bundle);
 }

@@ -38,7 +38,7 @@ public class KillPlayerWhenBelowScreen
      * Kill a player when they are below the screen.
      */
     public void run() {
-        double realDeathLine = gameState.getyScrollValue() + this.deathLine;
+        double realDeathLine = gameState.getYScrollValue() + this.deathLine;
         for (Player player : this.players.getAlivePlayers()) {
             BallManager b = player.getBallManager();
             if (b.getY() > realDeathLine) {

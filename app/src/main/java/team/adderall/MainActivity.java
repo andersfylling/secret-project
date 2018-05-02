@@ -174,7 +174,7 @@ public class MainActivity
     }
 
     @Override
-    public void getregisterBundleContent(Bundle bundle){
+    public void getRegisterBundleContent(Bundle bundle){
         registerBundleContent(bundle);
     }
 

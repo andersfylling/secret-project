@@ -100,8 +100,8 @@ public class LevelManager
         this.buffs = buffs;
         this.generator.setBuffs(buffs);
 
-        this.gameState.setxScale((float)this.width/(float)GameState.FIXED_WIDTH);
-        this.gameState.setyScale((float)this.height/(float)GameState.FIXED_HEIGHT);
+        this.gameState.setXScale((float)this.width/(float)GameState.FIXED_WIDTH);
+        this.gameState.setYScale((float)this.height/(float)GameState.FIXED_HEIGHT);
 
         this.painters[Floor.TYPE_AIR] = new Paint();
         this.painters[Floor.TYPE_AIR].setStyle(Paint.Style.FILL);
@@ -110,7 +110,7 @@ public class LevelManager
         this.painters[Floor.TYPE_SOLID] = new Paint();
         this.painters[Floor.TYPE_SOLID].setStyle(Paint.Style.FILL);
         this.painters[Floor.TYPE_SOLID].setColor(Color.BLUE);
-        this.painters[Floor.TYPE_SOLID].setStrokeWidth(thickness*gameState.getyScale());
+        this.painters[Floor.TYPE_SOLID].setStrokeWidth(thickness*gameState.getYScale());
 
 
         // generate the levels
@@ -133,7 +133,7 @@ public class LevelManager
         int counter = 0;
         //starValue++;
         for (Floor floor : this.levels) {
-            floor.paint(canvas, this.painters, this.height - (counter * this.thickness),gameState.getxScale());
+            floor.paint(canvas, this.painters, this.height - (counter * this.thickness),gameState.getXScale());
 
             // TODO: ... xD
             counter++; // next level

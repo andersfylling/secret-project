@@ -60,7 +60,7 @@ public class LogoutLoginFragment
                 b.onGetGplayInteraction(result);
                 Bundle bundle = new Bundle();
 
-                b.getregisterBundleContent(bundle);
+                b.getRegisterBundleContent(bundle);
                 startMain(true, bundle);
 
 

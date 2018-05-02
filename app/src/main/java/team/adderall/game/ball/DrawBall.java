@@ -34,7 +34,7 @@ public class DrawBall
     public void paint(Canvas canvas)
     {
         for(Player player : players.getAlivePlayers()){
-            player.getBallManager().paint(canvas, gameState.getxScale());
+            player.getBallManager().paint(canvas, gameState.getXScale());
         }
     }
 
