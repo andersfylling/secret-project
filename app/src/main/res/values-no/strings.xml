@@ -3,8 +3,8 @@
     <string name="app_name">ballspill</string>
     <string name="play_game_button">start spill</string>
     <string name="username">Anonym bruker</string>
-    <string name="menu_lobby">Lobby</string>
-    <string name="nav_solo">Solo</string>
+    <string name="menu_lobby">Multi player</string>
+    <string name="nav_solo">Single player</string>
     <string name="nav_high_score">Toppliste</string>
     <string name="nav_settings">"innstillinger "</string>
     <string name="nav_logout_login">Logg ut</string>
@@ -14,6 +14,8 @@
     <string name="needToLogIn">Du må være logget inn for å bruke denne funksjonen</string>
     <string name="logout">Logg ut</string>
     <string name="login">Logg inn</string>
+    <string name="not_connected">Ikkje tilkoblet</string>
+    <string name="connecting">Kobler til</string>
     <string name="RestApiUnableToConnect">" Kan ikke koble til REST API for spillservere"</string>
     <string name="newHighscore">WUUT !! Ny high score. Du rocker!</string>
     <string name="newNotHighscore">"Gratulerer med %s. plass! "</string>
@@ -26,4 +28,10 @@
     <string name="you_are_now">Du er nå %s</string>
     <string name="logged_out">logget ut!</string>
     <string name="logged_in">logget inn!</string>
+    <string name="lobby_status_connected">Tilkoblet</string>
+    <string name="lobby_status_not_connected">Ikkje tilkoblet</string>
+    <string name="lobby_toast_error_unable_to_leave_lobby">Karte ikkje å forlate lobby</string>
+    <string name="lobby_button_connect">Koble til</string>
+    <string name="lobby_button_find_lobby">Finn lobby</string>
+    <string name="lobby_button_leave_lobby">Forlat lobby</string>
 </resources>

@@ -6,7 +6,9 @@ import android.content.Intent;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import team.adderall.GameActivity;
@@ -20,8 +22,7 @@ public class GameDetails
     public final static int CODE_GAME_ENDED = 34534;
     public final static int CODE_GAME_UNABLE_TO_START = 3467345;
 
-    // players <userID, &Player>
-    private Map<Long, Player> players;
+    private List<Player> players;
 
     private String gameServer;
     private int gameServerPort;
@@ -36,7 +37,7 @@ public class GameDetails
     public GameDetails(final boolean multiplayer) {
         this.multiplayer = multiplayer;
 
-        this.players = new HashMap<>();
+        this.players = new ArrayList<>();
         this.gameSeed = 1;
         this.highscore = 0;
         this.gameID = Multiplayer.NOT_REAL_GAME_ID;
@@ -54,16 +55,16 @@ public class GameDetails
         this.gameSeed = gameSeed;
     }
 
-    public Map<Long, Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(Map<Long, Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 
     public void addPlayer(final Player player) {
-        this.players.put((long) this.players.size(), player);
+        this.players.add(player);
     }
 
 
@@ -103,7 +104,7 @@ public class GameDetails
     }
 
     public long getHighscore() {
-        for(Player p: players.values()){
+        for(Player p : players){
             if(p.isActivePlayer()){
                 return p.getScore();
             }

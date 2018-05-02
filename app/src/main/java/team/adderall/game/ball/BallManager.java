@@ -25,6 +25,10 @@ public class BallManager
     // +- ball radius
     private final static int RADIUS = GameState.FIXED_BALL_RADIUS;
     // |
+    // +- ball colours
+    private final static String COLOR_ACTIVE = "#F07030";
+    private final static String COLOR_ENEMY = "#7070F0";
+    // |
     // +- movement threshold
     private final static int MOVEMENT_THRESHOLD = 0;
     // |
@@ -82,9 +86,9 @@ public class BallManager
     /**
      * Constructor
      */
-    public BallManager(final boolean activePlayer) {
-
-        this.ball = new Ball(RADIUS);
+    public BallManager(final boolean activePlayer)
+    {
+        this.ball = new Ball(RADIUS, activePlayer ? COLOR_ACTIVE : COLOR_ENEMY);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
         tracker.setposition(100, 0);
@@ -94,7 +98,7 @@ public class BallManager
         this.painter.setStyle(Paint.Style.FILL);
 
         this.deathPainter = new Paint();
-        this.deathPainter.setColor(Color.RED);
+        this.deathPainter.setColor(Color.GRAY);
         this.deathPainter.setTextSize(75);
         this.deathPainter.setTextAlign(Paint.Align.CENTER);
 
@@ -163,9 +167,6 @@ public class BallManager
         tracker.setposition(x, y);
     }
 
-    public void doGravity() {
-        this.tracker.fallToTheGround();
-    }
     public void updatePlayerPos(){
         this.tracker.updatePlayerPos();
     }

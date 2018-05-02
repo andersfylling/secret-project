@@ -1,29 +1,19 @@
 package team.adderall.game.userinput;
 
-import team.adderall.game.GameState;
 import team.adderall.game.Gravity;
 import team.adderall.game.Player;
-import team.adderall.game.Players;
-import team.adderall.game.framework.component.*;
 
-@GameComponent
 public class Jumping
-    implements Runnable
 {
-    private final Player player;
+    public final static int JUMP_VELOCITY = -11;
 
-    @GameDepWire
-    public Jumping(
-            @Inject("players") Players players
-    ) {
-        this.player = players.getActive();
-    }
+    public Jumping()
+    {}
 
-    @Override
-    public void run() {
-        if(this.player != null && this.player.getBallManager().getAtGround()) {
-            this.player.getBallManager().setVelocity(GameState.FIXED_JUMP * Gravity.METER);
-            this.player.getBallManager().setAtGround(false);
+    public static void jump(Player player) {
+        if(player != null && player.getBallManager().getAtGround()) {
+            player.getBallManager().setVelocity(JUMP_VELOCITY * Gravity.METER);
+            player.getBallManager().setAtGround(false);
         }
     }
 }

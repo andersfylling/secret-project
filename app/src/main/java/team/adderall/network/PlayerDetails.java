@@ -12,6 +12,9 @@ public class PlayerDetails
         Parcelable
 {
 
+    @SerializedName("user_id")
+    @Expose
+    private Integer userId;
     @SerializedName("username")
     @Expose
     private String username;
@@ -44,9 +47,10 @@ public class PlayerDetails
      *
      * @param username
      */
-    public PlayerDetails(String username) {
+    public PlayerDetails(String username, int userId) {
         super();
         this.username = username;
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -55,6 +59,14 @@ public class PlayerDetails
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -69,5 +81,4 @@ public class PlayerDetails
     public int describeContents() {
         return 0;
     }
-
 }

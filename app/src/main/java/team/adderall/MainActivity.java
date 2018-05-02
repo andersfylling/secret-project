@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,15 +25,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import team.adderall.game.highscore.GooglePlay;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import team.adderall.network.GameService;
-import team.adderall.network.JSend;
-import team.adderall.network.PlayerDetails;
-import team.adderall.network.UserSession;
 
 public class MainActivity
         extends AppCompatActivity implements FragmentListner
@@ -44,8 +34,6 @@ public class MainActivity
     private GoogleSignInAccount gplay;
     private GooglePlay gplayAcc = null;
 
-    private GameService service;
-    private UserSession session;
     private MenuItemHandler menuItemHandler;
 
 
@@ -69,56 +57,15 @@ public class MainActivity
 
         mDrawerLayout.addDrawerListener(new MenuSlideHandler());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.baseUrl))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        service = retrofit.create(GameService.class);
-
-        // auth to game server
-        session = new UserSession();
-        PlayerDetails username = new PlayerDetails();
-        username.setUsername("andemann"); // TODO: get from settings
-        Call<JSend<UserSession>> call = service.authenticate(username);
-        final MainActivity self = this;
-        call.enqueue(new Callback<JSend<UserSession>>() {
-            @Override
-            public void onResponse(Call<JSend<UserSession>> call, Response<JSend<UserSession>> response) {
-                self.session.setToken(response.body().getData().getToken());
-
-                NavigationView navigationView = findViewById(R.id.nav_view);
-
-                Menu menuNav = navigationView.getMenu();
-                MenuItem navLobby = menuNav.findItem(R.id.nav_lobby);
-                navLobby.setEnabled(true);
-            }
-
-            @Override
-            public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
-                // TODO: retry
-                Toast toast = Toast.makeText(self, R.string.RestApiUnableToConnect, Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
         Bundle bundle = getIntent().getExtras();
-
-        if(bundle!= null)
-        {
-            String token = bundle.getString("sessionToken");
-            if(token != null)
-            {
-                this.session = new UserSession(token);
-            }
+        if(bundle != null) {
             this.gplay = bundle.getParcelable("gplay");
         }
 
-        if(this.gplay == null)
-        {
+        if(this.gplay == null) {
             updateMenuToSignedIn(false);
         }
-        else
-        {
+        else {
             updateMenuToSignedIn(true);
             this.gplayAcc = new GooglePlay(this, this.gplay);
 
@@ -130,10 +77,16 @@ public class MainActivity
 
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
-        bundle.putString(UserSession.SESSION_TOKEN_NAME, this.session.getToken());
-        if(this.gplay!=null) {
-            bundle.putString("username", this.gplay.getDisplayName());
+        String name;
+
+        if (gplay == null) {
+            NavigationView nv = findViewById(R.id.nav_view);
+            TextView username = nv.getHeaderView(0).findViewById(R.id.headerName);
+            name = username.getText().toString();
+        } else {
+            name = gplay.getDisplayName();
         }
+        bundle.putString("username", name);
     }
 
     /**
@@ -186,7 +139,7 @@ public class MainActivity
             updateMenuToSignedIn(true);
             updateUsername(acc.getDisplayName());
         }
-        else{
+        else {
             this.gplayAcc = null;
             updateMenuToSignedIn(false);
             updateUsername("");
@@ -202,7 +155,7 @@ public class MainActivity
     }
 
     private void updateMenuToSignedIn(boolean b) {
-        String title = b == true?  getString(R.string.logout) : getString(R.string.login);
+        String title = b ?  getString(R.string.logout) : getString(R.string.login);
         NavigationView nv = findViewById(R.id.nav_view);
         MenuItem login =  nv.getMenu().getItem(4);
         login.setTitle(title);
@@ -300,7 +253,6 @@ public class MainActivity
     protected void onSaveInstanceState(Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putParcelable("gplay", this.gplay);
-        bundle.putString("sessionToken", this.session.getToken());
     }
 
 }

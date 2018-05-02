@@ -88,7 +88,7 @@ public class Player {
         this.activePlayer = activePlayer;
     }
 
-    public void createBallManager(boolean activePlayer) {
+    public void createBallManager() {
         if (this.ballManager != null) {
             return;
         }

@@ -58,32 +58,9 @@ public class PositionTracker
         this.y += yDiff; // y is reversed
     }
 
-    /**
-     * Gravity implemetation.
-     * Fall to the ground at a constant rate.
-     */
-    public void fallToTheGround() {
-        this.verticalSpeed += gravity *0.5* partOfSecond(System.currentTimeMillis());
-        if(this.verticalSpeed > terminalVel){
-            this.verticalSpeed = terminalVel;
-        }
-        this.y += this.verticalSpeed;
-    }
     public void updatePlayerPos(){
         this.y = this.y;
         this.x = this.x;
-    }
-
-    /**
-     * Return how long it have passed since the last update, in a percentage of frames.
-     * Given that we uses 60 frames per second
-     * @param curtime
-     * @return difference
-     */
-    private double partOfSecond(long curtime) {
-        double diff = (curtime - this.oldTime);
-        this.oldTime = curtime;
-        return diff/1000*60;
     }
 
     public void updatePosition(double x, double y) {

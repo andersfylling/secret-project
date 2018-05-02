@@ -4,6 +4,9 @@ import android.hardware.SensorEvent;
 import android.view.Display;
 import android.view.Surface;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
@@ -14,29 +17,52 @@ import team.adderall.game.framework.component.Inject;
 @GameComponent
 public class UserInputHolder
 {
-    private double xMovement; // movement on the x axis
-    private boolean jump; // requested a jump
+    private double[] xMovement; // movement on the x axis
+    private boolean[] jump; // requested a jump
+
     private int orientation;
+    private Players players;
+
+    private int active;
 
     @GameDepWire
-    public UserInputHolder(@Inject("display") Display display)
+    public UserInputHolder(@Inject("display") Display display,
+                           @Inject("players") Players p)
     {
-        xMovement = 0;
-        jump = false;
+        xMovement = new double[p.size()];
+        jump = new boolean[p.size()];
+        players = p;
+        active = (int) players.getActive().getUserID();
         orientation = display.getRotation();
     }
 
+    /**
+     * Used explicitly for the active player.
+     */
     public void requestJump() {
-        jump = true;
+        jump[active] = true;
+    }
+
+    public void requestJump(int userID) {
+        jump[userID] = true;
     }
 
     public void requestXAxisMovement(SensorEvent evt) {
         double x = parseXFromSensor(evt);
-        this.requestXAxisMovement(x);
+        this.requestXAxisMovement(active, x);
     }
 
-    public void requestXAxisMovement(double distance) {
-        xMovement += distance * -1; // haxor. need to get an understanding why we did this again.
+    public void requestXAxisMovement(int userID, double distance) {
+        xMovement[userID] += distance * -1; // haxor. need to get an understanding why we did this again.
+    }
+
+    /**
+     * Can only be used for opponents. Do not use this logic for the main player(!).
+     * @param userID
+     * @param position
+     */
+    public void requestMPXAxisMovement(int userID, double position) {
+        xMovement[userID] = position;
     }
 
 
@@ -67,16 +93,25 @@ public class UserInputHolder
         return x;
     }
 
-    public boolean jumping() {
-        boolean status = jump;
-        jump = false;
+    public boolean jumping(int userID) {
+        boolean status = jump[userID];
+        jump[userID] = false;
 
         return status;
     }
 
-    public double xAxisMovement() {
-        double movement = xMovement;
-        xMovement = 0;
+    public double xAxisMovement(int userID) {
+
+        double movement = xMovement[userID];
+        if (userID != active && movement > 0) {
+            for (Player player : players.getAlivePlayers()) {
+                if (player.getUserID() == userID) {
+                    movement -= player.getBallManager().getX();
+                    break;
+                }
+            }
+        }
+        xMovement[userID] = 0;
 
         return movement;
     }

@@ -1,10 +1,12 @@
 package team.adderall.game;
 
+import android.app.Activity;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
+import team.adderall.Closer;
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
@@ -13,23 +15,29 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.multiplayer.Client;
 import team.adderall.game.framework.multiplayer.Clientv1;
-import team.adderall.game.framework.multiplayer.Packet;
+import team.adderall.game.framework.multiplayer.GamePacket;
+import team.adderall.game.framework.multiplayer.GamePacketResponse;
 
 /**
- * Sends updates about main player and keep other players up to date.
+ * Sends updates about main player and keep opponents up to date.
  */
 @GameComponent
 @GameLogic(wave=100)
 public class Multiplayer
-    implements GameLogicInterface
+        implements
+        GameLogicInterface,
+        Closer
 {
     public final static long NOT_REAL_GAME_ID = 0;
     private final static long TIMEOUT = 5;
 
     private final GameDetails gameDetails;
-    private final Map<Long, Player> gamers;
+    private final Map<Integer, Player> gamers;
     private final Player gamer;
     private final Players players;
+
+    private long sequence;
+    private long gameSequence;
 
     private final boolean onlineGame;
     private final long gameID;
@@ -37,10 +45,25 @@ public class Multiplayer
     private long lastUpdate;
     private boolean singleplayer;
 
-    private Client client;
+    private int failedAuthTries;
 
+    private Client client;
+    private Activity activity;
+
+    private final UserInputHolder userInputHolder;
+
+    /**
+     * Constructor
+     *
+     * @param players
+     * @param holder
+     * @param activity
+     * @param gameDetails
+     */
     @GameDepWire
     public Multiplayer(@Inject("players") Players players,
+                       @Inject("userInputHolder") UserInputHolder holder,
+                       @Inject("activity") Activity activity,
                        @Inject("GameDetails") GameDetails gameDetails)
     {
         this.gameDetails = gameDetails;
@@ -49,9 +72,17 @@ public class Multiplayer
         this.onlineGame = gameDetails.isMultiplayer() || gameDetails.getGameID() == NOT_REAL_GAME_ID;
         this.gameID = gameDetails.getGameID();
 
+        this.activity = activity;
+
         this.players = players;
         this.gamer = this.players.getActive();
         this.gamers = new HashMap<>();
+        userInputHolder = holder;
+
+        sequence = 1;
+        gameSequence = 1;
+
+        failedAuthTries = 0;
 
         singleplayer = !gameDetails.isMultiplayer();
 
@@ -61,7 +92,7 @@ public class Multiplayer
         }
 
         for (Player player : players.getAlivePlayers()) {
-            this.gamers.put(player.getUserID(), player);
+            this.gamers.put((int) player.getUserID(), player);
         }
 
         // listen for player updates (death, lost, win, etc. not moves from the udp server)
@@ -80,16 +111,21 @@ public class Multiplayer
         this.client.receive(this::eventHandler);
         try {
             this.client.configure(gameDetails.getGameServer(), gameDetails.getGameServerPort());
+            this.client.connect();
+
+            // register player
+            authenticate();
         } catch (UnknownHostException e) {
             System.err.println(e.getMessage());
         }
-        this.client.connect();
-
-        // register player
-        Packet packet = new Packet(Packet.TYPE_REGISTER, players.getActive().getGameToken());
-        client.send(packet);
     }
 
+    /**
+     * Remove the player if it dies or loses to trim out those extra network packets.
+     *
+     * @param player
+     * @param action
+     */
     public void playerUpdate(Player player, int action) {
         switch (action) {
             case PlayerChange.LOST:
@@ -99,33 +135,119 @@ public class Multiplayer
         }
     }
 
+    /**
+     * Remove a player/gamer. Anyone removed, which still transmits packets
+     * will be ignored.
+     *
+     * @param key
+     */
     private void removeGamer(long key) {
-        if (this.gamers.containsKey(key)) {
-            this.gamers.remove(key);
+        if (this.gamers.containsKey((int) key)) {
+            this.gamers.remove((int) key);
         }
     }
 
+    /**
+     * Multi player isn't used in single player mode.
+     *
+     * @return
+     */
     public boolean deactivated() {
         return !this.onlineGame;
     }
 
-    public void eventHandler(final Packet evt) {
+    /**
+     * Verify the incoming event contains new up to date information.
+     * @param evt
+     */
+    public void eventHandler(final GamePacketResponse evt) {
+
+        // check if there was an issue with the params
+        // or auth try
+        boolean err = false;
+        if (evt.type() == GamePacket.TYPE_UNKNOWN_GAME_ID) {
+            err = true;
+        }
+        else if (evt.type() == GamePacket.TYPE_UNKNOWN_USER_ID) {
+            err = true;
+        }
+        else if (evt.type() == GamePacket.TYPE_ATHENTICATION_FAILED) {
+            failedAuthTries++;
+            if (failedAuthTries > 30) {
+                client.close();
+                activity.onBackPressed();
+            }
+            err = true;
+        }
+        if (err) {
+            authenticate();
+            return;
+        }
+
+
+        // update sequence number
+        if (evt.sequence() > gameSequence) {
+            gameSequence = evt.sequence();
+        } else {
+            // ignore packets with "outdated info" (compared to what we already got)
+            return;
+        }
+
         // check if player exists
-        if (!this.gamers.containsKey(evt.getUserID())) {
+        if (!this.gamers.containsKey(evt.userID())) {
             return;
         }
 
         // check if the event is for this player
-        if (this.gamer.getUserID() == evt.getUserID()) {
+        if (this.gamer.getUserID() == evt.userID()) {
             return; // TODO: update oneself to completely sync units
         }
 
-        Player player = this.gamers.get(evt.getUserID());
-        player.getBallManager().setPos(evt.getX(), evt.getY());
+        // make sure this doesn't regard a dead player
+        Player player = this.gamers.get(evt.userID());
+        if (player.getBallManager().getState() == BallManager.STATE_DEAD) {
+            return;
+        }
+
+        // Dispatch event based on type
+        //
+
+        // handle movements
+        if (evt.type() == GamePacket.TYPE_MOVEMENT) {
+            handleMovementEvent(evt);
+        }
     }
 
     /**
-     * Send out info about main player
+     * Using the session token, authenticate to the UDP server.
+     * The UDP server stores both IP and port, to make sure no one steals
+     * your game session.
+     */
+    public void authenticate()
+    {
+        GamePacket packet = GamePacket.AuthenticateBuilder(sequence++, (int) gamer.getUserID(), (int) gameID)
+                .token(gamer.getGameToken())
+                .build();
+        client.send(packet);
+    }
+
+    /**
+     * Handle enemy movements.
+     *
+     * @param evt network event containing enemy position
+     */
+    public void handleMovementEvent(final GamePacketResponse evt)
+    {
+        userInputHolder.requestMPXAxisMovement(evt.userID(), evt.x());
+
+        boolean jumping = evt.inAir();
+        if (jumping) {
+            userInputHolder.requestJump(evt.userID());
+        }
+    }
+
+    /**
+     * Send out info about active player
      */
     @Override
     public void run() {
@@ -133,28 +255,34 @@ public class Multiplayer
         if (singleplayer) {
             return;
         }
-
-        if (this.lastUpdate + TIMEOUT > System.currentTimeMillis()) {
-            return;
-        }
-        this.lastUpdate = System.currentTimeMillis();
-
-        if (this.gamer == null) {
+        if (gamer == null) {
             return;
         }
 
-        BallManager bm = this.gamer.getBallManager();
+        if (lastUpdate + TIMEOUT > System.currentTimeMillis()) {
+            return;
+        }
+        lastUpdate = System.currentTimeMillis();
+
+
+        BallManager bm = gamer.getBallManager();
         boolean jumping = bm.getVelocity() < 0;
         double x = bm.getX();
         double y = bm.getY();
 
-        // TODO: refactor
-        Packet event = new Packet(Packet.TYPE_PLAYER_MOVED, x, y, jumping, this.gamer.getUserID(), this.gameID);
-
-        this.client.send(event);
+        GamePacket packet = GamePacket.MovementBuilder(sequence++, (int) gamer.getUserID(), (int) gameID)
+                .x(x)
+                .y(y)
+                .inAir(jumping)
+                .build();
+        client.send(packet);
     }
 
+    /**
+     * Kill the socket connection
+     */
+    @Override
     public void close() {
-        this.client.close();
+        client.close();
     }
 }

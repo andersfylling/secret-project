@@ -9,6 +9,9 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * POJO
+ */
 public class PlayerStatus
         implements
         Serializable,
@@ -39,6 +42,9 @@ public class PlayerStatus
     @SerializedName("game_server_port")
     @Expose
     private Integer gameServerPort;
+    @SerializedName("game_seed")
+    @Expose
+    private Long gameSeed;
 
     public final static Parcelable.Creator<PlayerStatus> CREATOR = new Creator<PlayerStatus>() {
         @SuppressWarnings({
@@ -64,6 +70,7 @@ public class PlayerStatus
         this.userId = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.gameServerAddr = ((String) in.readValue((String.class.getClassLoader())));
         this.gameServerPort = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.gameSeed = ((Long) in.readValue((Long.class.getClassLoader())));
     }
 
     /**
@@ -82,7 +89,7 @@ public class PlayerStatus
      * @param players
      * @param situation
      */
-    public PlayerStatus(Integer situation, String message, List<PlayerDetails> players, Boolean closedLobby, Integer gameId, Integer userId, String addr, Integer port) {
+    public PlayerStatus(Integer situation, String message, List<PlayerDetails> players, Boolean closedLobby, Integer gameId, Integer userId, String addr, Integer port, Long gameSeed) {
         super();
         this.situation = situation;
         this.message = message;
@@ -92,6 +99,7 @@ public class PlayerStatus
         this.userId = userId;
         this.gameServerAddr = addr;
         this.gameServerPort = port;
+        this.gameSeed = gameSeed;
     }
 
     public Integer getSituation() {
@@ -154,6 +162,29 @@ public class PlayerStatus
         this.userId = userId;
     }
 
+    public String getGameServerAddr() {
+        return gameServerAddr;
+    }
+
+    public void setGameServerAddr(String gameServerAddr) {
+        this.gameServerAddr = gameServerAddr;
+    }
+
+    public Integer getGameServerPort() {
+        return gameServerPort;
+    }
+
+    public void setGameServerPort(Integer gameServerPort) {
+        this.gameServerPort = gameServerPort;
+    }
+
+    public Long getGameSeed() {
+        return this.gameSeed;
+    }
+    public void setGameSeed(Long gameSeed) {
+        this.gameSeed = gameSeed;
+    }
+
     @Override
     public String toString() {
         return this.message;
@@ -172,21 +203,5 @@ public class PlayerStatus
 
     public int describeContents() {
         return 0;
-    }
-
-    public String getGameServerAddr() {
-        return gameServerAddr;
-    }
-
-    public void setGameServerAddr(String gameServerAddr) {
-        this.gameServerAddr = gameServerAddr;
-    }
-
-    public Integer getGameServerPort() {
-        return gameServerPort;
-    }
-
-    public void setGameServerPort(Integer gameServerPort) {
-        this.gameServerPort = gameServerPort;
     }
 }
