@@ -31,4 +31,10 @@
     <string name="logged_out">Logged out!</string>
     <string name="logged_in">Logged In!</string>
     <string name="you_are_now">You are now %s</string>
+    <string name="lobby_status_connected">connected</string>
+    <string name="lobby_status_not_connected">not connected</string>
+    <string name="lobby_toast_error_unable_to_leave_lobby">Unable to leave lobby lol</string>
+    <string name="lobby_button_connect">Connect</string>
+    <string name="lobby_button_find_lobby">Find lobby</string>
+    <string name="lobby_button_leave_lobby">Leave lobby</string>
 </resources>

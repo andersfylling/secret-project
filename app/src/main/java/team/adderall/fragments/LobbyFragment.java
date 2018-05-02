@@ -140,7 +140,7 @@ public class LobbyFragment
             @Override
             public void onResponse(Call<JSend<UserSession>> call, Response<JSend<UserSession>> response) {
                 self.session.setToken(response.body().getData().getToken());
-                self.lobbyStatus.setText("connected");
+                self.lobbyStatus.setText(R.string.lobby_status_connected);
                 progressBar.setVisibility(View.GONE);
                 state = CONNECTED;
                 updateButton();
@@ -151,7 +151,7 @@ public class LobbyFragment
                 // TODO: retry
                 Toast toast = Toast.makeText(self.getContext(), MSG_CANNOT_CONNECT, Toast.LENGTH_LONG);
                 toast.show();
-                self.lobbyStatus.setText("not connected");
+                self.lobbyStatus.setText(R.string.lobby_status_not_connected);
                 progressBar.setVisibility(View.GONE);
                 state = NOT_CONNECTED;
                 updateButton();
@@ -189,7 +189,7 @@ public class LobbyFragment
                 if (state == DESTROY) {
                     return;
                 }
-                self.lobbyStatus.setText("connected");
+                self.lobbyStatus.setText(R.string.lobby_status_connected);
                 progressBar.setVisibility(View.GONE);
                 state = CONNECTED;
                 usernames.clear();
@@ -204,7 +204,7 @@ public class LobbyFragment
                     return;
                 }
                 // TODO: retry
-                Toast toast = Toast.makeText(self.getContext(), "Unable to leave lobby lol", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(self.getContext(), R.string.lobby_toast_error_unable_to_leave_lobby, Toast.LENGTH_LONG);
                 toast.show();
                 progressBar.setVisibility(View.GONE);
                 state = IN_LOBBY;
@@ -214,7 +214,7 @@ public class LobbyFragment
     }
 
     public void lostConnection() {
-        lobbyStatus.setText("not connected");
+        lobbyStatus.setText(R.string.lobby_status_not_connected);
         progressBar.setVisibility(View.GONE);
         state = NOT_CONNECTED;
         updateButton();
@@ -265,17 +265,17 @@ public class LobbyFragment
     private void updateButton() {
         switch (state) {
             case NOT_CONNECTED:
-                button.setText("Connect");
+                button.setText(R.string.lobby_button_connect);
                 button.setOnClickListener(this::connect);
                 button.setEnabled(true);
                 break;
             case CONNECTED:
-                button.setText("Find lobby");
+                button.setText(R.string.lobby_button_find_lobby);
                 button.setOnClickListener(this::joinLobby);
                 button.setEnabled(true);
                 break;
             case IN_LOBBY:
-                button.setText("Leave lobby");
+                button.setText(R.string.lobby_button_leave_lobby);
                 button.setOnClickListener(this::leaveLobby);
                 button.setEnabled(true);
                 break;

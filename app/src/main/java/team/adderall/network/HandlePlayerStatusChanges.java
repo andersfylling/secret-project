@@ -13,6 +13,8 @@ public class HandlePlayerStatusChanges
         implements
         Callback<JSend<PlayerStatus>>
 {
+    private final static long DEFAULT_TIMEOUT = 900;
+
     private UserSession session;
     private GameService service;
     private NotifyWhenPlayerStatusChanges listener;
@@ -40,31 +42,26 @@ public class HandlePlayerStatusChanges
      * @see #onPreExecute()
      * @see #onPostExecute
      * @see #publishProgress
-     * TODO: pls fix this stupidity.
      */
     @Override
     protected Object doInBackground(Object[] objects) {
-        int counter = 0;
         while (!isCancelled()) {
             this.requestPlayerStatus();
             try {
-                Thread.sleep(900);
+                Thread.sleep(DEFAULT_TIMEOUT);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 this.cancel(false);
             }
-
-            //if (counter > 30) {
-            //    this.cancel(false);
-            //}
-            //counter++;
         }
 
         return null;
     }
 
 
-
+    /**
+     * Send a HTTP request to get the latest player+lobby details
+     */
     private void requestPlayerStatus() {
         Call<JSend<PlayerStatus>> call = service.joinAGame(this.session.getToken());
         call.enqueue(this);
