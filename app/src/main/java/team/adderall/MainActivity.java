@@ -235,9 +235,11 @@ public class MainActivity
         android.content.res.Configuration conf = res.getConfiguration();
         SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String language = shared.getString("languagekey","en");
-        conf.setLocale(new Locale(language));
-        res.updateConfiguration(conf, dm);
+        String language = shared.getString("languagekey","default");
+        if(!language.equals("default")) {
+            conf.setLocale(new Locale(language));
+            res.updateConfiguration(conf, dm);
+        }
 
     }
 

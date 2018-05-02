@@ -9,7 +9,7 @@
             android:title="@string/title_language_list"
             android:entries="@array/supported_languages"
             android:entryValues="@array/supported_languagesCodes"
-            android:defaultValue="en"
+            android:defaultValue="default"
             />
 
     </PreferenceCategory>
