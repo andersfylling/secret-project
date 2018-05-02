@@ -28,9 +28,6 @@ public class SoloFragment
         this.username = getArguments() == null ? this.getContext().getString(R.string.username) :
                 getArguments().getString("username",
                 this.getContext().getString(R.string.username));
-        //this.username = savedInstanceState == null ?
-        //        this.getContext().getString(R.string.username)
-        //        : savedInstanceState.getString(username);
 
         Button button = view.findViewById(R.id.button_start_solo_game);
         button.setOnClickListener(this::startGameActivity);
