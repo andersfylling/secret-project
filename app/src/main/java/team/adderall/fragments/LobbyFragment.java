@@ -40,7 +40,6 @@ public class LobbyFragment
         extends
         Fragment
 {
-    private final static String DEFAULT_USERNAME = "anonymous";
     private final static String KEY_USERNAME = "username"; // TODO: move to a static class
 
     private final static String MSG_CANNOT_CONNECT = "Unable to connect to game servers REST API";
@@ -99,7 +98,7 @@ public class LobbyFragment
         username = new PlayerDetails();
 
         Bundle extras = getArguments();
-        String name = DEFAULT_USERNAME;
+        String name = getResources().getString(R.string.username);
         if (extras != null) {
             name = extras.getString(KEY_USERNAME);
         }
