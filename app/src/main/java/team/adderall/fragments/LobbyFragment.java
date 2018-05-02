@@ -199,12 +199,10 @@ public class LobbyFragment
     public void updatePlayerStatus(PlayerStatus playerStatus) {
         lobbyStatus.setText(playerStatus.getMessage());
         if (playerStatus.getSituation() > SEARCHING_FOR_LOBBY) {
-            state = SEARCHING_FOR_LOBBY;
+            state = IN_LOBBY;
             updateButton();
             progressBar.setVisibility(View.GONE);
         }
-        state = IN_LOBBY;
-        updateButton();
 
         // TODO: don't update after first closed lobby signal
         playersTitle.setVisibility(View.VISIBLE);

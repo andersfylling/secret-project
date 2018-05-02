@@ -158,6 +158,7 @@ public class Multiplayer
                 System.out.println("UNABLE TO AUTHENTICATE");
                 activity.onBackPressed();
             }
+            err = true;
         }
         if (err) {
             authenticate();
