@@ -13,7 +13,6 @@ import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.configuration.EssentialGameConfigurationDependencies;
 import team.adderall.game.framework.configuration.GameConfigurationLoader;
 import team.adderall.game.framework.context.GameContext;
-import team.adderall.game.framework.multiplayer.Client;
 
 public class GameInitializer
 {

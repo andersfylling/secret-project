@@ -23,4 +23,10 @@
     <string name="ToAutoSyncEnable">To autoSync highscores, you must be logged in</string>
     <string name="language" translatable="false">language</string>
     <string name="title_language_list">Select the correct language</string>
+    <string name="button_show_highscore">Show Global Highscore List</string>
+    <string name="highscore_posistion">Position: %s )</string>
+    <string name="highscore_score">Score: %s</string>
+    <string name="logged_out">Logged out!</string>
+    <string name="logged_in">Logged In!</string>
+    <string name="you_are_now">You are now %s</string>
 </resources>

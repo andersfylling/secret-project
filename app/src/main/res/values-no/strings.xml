@@ -5,7 +5,7 @@
     <string name="username">Anonym bruker</string>
     <string name="menu_lobby">Lobby</string>
     <string name="nav_solo">Solo</string>
-    <string name="nav_high_score">High score</string>
+    <string name="nav_high_score">Toppliste</string>
     <string name="nav_settings">"innstillinger "</string>
     <string name="nav_logout_login">Logg ut</string>
     <string name="hello_blank_fragment">Hei tomt fragment</string>
@@ -20,4 +20,10 @@
     <string name="ToAutoSyncEnable">For å auto synkronisere highscores må du være logget inn</string>
     <string name="title_language_list">"Velg riktig språk "</string>
     <string name="button_start_game">"Start spill "</string>
+    <string name="button_show_highscore">Vis Global High Score Liste</string>
+    <string name="highscore_posistion">Plass: %s )</string>
+    <string name="highscore_score">Poengsum: %s</string>
+    <string name="you_are_now">Du er nå %s</string>
+    <string name="logged_out">logget ut!</string>
+    <string name="logged_in">logget inn!</string>
 </resources>

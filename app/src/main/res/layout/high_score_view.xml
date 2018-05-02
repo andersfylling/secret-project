@@ -7,8 +7,7 @@
     <TextView
         android:id="@+id/result"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="text " />
+        android:layout_height="wrap_content" />
 
     <ListView
         android:id="@+id/highscore"
@@ -22,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Show Global Highscore List" />
+        android:text="@string/button_show_highscore" />
 
 
 </RelativeLayout>

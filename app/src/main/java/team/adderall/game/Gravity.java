@@ -1,12 +1,9 @@
 package team.adderall.game;
 
-import android.graphics.Point;
-
 import java.util.concurrent.TimeUnit;
 
 import team.adderall.game.ball.BallManager;
 import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.GameLoop;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.GameLogic;

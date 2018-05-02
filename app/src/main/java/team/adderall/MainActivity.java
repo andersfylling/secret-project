@@ -131,6 +131,9 @@ public class MainActivity
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
         bundle.putString(UserSession.SESSION_TOKEN_NAME, this.session.getToken());
+        if(this.gplay!=null) {
+            bundle.putString("username", this.gplay.getDisplayName());
+        }
     }
 
     /**
@@ -171,6 +174,11 @@ public class MainActivity
     }
 
     @Override
+    public void getRegisterBundleContent(Bundle bundle){
+        registerBundleContent(bundle);
+    }
+
+    @Override
     public void onGetGplayInteraction(GoogleSignInAccount acc) {
         this.gplay = acc;
         this.gplayAcc = new GooglePlay(this,acc);
@@ -184,13 +192,13 @@ public class MainActivity
             updateUsername("");
 
         }
-
     }
 
     private void updateUsername(String displayName) {
         NavigationView nv = findViewById(R.id.nav_view);
         TextView username = nv.getHeaderView(0).findViewById(R.id.headerName);
         username.setText(displayName);
+
     }
 
     private void updateMenuToSignedIn(boolean b) {
@@ -235,9 +243,11 @@ public class MainActivity
         android.content.res.Configuration conf = res.getConfiguration();
         SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
 
-        String language = shared.getString("languagekey","en");
-        conf.setLocale(new Locale(language));
-        res.updateConfiguration(conf, dm);
+        String language = shared.getString("languagekey","default");
+        if(!language.equals("default")) {
+            conf.setLocale(new Locale(language));
+            res.updateConfiguration(conf, dm);
+        }
 
     }
 

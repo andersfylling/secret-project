@@ -7,8 +7,6 @@ import java.util.Map;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
-import team.adderall.game.userinput.SensorEvt;
-import team.adderall.game.userinput.SensorEvtListener;
 
 @GameComponent
 public class Players
@@ -48,6 +46,8 @@ public class Players
     public List<Player> getDeadPlayers() {
         return deadPlayers;
     }
+
+    public List<Player> getPlayers(){ return players;}
 
     public void invalidateActive() {
         this.active = null;

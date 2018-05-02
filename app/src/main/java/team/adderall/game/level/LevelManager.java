@@ -5,20 +5,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
-import com.google.android.gms.games.Game;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 import team.adderall.game.GameDetails;
-import team.adderall.game.GameExtraObjects.Aid;
+import team.adderall.game.GameExtraObjects.Buff;
 import team.adderall.game.GameState;
 import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.UpdateRateCounter;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
@@ -46,15 +39,13 @@ public class LevelManager
     private Paint blockPainter;
     private Paint spacePainter;
     int starValue = 0;
-    private ArrayList<Aid> aids;
+    private ArrayList<Buff> buffs;
 
     /**
-     * @param width              width of drawable area
-     * @param height             height of drawable area
-     * @param pointsInWidth      n1-n2 = line, n2-n3: space, n3-n4: line, etc.
-     * @param minimumLevelsReady how many levels/floors should always be predefined
-     * @param thickness          how thick should each floor/line/level be
-     * @param gameSeed           affects floor/level generation
+     * Level manager constructor
+     * @param canvasSize
+     * @param gameDetails
+     * @param gameState
      */
     @GameDepWire
     public LevelManager(@Inject("canvasSize") Point canvasSize,
@@ -65,7 +56,7 @@ public class LevelManager
         this.width = canvasSize.x;
         this.height = canvasSize.y;
 
-        this.thickness = GameState.FIXED_THICKNESS;//100;//thickness;
+        this.thickness = GameState.FIXED_THICKNESS;
 
         this.generator = new LevelGenerator(gameDetails.getGameSeed(), Floor.TYPE_HIGHEST_INDEX);
         this.levels = new ArrayList<>();
@@ -99,18 +90,18 @@ public class LevelManager
 
 
     /**
-     * Get the Aids list from the AidsHandler.
-     * Also generete the floors now that we have the correct Aid Types
+     * Get the Aids list from the BuffsHandler.
+     * Also generete the floors now that we have the correct Buff Types
      * After that we would also initialise all the correct painters.
-     * @param aids
+     * @param buffs
      */
-    public void setAids(ArrayList<Aid> aids)
+    public void setBuffs(ArrayList<Buff> buffs)
     {
-        this.aids = aids;
-        this.generator.setAids(aids);
+        this.buffs = buffs;
+        this.generator.setBuffs(buffs);
 
-        this.gameState.setxScale((float)this.width/(float)GameState.FIXED_WIDTH);
-        this.gameState.setyScale((float)this.height/(float)GameState.FIXED_HEIGHT);
+        this.gameState.setXScale((float)this.width/(float)GameState.FIXED_WIDTH);
+        this.gameState.setYScale((float)this.height/(float)GameState.FIXED_HEIGHT);
 
         this.painters[Floor.TYPE_AIR] = new Paint();
         this.painters[Floor.TYPE_AIR].setStyle(Paint.Style.FILL);
@@ -119,7 +110,7 @@ public class LevelManager
         this.painters[Floor.TYPE_SOLID] = new Paint();
         this.painters[Floor.TYPE_SOLID].setStyle(Paint.Style.FILL);
         this.painters[Floor.TYPE_SOLID].setColor(Color.BLUE);
-        this.painters[Floor.TYPE_SOLID].setStrokeWidth(thickness*gameState.getyScale());
+        this.painters[Floor.TYPE_SOLID].setStrokeWidth(thickness*gameState.getYScale());
 
 
         // generate the levels
@@ -128,10 +119,10 @@ public class LevelManager
             this.levels.add(floor);
         }
 
-        // Initialise all the correct painters for aids
-        for (Aid aid : aids) {
-            int type = aid.getType();
-            this.painters[type] = aid.getPainter();
+        // Initialise all the correct painters for buffs
+        for (Buff buff : buffs) {
+            int type = buff.getType();
+            this.painters[type] = buff.getPainter();
         }
 
     }
@@ -142,7 +133,7 @@ public class LevelManager
         int counter = 0;
         //starValue++;
         for (Floor floor : this.levels) {
-            floor.paint(canvas, this.painters, this.height - (counter * this.thickness),gameState.getxScale());
+            floor.paint(canvas, this.painters, this.height - (counter * this.thickness),gameState.getXScale());
 
             // TODO: ... xD
             counter++; // next level

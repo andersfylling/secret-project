@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import org.junit.Test;
 
-import team.adderall.game.framework.GameInitializer;
 import team.adderall.game.framework.configuration.GameConfiguration;
 
 @GameConfiguration

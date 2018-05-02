@@ -4,7 +4,6 @@ package team.adderall.game.level;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Rect;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class Floor
     public final static int TYPE_HIGHEST_INDEX = TYPE_SOLID;
 
     /**
-     * Aid types
+     * Buff types
      */
     public final static int TYPE_COIN = 1;
     public static final int TYPE_SUPERCOIN = 2;
@@ -102,7 +101,7 @@ public class Floor
     }
 
     /**
-     * Get a given Aid
+     * Get a given Buff
      * @param floorType
      * @param x
      * @param y

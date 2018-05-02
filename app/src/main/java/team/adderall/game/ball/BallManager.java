@@ -4,14 +4,10 @@ package team.adderall.game.ball;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
-import android.graphics.Rect;
 
 
 import team.adderall.game.GameState;
 import team.adderall.game.PositionTracker;
-import team.adderall.game.userinput.SensorEvt;
-import team.adderall.game.userinput.SensorEvtListener;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 
@@ -127,7 +123,7 @@ public class BallManager
     /**
      * Paint / draw the ball
      * @param canvas
-     * @param v
+     * @param scale
      */
     public void paint(Canvas canvas, float scale) {
         // draw the ball
@@ -191,8 +187,8 @@ public class BallManager
         return ball;
     }
 
-    public void drawHighScore(Canvas canvas, float y) {
-        this.tracker.drawHighScore(canvas,y);
+    public void drawHighScore(Canvas canvas, float y, String name, int playerNumber) {
+        this.tracker.drawHighScore(canvas,y,name,playerNumber);
     }
 
     public void setAtGround(boolean atGround) {

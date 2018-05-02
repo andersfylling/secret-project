@@ -6,8 +6,6 @@ import android.graphics.Paint;
 
 import team.adderall.game.framework.GamePainter;
 import team.adderall.game.framework.UpdateRateCounter;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
 
 public class UpdateRateCountPainter
         implements GamePainter

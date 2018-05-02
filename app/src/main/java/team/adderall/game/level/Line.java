@@ -1,9 +1,5 @@
 package team.adderall.game.level;
 
-/**
- * Created by Cim on 14/4/18.
- */
-
 public class Line {
     private int floorType;
     private final int x1;

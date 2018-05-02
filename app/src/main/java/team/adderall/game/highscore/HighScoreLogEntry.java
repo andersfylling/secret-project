@@ -4,12 +4,12 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class HighScoreObject implements Serializable,Comparable {
+public class HighScoreLogEntry implements Serializable,Comparable {
     private final long score;
     private boolean synced;
     private final long time;
 
-    public HighScoreObject(long score, boolean synced){
+    public HighScoreLogEntry(long score, boolean synced){
         this.score = score;
         this.synced = synced;
         this.time = System.nanoTime();
@@ -17,7 +17,7 @@ public class HighScoreObject implements Serializable,Comparable {
 
     @Override
     public int compareTo(@NonNull Object o) {
-        HighScoreObject highscore = (HighScoreObject)o;
+        HighScoreLogEntry highscore = (HighScoreLogEntry)o;
         long compareScore = this.score - highscore.getScore();
         return (int) compareScore;
     }

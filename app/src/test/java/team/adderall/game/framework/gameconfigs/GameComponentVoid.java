@@ -6,7 +6,6 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameComponentRegister;
 import team.adderall.game.framework.component.Inject;
 
-import static org.junit.Assert.assertEquals;
 
 @GameConfiguration
 public class GameComponentVoid {
