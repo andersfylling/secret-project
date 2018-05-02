@@ -25,6 +25,10 @@ public class BallManager
     // +- ball radius
     private final static int RADIUS = GameState.FIXED_BALL_RADIUS;
     // |
+    // +- ball colours
+    private final static String COLOR_ACTIVE = "#F07030";
+    private final static String COLOR_ENEMY = "#7070F0";
+    // |
     // +- movement threshold
     private final static int MOVEMENT_THRESHOLD = 0;
     // |
@@ -84,7 +88,7 @@ public class BallManager
      */
     public BallManager(final boolean activePlayer)
     {
-        this.ball = new Ball(RADIUS, activePlayer ? "#F07030" : "#7070F0");
+        this.ball = new Ball(RADIUS, activePlayer ? COLOR_ACTIVE : COLOR_ENEMY);
 
         this.tracker = new PositionTracker(MOVEMENT_THRESHOLD);
         tracker.setposition(100, 0);
