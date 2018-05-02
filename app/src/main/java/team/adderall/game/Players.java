@@ -47,6 +47,8 @@ public class Players
         return deadPlayers;
     }
 
+    public List<Player> getPlayers(){ return players;}
+
     public void invalidateActive() {
         this.active = null;
     }

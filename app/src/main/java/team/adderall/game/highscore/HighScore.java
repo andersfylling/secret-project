@@ -12,6 +12,7 @@ public class HighScore {
     private double highestXValue = 0; // highest x value?
     private int aidHighScore = 0;
     private Paint painter = null;
+    private static int HIGHSCORE_DELIMINATOR = 50;
 
 
     public HighScore(){
@@ -37,14 +38,17 @@ public class HighScore {
      * Should these things be painted on a seperat view? on top of the other view.
      * So that we wont need to update the y position?
      * @param canvas
+     * @param name
+     * @param playerNumber
      */
-    public void paint(Canvas canvas,float y) {
-        final String text = "HighScore: " + Integer.toString(getScaledHighScore());
+    public void paint(Canvas canvas, float y, String name, int playerNumber) {
+        final String text = name + " " + Integer.toString(getScaledHighScore());
+
         if(this.painter == null){
             this.reset();
-
         }
-        canvas.drawText(text, 50, y+200, this.painter);
+
+        canvas.drawText(text, 50, y+200 + (playerNumber * HIGHSCORE_DELIMINATOR), this.painter);
     }
 
     private void reset() {

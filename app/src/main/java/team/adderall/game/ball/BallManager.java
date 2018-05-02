@@ -187,8 +187,8 @@ public class BallManager
         return ball;
     }
 
-    public void drawHighScore(Canvas canvas, float y) {
-        this.tracker.drawHighScore(canvas,y);
+    public void drawHighScore(Canvas canvas, float y, String name, int playerNumber) {
+        this.tracker.drawHighScore(canvas,y,name,playerNumber);
     }
 
     public void setAtGround(boolean atGround) {

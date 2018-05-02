@@ -131,6 +131,9 @@ public class MainActivity
     // called whenever a new fragment is started
     private void registerBundleContent(Bundle bundle) {
         bundle.putString(UserSession.SESSION_TOKEN_NAME, this.session.getToken());
+        if(this.gplay!=null) {
+            bundle.putString("username", this.gplay.getDisplayName());
+        }
     }
 
     /**
@@ -171,6 +174,11 @@ public class MainActivity
     }
 
     @Override
+    public void getregisterBundleContent(Bundle bundle){
+        registerBundleContent(bundle);
+    }
+
+    @Override
     public void onGetGplayInteraction(GoogleSignInAccount acc) {
         this.gplay = acc;
         this.gplayAcc = new GooglePlay(this,acc);
@@ -184,13 +192,13 @@ public class MainActivity
             updateUsername("");
 
         }
-
     }
 
     private void updateUsername(String displayName) {
         NavigationView nv = findViewById(R.id.nav_view);
         TextView username = nv.getHeaderView(0).findViewById(R.id.headerName);
         username.setText(displayName);
+
     }
 
     private void updateMenuToSignedIn(boolean b) {

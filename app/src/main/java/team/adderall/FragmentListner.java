@@ -1,6 +1,8 @@
 package team.adderall;
 
 
+import android.os.Bundle;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public interface FragmentListner {
@@ -34,4 +36,10 @@ public interface FragmentListner {
      * Update used language
      */
     public void askForUpdateLanguage();
+
+    /**
+     * Used to get an up to date bundle with things needed to pass between fragments
+     * @param bundle
+     */
+    public void getregisterBundleContent(Bundle bundle);
 }

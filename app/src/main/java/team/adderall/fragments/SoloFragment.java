@@ -17,11 +17,20 @@ public class SoloFragment
         extends Fragment
 {
     public final static boolean STAT_MULTIPLAYER = false;
+    private String username="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.solo_view, container, false);
+
+        //Get username
+        this.username = getArguments() == null ? this.getContext().getString(R.string.username) :
+                getArguments().getString("username",
+                this.getContext().getString(R.string.username));
+        //this.username = savedInstanceState == null ?
+        //        this.getContext().getString(R.string.username)
+        //        : savedInstanceState.getString(username);
 
         Button button = view.findViewById(R.id.button_start_solo_game);
         button.setOnClickListener(this::startGameActivity);
@@ -35,6 +44,8 @@ public class SoloFragment
 
         Player player = new Player();
         player.setActivePlayer(true);
+
+        player.setName(this.username);
         config.addPlayer(player);
 
         Intent intent = config.writeToGameActivityIntent(getContext());

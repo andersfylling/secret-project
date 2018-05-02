@@ -172,9 +172,9 @@ public class PositionTracker
         highScore.potensiallySetHighestXValue(y);
     }
 
-    public void drawHighScore(Canvas canvas, float y) {
+    public void drawHighScore(Canvas canvas, float y, String name, int playerNumber) {
         if(this.highScore != null) {
-            this.highScore.paint(canvas, y);
+            this.highScore.paint(canvas, y, name, playerNumber);
         }
     }
 

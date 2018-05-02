@@ -23,4 +23,7 @@
     <string name="button_show_highscore">Vis Global High Score Liste</string>
     <string name="highscore_posistion">Plass: %s )</string>
     <string name="highscore_score">Poengsum: %s</string>
+    <string name="you_are_now">Du er nå %s</string>
+    <string name="logged_out">logget ut!</string>
+    <string name="logged_in">logget inn!</string>
 </resources>
