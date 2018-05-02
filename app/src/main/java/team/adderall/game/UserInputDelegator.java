@@ -13,20 +13,17 @@ public class UserInputDelegator
     implements GameLogicInterface
 {
     private UserInputHolder holder;
-    private Jumping jumping;
     private DeltaTime deltaTime;
     private Players players;
 
     @GameDepWire
     public UserInputDelegator(@Inject("userInputHolder") UserInputHolder h,
-                              @Inject("jumping") Jumping j,
                               @Inject("deltaTime") DeltaTime dt,
                               @Inject("players") Players p)
     {
         holder = h;
         players = p;
         deltaTime = dt; // game speed
-        jumping = j;
     }
 
 
@@ -53,11 +50,7 @@ public class UserInputDelegator
         boolean jump = holder.jumping((int) player.getUserID());
 
         if (jump) {
-            if (player.isActivePlayer()) {
-                jumping.run();
-            } else {
-                Jumping.jump(player);
-            }
+            Jumping.jump(player);
         }
     }
 
