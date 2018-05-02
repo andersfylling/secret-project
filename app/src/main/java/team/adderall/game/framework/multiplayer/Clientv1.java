@@ -27,10 +27,6 @@ public class Clientv1
     public Clientv1()
             throws SocketException
     {
-        if (Packet.VERSION != 1) {
-            throw new Error("WRONG VERSION ON PACKET CLASS");
-        }
-
         socket = new DatagramSocket();
         this.listeners = new ArrayList<>();
         this.configured = false;
