@@ -19,7 +19,7 @@
     <string name="logout">Log out</string>
     <string name="login">Login</string>
     <string name="RestApiUnableToConnect">Unable to connect to game servers REST API</string>
-    <string name="baseUrl" translatable="false">http://10.0.0.87:3173/api/</string>
+    <string name="baseUrl" translatable="false">http://172.18.87.101:3173/api/</string>
     <string name="newHighscore">WUUT!! New Highscore. You Rock!</string>
     <string name="newNotHighscore">Congrats on position %s</string>
     <string name="ToAutoSyncEnable">To autoSync highscores, you must be logged in</string>

@@ -17,10 +17,12 @@
     <PreferenceCategory
         android:title="@string/game_server_connection_title">
 
-        <Preference
-            android:title="@string/baseUrl"
+        <EditTextPreference
+            android:title="Set base url"
             android:key="settings_game_server_connection"
-            android:summary="Base URL for game server"/>
+            android:summary="Base URL for game server"
+            android:defaultValue="@string/baseUrl"
+            />
 
     </PreferenceCategory>
 
