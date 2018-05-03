@@ -93,7 +93,7 @@ public class LobbyFragment
         // build service
         // TODO: need some way to handle one shared instance
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.baseUrl))
+                .baseUrl(key)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(GameService.class);
