@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.github.javiersantos.materialstyleddialogs.enums.Style;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,7 +32,8 @@ public class HighScoreFragment
         extends Fragment
 {
 
-    ArrayList<HighScoreLogEntry> highscoreObjList;
+    private ArrayList<HighScoreLogEntry> highscoreObjList;
+    private HighscoreAdapter adp;
 
     SharedPreferences shared;
     long CurrentScore = -1;
@@ -64,7 +67,7 @@ public class HighScoreFragment
         Button showHighscoreList = view.findViewById(R.id.showHH);
         showHighscoreList.setOnClickListener(e->openGooglePlayHighscoreList());
 
-        HighscoreAdapter adp = new HighscoreAdapter(this.getContext(), highscoreObjList, CurrentScore);
+        adp = new HighscoreAdapter(this.getContext(), highscoreObjList, CurrentScore);
         highscoreist.setAdapter(adp);
 
         TextView result = view.findViewById(R.id.result);
@@ -73,17 +76,41 @@ public class HighScoreFragment
 
         int id = adp.getIdFor(CurrentScore);
         if(id == 0) {
-            result.setText(R.string.newHighscore);
+            newBestHighScoreAction();
         }
         else if(id == -1){
             result.setVisibility(View.INVISIBLE);
         }
         else{
-            result.setText(getString(R.string.newNotHighscore,Long.toString(id + 1)));
+            newHighScoreAction();
 
         }
 
         return view;
+    }
+
+    private void newHighScoreAction() {
+        MaterialStyledDialog dialog = new MaterialStyledDialog.Builder(getContext())
+                .setTitle(R.string.highscore_congrats)
+                .setDescription(R.string.newHighscore + "\n\n")
+                .setStyle(Style.HEADER_WITH_TITLE)
+                .setHeaderColor(R.color.colorPrimary)
+                .withDialogAnimation(true)
+                .build();
+
+        dialog.show();
+    }
+    private void newBestHighScoreAction() {
+        int id = adp.getIdFor(CurrentScore);
+        MaterialStyledDialog dialog = new MaterialStyledDialog.Builder(getContext())
+                .setTitle(R.string.highscore_congrats_best)
+                .setDescription(getString(R.string.newNotHighscore,Long.toString(id + 1)) + "\n\n")
+                .setStyle(Style.HEADER_WITH_TITLE)
+                .setHeaderColor(R.color.md_material_blue_800)
+                .withDialogAnimation(true)
+                .build();
+
+        dialog.show();
     }
 
     /**

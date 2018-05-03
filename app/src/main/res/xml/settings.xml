@@ -14,5 +14,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/game_server_connection_title">
+
+        <Preference
+            android:title="@string/baseUrl"
+            android:key="settings_game_server_connection"
+            android:summary="Base URL for game server"/>
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

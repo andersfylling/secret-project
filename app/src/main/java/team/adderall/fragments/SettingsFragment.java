@@ -9,7 +9,11 @@ import team.adderall.FragmentListner;
 import team.adderall.R;
 
 public class SettingsFragment
-        extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+        extends
+        PreferenceFragment
+        implements
+        SharedPreferences.OnSharedPreferenceChangeListener
+{
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class SettingsFragment
     @Override
     /**
      * on shared preference changed
-     * Tell mainactivity to set the new language as the current language.
+     * Tell main activity to set the new language as the current language.
      */
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         FragmentListner fl = (FragmentListner) this.getActivity();
