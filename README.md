@@ -22,7 +22,7 @@ mobile screen you die.
 - [x] Collision detection
 - [x] Gravity
 - [x] Jumping
-- [x] Aids to help you level while in game
+- [x] In game buffs
 
 ## Pictures
 
