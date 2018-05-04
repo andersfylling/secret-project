@@ -95,7 +95,7 @@ public class Collision
                 continue;
             }
             // getNoneIntercetCord sets the "hitOnTop" variable to true
-            // if a roof collision is detected
+            // if a floor collision is detected (standing on top of a floor)
             hitOnTop = false;
             Point p = getNoneIntercetCord(getRect(x1, y1), collide);
             entity.setPos(p.x, p.y);
