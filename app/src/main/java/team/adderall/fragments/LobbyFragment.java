@@ -2,8 +2,10 @@ package team.adderall.fragments;
 
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,11 +86,14 @@ public class LobbyFragment
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.lobby_view, container, false);
         inGame = false;
+        SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+
+        String key = shared.getString("settings_game_server_connection",getString(R.string.baseUrl));
 
         // build service
         // TODO: need some way to handle one shared instance
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.baseUrl))
+                .baseUrl(key)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(GameService.class);

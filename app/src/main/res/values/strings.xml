@@ -19,7 +19,7 @@
     <string name="logout">Log out</string>
     <string name="login">Login</string>
     <string name="RestApiUnableToConnect">Unable to connect to game servers REST API</string>
-    <string name="baseUrl" translatable="false">http://10.0.0.87:3173/api/</string>
+    <string name="baseUrl" translatable="false">http://172.18.87.101:3173/api/</string>
     <string name="newHighscore">WUUT!! New Highscore. You Rock!</string>
     <string name="newNotHighscore">Congrats on position %s</string>
     <string name="ToAutoSyncEnable">To autoSync highscores, you must be logged in</string>
@@ -37,4 +37,10 @@
     <string name="lobby_button_connect">Connect</string>
     <string name="lobby_button_find_lobby">Find lobby</string>
     <string name="lobby_button_leave_lobby">Leave lobby</string>
+    <string name="game_server_connection" translatable="false">10.0.0.87:3173</string>
+    <string name="game_server_connection_title">Game Server Connection</string>
+    <string name="highscore_congrats">Congratulation!</string>
+    <string name="highscore_congrats_best">Congratulation!  It\'s a personal best!</string>
+    <string name="set_base_url">Set base url</string>
+    <string name="base_url_sum">Base URL for game server</string>
 </resources>
