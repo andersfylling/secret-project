@@ -5,7 +5,10 @@ import team.adderall.game.ball.BallManager;
 /**
  * Details about a player
  */
-public class Player {
+public class Player
+    implements
+        GravityAffected
+{
     private String id;
     private String name;
     private int score;
@@ -106,5 +109,25 @@ public class Player {
 
     public void setGameToken(Long gameToken) {
         this.gameToken = gameToken;
+    }
+
+    @Override
+    public double y() {
+        return ballManager.getY(); // potential null pointer exception
+    }
+
+    @Override
+    public void y(double y) {
+        ballManager.setY(y); // potential null pointer exception
+    }
+
+    @Override
+    public double velocity() {
+        return ballManager.getVelocity(); // potential null pointer exception
+    }
+
+    @Override
+    public void velocity(double velocity) {
+        ballManager.setVelocity(velocity); // potential null pointer exception
     }
 }
