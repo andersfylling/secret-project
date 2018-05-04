@@ -1,11 +1,28 @@
 package team.adderall.game;
 
 import team.adderall.game.ball.BallManager;
+import team.adderall.game.physics.GravityAffected;
+import team.adderall.game.physics.Velocity;
+import team.adderall.game.physics.XPosition;
+import team.adderall.game.physics.XYPosition;
+import team.adderall.game.physics.YPosition;
 
 /**
- * Details about a player
+ * Details about a player.
+ * We've implemented different physics related interfaces
+ * since the Player instance is what we generally use during calculations.
+ * TODO-0: inject player instances into a entity class such that Gravity, Collision, etc.
+ * TODO-1: doesn't need to be aware of players directly.
  */
-public class Player {
+public class Player
+        implements
+        YPosition,
+        XPosition,
+        XYPosition,
+        Velocity,
+        GravityAffected,
+        Collidable
+{
     private String id;
     private String name;
     private int score;
@@ -106,5 +123,55 @@ public class Player {
 
     public void setGameToken(Long gameToken) {
         this.gameToken = gameToken;
+    }
+
+
+
+    // The code below is outdated, as we haven't removed BallManager yet.
+    // TODO: BallManager is legacy code and should be removed
+
+    @Override
+    public double y() {
+        return ballManager.getY(); // potential null pointer exception
+    }
+
+    @Override
+    public void y(double y) {
+        ballManager.setY(y); // potential null pointer exception
+    }
+
+    @Override
+    public double velocity() {
+        return ballManager.getVelocity(); // potential null pointer exception
+    }
+
+    @Override
+    public void velocity(double velocity) {
+        ballManager.setVelocity(velocity); // potential null pointer exception
+    }
+
+    @Override
+    public void setPos(double x, double y) {
+        ballManager.setPos(x, y); // potential null pointer exception
+    }
+
+    @Override
+    public double x() {
+        return ballManager.getX(); // potential null pointer exception
+    }
+
+    @Override
+    public void x(double x) {
+        ballManager.setPos(x, ballManager.getY());  // potential null pointer exception
+    }
+
+    @Override
+    public void setAtGround(boolean atGround) {
+        ballManager.setAtGround(atGround);
+    }
+
+    @Override
+    public boolean getAtGround() {
+        return ballManager.getAtGround();
     }
 }

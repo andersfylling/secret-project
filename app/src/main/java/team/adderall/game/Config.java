@@ -18,6 +18,8 @@ import team.adderall.game.framework.context.GameContext;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.highscore.DrawHighScore;
 import team.adderall.game.level.LevelManager;
+import team.adderall.game.physics.DeltaTime;
+import team.adderall.game.physics.Gravity;
 import team.adderall.game.userinput.Jumping;
 
 /**

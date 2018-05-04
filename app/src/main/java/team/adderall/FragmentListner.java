@@ -11,35 +11,35 @@ public interface FragmentListner {
      * @param acc
      * return void
      */
-    public void onGetGplayInteraction(GoogleSignInAccount acc);
+    void onGetGplayInteraction(GoogleSignInAccount acc);
 
     /**
      * Start Google highscore view
      * return void
      */
-    public void startGoogleHighscoreView();
+    void startGoogleHighscoreView();
 
     /**
      * Update player score
      * @param score
      * @return boolean didUpdate
      */
-    public boolean updatePlayersScore(long score);
+    boolean updatePlayersScore(long score);
 
     /**
      * Is logged in
      * @return boolean isLoggedIn
      */
-    public boolean isLoggedIn();
+    boolean isLoggedIn();
 
     /**
      * Update used language
      */
-    public void askForUpdateLanguage();
+    void askForUpdateLanguage();
 
     /**
      * Used to get an up to date bundle with things needed to pass between fragments
      * @param bundle
      */
-    public void getRegisterBundleContent(Bundle bundle);
+    void getRegisterBundleContent(Bundle bundle);
 }

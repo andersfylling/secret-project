@@ -5,6 +5,7 @@ import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.GameLogic;
 import team.adderall.game.framework.component.Inject;
+import team.adderall.game.physics.DeltaTime;
 import team.adderall.game.userinput.Jumping;
 
 @GameComponent

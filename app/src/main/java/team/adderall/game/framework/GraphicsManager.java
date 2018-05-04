@@ -133,7 +133,7 @@ public class GraphicsManager
         long now = System.nanoTime();
 
         double diff = (now - this.lastRun) / 10000000.0;
-        double update = diff * this.SCROLLSPEED;
+        double update = diff * SCROLLSPEED;
 
         if(update>1) {
             this.lastRun = now;
