@@ -34,8 +34,9 @@
     <string name="lobby_button_connect">Koble til</string>
     <string name="lobby_button_find_lobby">Finn lobby</string>
     <string name="lobby_button_leave_lobby">Forlat lobby</string>
-    <string name="game_server_connection">10.0.0.87:3173</string>
     <string name="game_server_connection_title">Game Server Tilkobling</string>
     <string name="highscore_congrats">Gratulerer!</string>
     <string name="highscore_congrats_best">Gratulerer!  Ny personlig rekord!</string>
+    <string name="set_base_url">Sett server Url</string>
+    <string name="base_url_sum">Server URL for spill server</string>
 </resources>

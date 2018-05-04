@@ -18,9 +18,9 @@
         android:title="@string/game_server_connection_title">
 
         <EditTextPreference
-            android:title="Set base url"
+            android:title="@string/set_base_url"
             android:key="settings_game_server_connection"
-            android:summary="Base URL for game server"
+            android:summary="@string/base_url_sum"
             android:defaultValue="@string/baseUrl"
             />
 
