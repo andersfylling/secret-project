@@ -14,5 +14,17 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/game_server_connection_title">
+
+        <EditTextPreference
+            android:title="@string/set_base_url"
+            android:key="settings_game_server_connection"
+            android:summary="@string/base_url_sum"
+            android:defaultValue="@string/baseUrl"
+            />
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>
