@@ -54,9 +54,7 @@ public class GameLoop
      * @param remainingMilliSeconds
      * @throws InterruptedException
      */
-    private void executeLogicInWaves(long remainingMilliSeconds)
-            throws InterruptedException
-    {
+    private void executeLogicInWaves(long remainingMilliSeconds) {
         for (GameLogicInterface[] wave : this.logics) {
             final long start = System.currentTimeMillis();
             // run jobs in parallel

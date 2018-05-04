@@ -1,6 +1,10 @@
 package team.adderall.game;
 
 import org.junit.Test;
+
+import team.adderall.game.physics.Gravity;
+import team.adderall.game.physics.GravityAffected;
+
 import static org.junit.Assert.assertEquals;
 
 public class GravityTest {

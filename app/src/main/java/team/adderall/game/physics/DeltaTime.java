@@ -1,4 +1,4 @@
-package team.adderall.game;
+package team.adderall.game.physics;
 
 import java.util.concurrent.TimeUnit;
 

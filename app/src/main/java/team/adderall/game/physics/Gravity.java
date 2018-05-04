@@ -1,8 +1,8 @@
-package team.adderall.game;
+package team.adderall.game.physics;
 
 import java.util.concurrent.TimeUnit;
 
-import team.adderall.game.ball.BallManager;
+import team.adderall.game.Players;
 import team.adderall.game.framework.GameLogicInterface;
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
