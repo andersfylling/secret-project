@@ -1,5 +1,6 @@
 package team.adderall.game;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -60,6 +61,7 @@ public class Multiplayer
      * @param activity
      * @param gameDetails
      */
+    @SuppressLint("UseSparseArrays") // it holds only a handful of references anyways.
     @GameDepWire
     public Multiplayer(@Inject("players") Players players,
                        @Inject("userInputHolder") UserInputHolder holder,
