@@ -430,9 +430,9 @@ public class GameConfigurationLoader
             } catch (InvocationTargetException | IllegalAccessException e) {
                 System.out.println("unable to inject params into method: " + method.getName() + ", in class: " + instance.getClass().getName());
 
-                String paramsStr = "";
+                StringBuilder paramsStr = new StringBuilder();
                 for (String param : params) {
-                    paramsStr += param + ", ";
+                    paramsStr.append(param).append(", ");
                 }
                 System.out.println("params: " + paramsStr);
 

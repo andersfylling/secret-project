@@ -66,7 +66,7 @@ public class GoogleSignInActivity extends Activity{
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            System.out.println(e);
+            System.out.println(e.getLocalizedMessage());
 
         }
     }

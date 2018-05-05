@@ -172,9 +172,9 @@ public class GameComponentHolder
         if (this.requiredDependencies.size() != parameters.size()) {
             String err = "missing dependencies for @GameComponent: " + this.toStringWithDependencies();
 
-            String have = "";
+            StringBuilder have = new StringBuilder();
             for (Object dep : parameters) {
-                have += dep.toString() + ",";
+                have.append(dep.toString()).append(",");
             }
 
 
@@ -258,24 +258,24 @@ public class GameComponentHolder
 
     public String toStringWithDependencies()
     {
-        String content = this.name + "{";
+        StringBuilder content = new StringBuilder(this.name + "{");
         for (String dependency : this.requiredDependencies) {
-            content += dependency + ",";
+            content.append(dependency).append(",");
         }
-        content += "}";
+        content.append("}");
 
-        return content;
+        return content.toString();
     }
 
     public String toStringWithAllDependencies()
     {
-        String content = this.name + "{";
+        StringBuilder content = new StringBuilder(this.name + "{");
         for (String dependency : this.dependencies) {
-            content += dependency + ",";
+            content.append(dependency).append(",");
         }
-        content += "}";
+        content.append("}");
 
-        return content;
+        return content.toString();
     }
 
 
