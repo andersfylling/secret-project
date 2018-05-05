@@ -1,5 +1,6 @@
 package team.adderall.game;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -60,6 +61,7 @@ public class Multiplayer
      * @param activity
      * @param gameDetails
      */
+    @SuppressLint("UseSparseArrays") // it holds only a handful of references anyways.
     @GameDepWire
     public Multiplayer(@Inject("players") Players players,
                        @Inject("userInputHolder") UserInputHolder holder,
@@ -165,19 +167,19 @@ public class Multiplayer
         // check if there was an issue with the params
         // or auth try
         boolean err = false;
-        if (evt.type() == GamePacket.TYPE_UNKNOWN_GAME_ID) {
-            err = true;
-        }
-        else if (evt.type() == GamePacket.TYPE_UNKNOWN_USER_ID) {
-            err = true;
-        }
-        else if (evt.type() == GamePacket.TYPE_ATHENTICATION_FAILED) {
-            failedAuthTries++;
-            if (failedAuthTries > 30) {
-                client.close();
-                activity.onBackPressed();
-            }
-            err = true;
+        switch (evt.type()) {
+            case GamePacket.TYPE_UNKNOWN_GAME_ID:
+            case GamePacket.TYPE_UNKNOWN_USER_ID:
+                err = true;
+                break;
+            case GamePacket.TYPE_ATHENTICATION_FAILED:
+                failedAuthTries++;
+                if (failedAuthTries > 30) {
+                    client.close();
+                    activity.onBackPressed();
+                }
+                err = true;
+                break;
         }
         if (err) {
             authenticate();

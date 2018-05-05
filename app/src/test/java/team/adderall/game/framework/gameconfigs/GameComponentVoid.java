@@ -30,7 +30,7 @@ public class GameComponentVoid {
         return () -> randomGameLogicExecuted = true;
     }
     @GameComponentRegister
-    public void gameLogicWithParams(@Inject("getASixer") final int v, @Inject("getAnders") final String n){
-        return;
-    }
+    public void gameLogicWithParams(@Inject("getASixer") final int v,
+                                    @Inject("getAnders") final String n)
+    {}
 }

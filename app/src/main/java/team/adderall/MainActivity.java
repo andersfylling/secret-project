@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Locale;
 import java.util.logging.Level;
@@ -233,12 +232,7 @@ public class MainActivity
 
         Games.getLeaderboardsClient(this, this.gplay)
                 .getLeaderboardIntent(getString(R.string.LeaderBoard))
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_LEADERBOARD_UI);
-                    }
-                });
+                .addOnSuccessListener(intent -> startActivityForResult(intent, RC_LEADERBOARD_UI));
     }
 
     /**

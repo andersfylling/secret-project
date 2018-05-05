@@ -75,24 +75,25 @@ public class HighScoreFragment
         result.setTextColor(Color.GREEN);
 
         int id = adp.getIdFor(CurrentScore);
-        if(id == 0) {
-            newBestHighScoreAction();
-        }
-        else if(id == -1){
-            result.setVisibility(View.INVISIBLE);
-        }
-        else{
-            newHighScoreAction();
-
+        switch (id) {
+            case 0:
+                newBestHighScoreAction();
+                break;
+            case -1:
+                result.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                newHighScoreAction();
         }
 
         return view;
     }
 
     private void newHighScoreAction() {
+        int id = adp.getIdFor(CurrentScore);
         MaterialStyledDialog dialog = new MaterialStyledDialog.Builder(getContext())
                 .setTitle(R.string.highscore_congrats)
-                .setDescription(getString(R.string.newHighscore) + "\n\n")
+                .setDescription(getString(R.string.newNotHighscore,Long.toString(id + 1)) + "\n\n")
                 .setStyle(Style.HEADER_WITH_TITLE)
                 .setHeaderColor(R.color.colorPrimary)
                 .withDialogAnimation(true)
@@ -101,11 +102,9 @@ public class HighScoreFragment
         dialog.show();
     }
     private void newBestHighScoreAction() {
-        int id = adp.getIdFor(CurrentScore);
-
         MaterialStyledDialog dialog = new MaterialStyledDialog.Builder(getContext())
                 .setTitle(R.string.highscore_congrats_best)
-                .setDescription(getString(R.string.newNotHighscore,Long.toString(id + 1)) + "\n\n")
+                .setDescription(getString(R.string.newHighscore) + "\n\n")
                 .setStyle(Style.HEADER_WITH_TITLE)
                 .setHeaderColor(R.color.md_material_blue_800)
                 .withDialogAnimation(true)

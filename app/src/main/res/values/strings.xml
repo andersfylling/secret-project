@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ballgame</string>
-    <string name="play_game_button">start game</string>
     <string name="username">Anonymous</string>
     <string name="menu_lobby">Multi player</string>
     <string name="nav_solo">Single player</string>
@@ -9,16 +8,13 @@
     <string name="nav_logout_login">Log out</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="button_join_game">Join game</string>
     <string name="button_start_game">Start game</string>
     <string name="players_in_lobby">Players in lobby</string>
-    <string name="not_connected">not connected</string>
     <string name="connecting">connecting</string>
     <string name="needToLogIn">You need to be logged in to use this action</string>
     <string name="logout">Log out</string>
     <string name="login">Login</string>
-    <string name="RestApiUnableToConnect">Unable to connect to game servers REST API</string>
     <string name="baseUrl" translatable="false">http://172.18.87.101:3173/api/</string>
     <string name="newHighscore">WUUT!! New Highscore. You Rock!</string>
     <string name="newNotHighscore">Congrats on position %s</string>
@@ -37,7 +33,6 @@
     <string name="lobby_button_connect">Connect</string>
     <string name="lobby_button_find_lobby">Find lobby</string>
     <string name="lobby_button_leave_lobby">Leave lobby</string>
-    <string name="game_server_connection" translatable="false">10.0.0.87:3173</string>
     <string name="game_server_connection_title">Game Server Connection</string>
     <string name="highscore_congrats">Congratulation!</string>
     <string name="highscore_congrats_best">Congratulation!  It\'s a personal best!</string>

@@ -93,9 +93,7 @@ public class GameComponentData
                 Object value = null;
                 try {
                     value = m.invoke(a, (Object[])null);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
 
@@ -159,12 +157,12 @@ public class GameComponentData
         if (dependencies.length > 0 && dependencies[dependencies.length - 1] == null) {
             String err = "missing dependencies for game component: " + this.getName();
 
-            String have = "";
+            StringBuilder have = new StringBuilder();
             for (Object dep : dependencies) {
                 if (dep == null) {
                     continue;
                 }
-                have += dep.toString() + ",";
+                have.append(dep.toString()).append(",");
             }
 
 
@@ -180,22 +178,20 @@ public class GameComponentData
             } else {
                 this.instance = this.method.invoke(this.classInstance, dependencies);
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }
 
 
     public String getParamsAsString() {
-        String params = "{";
+        StringBuilder params = new StringBuilder("{");
         for (String param : this.paramsName) {
-            params += param + ",";
+            params.append(param).append(",");
         }
-        params += "}";
+        params.append("}");
 
-        return params;
+        return params.toString();
     }
 
     @Override

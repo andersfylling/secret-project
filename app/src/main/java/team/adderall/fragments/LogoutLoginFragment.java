@@ -36,7 +36,7 @@ public class LogoutLoginFragment
         return inflater.inflate(R.layout.logout_login_view, container, false);
     }
     private void startMain(boolean loggedIn,Bundle bundle){
-        String status = loggedIn == false ? getString(R.string.logged_out) : getString(R.string.logged_in);
+        String status = !loggedIn ? getString(R.string.logged_out) : getString(R.string.logged_in);
         Toast.makeText(this.getContext(),this.getContext().getString(R.string.you_are_now,status),Toast.LENGTH_LONG).show();
 
         SoloFragment fragment = new SoloFragment();

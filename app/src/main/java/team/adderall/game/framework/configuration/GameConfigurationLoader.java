@@ -10,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import team.adderall.game.framework.component.GameComponent;
@@ -158,11 +157,7 @@ public class GameConfigurationLoader
         Object instance = null;
         try {
             instance = Class.forName(config.getName()).newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         if (instance == null) {
@@ -257,6 +252,27 @@ public class GameConfigurationLoader
             this.loadGameComponentRegisters(instance.getClass(), instance);
         }
 
+        this.crashOnDuplicates();
+
+        // update dependency list
+        for (final GameComponentHolder component : this.components) {
+            component.createDependencyTree(this.components);
+        }
+
+        this.sortByDependencies();
+
+        // instantiate components
+        for (GameComponentHolder component : this.components) {
+            component.initialize(this.components);
+        }
+
+        this.crashOnNullInstances();
+
+        // create game logic components
+
+    }
+
+    private void crashOnDuplicates() {
         // check for name duplicates
         for (GameComponentHolder a : this.components) {
             int counter = 0;
@@ -271,14 +287,27 @@ public class GameConfigurationLoader
                 throw new StackOverflowError("found " + Integer.toString(counter) + " instance of @GameComponent " + a.toStringWithDependencies());
             }
         }
+    }
 
-        // update dependency list
-        for (final GameComponentHolder component : this.components) {
-            component.createDependencyTree(this.components);
+    private void crashOnNullInstances() {
+        // check for null instances and give a warning or fail
+        for (GameComponentHolder component : this.components) {
+            if (component.getInstance() != null) {
+                continue;
+            }
+
+            String err = "instance for game component was null: " + component.getName();
+            if (this.failOnNullInstance) {
+                throw new InstantiationError(err);
+            } else {
+                Log.e(TAG, err);
+            }
         }
+    }
 
-        // sort based on number of dependencies
-        Collections.sort(this.components, (left, right) -> {
+    private void sortByDependencies() {
+        // sort based on number of dependencies to speed up next sort
+        this.components.sort((left, right) -> {
             int a = left.nrOfDependencies();
             int b = right.nrOfDependencies();
 
@@ -290,12 +319,7 @@ public class GameConfigurationLoader
 
             return 0;
         });
-//        for (GameComponentHolder component : this.components) {
-//            System.out.print(component.toString() + "\n");
-//        }
-//        System.out.flush();
 
-        // hard core old stupid sort
         boolean unsorted = true;
         while (unsorted) {
             unsorted = false;
@@ -323,34 +347,6 @@ public class GameConfigurationLoader
                 }
             }
         }
-//        System.out.println(" HARDCORE SORT RESULT ::::::::::::");
-//        for (GameComponentHolder component : this.components) {
-//            System.out.print(component.toStringWithAllDependencies() + "\n");
-//        }
-//        System.out.flush();
-
-
-        // instantiate components
-        for (GameComponentHolder component : this.components) {
-            component.initialize(this.components);
-        }
-
-        // check for null instances and give a warning or fail
-        for (GameComponentHolder component : this.components) {
-            if (component.getInstance() != null) {
-                continue;
-            }
-
-            String err = "instance for game component was null: " + component.getName();
-            if (this.failOnNullInstance) {
-                throw new InstantiationError(err);
-            } else {
-                Log.e(TAG, err);
-            }
-        }
-
-        // create game logic components
-
     }
 
     public void installGameComponents(@NonNull GameContextSetter ctx) {
@@ -369,11 +365,7 @@ public class GameConfigurationLoader
             Object instance = null;
             try {
                 instance = Class.forName(config.getName()).newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
             if (instance == null) {
@@ -439,9 +431,9 @@ public class GameConfigurationLoader
             } catch (InvocationTargetException | IllegalAccessException e) {
                 System.out.println("unable to inject params into method: " + method.getName() + ", in class: " + instance.getClass().getName());
 
-                String paramsStr = "";
+                StringBuilder paramsStr = new StringBuilder();
                 for (String param : params) {
-                    paramsStr += param + ", ";
+                    paramsStr.append(param).append(", ");
                 }
                 System.out.println("params: " + paramsStr);
 

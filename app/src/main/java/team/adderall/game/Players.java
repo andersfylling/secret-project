@@ -2,7 +2,6 @@ package team.adderall.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
@@ -95,8 +94,6 @@ public class Players
         }
     }
     public void triggerListenersThreaded(final Player player, final int action) {
-        (new Thread(() -> {
-            this.triggerListeners(player, action);
-        })).start();
+        (new Thread(() -> this.triggerListeners(player, action))).start();
     }
 }

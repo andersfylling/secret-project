@@ -40,8 +40,7 @@ public class MenuSlideHandler
     }
 
     /**
-     * Called when the drawer motion state changes. The new state will
-     * be one of {@link #STATE_IDLE}, {@link #STATE_DRAGGING} or {@link #STATE_SETTLING}.
+     * Called when the drawer motion state changes.
      *
      * @param newState The new drawer motion state
      */
