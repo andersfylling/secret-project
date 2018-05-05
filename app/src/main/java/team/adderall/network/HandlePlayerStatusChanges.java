@@ -77,8 +77,10 @@ public class HandlePlayerStatusChanges
      * @param response
      */
     @Override
-    public void onResponse(Call<JSend<PlayerStatus>> call, Response<JSend<PlayerStatus>> response) {
-        this.listener.updatePlayerStatus(response.body().getData());
+    public void onResponse(@NonNull Call<JSend<PlayerStatus>> call, @NonNull Response<JSend<PlayerStatus>> response) {
+        if (response.body() != null) {
+            this.listener.updatePlayerStatus(response.body().getData());
+        }
     }
 
     /**
@@ -89,7 +91,7 @@ public class HandlePlayerStatusChanges
      * @param t
      */
     @Override
-    public void onFailure(Call<JSend<PlayerStatus>> call, Throwable t) {
+    public void onFailure(@NonNull Call<JSend<PlayerStatus>> call, @NonNull Throwable t) {
 
     }
 }
