@@ -2,7 +2,6 @@ package team.adderall.game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;

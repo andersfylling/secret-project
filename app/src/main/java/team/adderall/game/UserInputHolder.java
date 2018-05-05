@@ -4,9 +4,6 @@ import android.hardware.SensorEvent;
 import android.view.Display;
 import android.view.Surface;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import team.adderall.game.framework.component.GameComponent;
 import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
