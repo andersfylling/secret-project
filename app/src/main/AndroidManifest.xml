@@ -13,8 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-        tools:ignore="GoogleAppIndexingWarning"
-        android:fullBackupContent=""> <!-- don't do any back up -->
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
             android:value="@string/app_id" />
