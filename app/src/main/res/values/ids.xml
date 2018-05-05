@@ -4,10 +4,6 @@
      NOTE: You can find this file by clicking the `Get Resources` link in
      the Events, Achievements, or Leaderboards menu of the Google Play Console. -->
 <string name="app_id" translatable="false">952210071483</string>
-
-<string name="ARchivement1" translatable="false">CgkIu7-SodsbEAIQAA</string>
-
-
 <string name="LeaderBoard" translatable="false">CgkIu7-SodsbEAIQAQ</string>
 
 </resources>

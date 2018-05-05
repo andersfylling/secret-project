@@ -152,7 +152,9 @@ public class LobbyFragment
 
             @Override
             public void onFailure(Call<JSend<UserSession>> call, Throwable t) {
-                // TODO: retry
+                if (self.getContext() == null) {
+                    return;
+                }
                 Toast toast = Toast.makeText(self.getContext(), MSG_CANNOT_CONNECT, Toast.LENGTH_LONG);
                 toast.show();
                 self.lobbyStatus.setText(R.string.lobby_status_not_connected);
