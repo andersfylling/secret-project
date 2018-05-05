@@ -1,5 +1,6 @@
 package team.adderall.game.framework;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Canvas;
 import android.view.View;
@@ -12,6 +13,7 @@ import team.adderall.game.framework.component.GameDepWire;
 import team.adderall.game.framework.component.Inject;
 import team.adderall.game.framework.context.GameContext;
 
+@SuppressLint("ViewConstructor")
 @GameComponent("GraphicsManager")
 public class GraphicsManager
         extends
