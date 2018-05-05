@@ -24,6 +24,10 @@ mobile screen you die.
 - [x] Jumping
 - [x] In game buffs
 
+## Changes needed before you using this project
+There is two changes needed when setting this project up. One is to start the game server, and change the server URL using the settings menu in the game application. Please refer to the Wiki for more information about this. 
+The second is to change the res/values/ids.xml to point to your own Google play project. Such that you are allowed to sign it. If not, the Google Play integration would not work for you.
+
 ## Pictures
 
 ![Just implemented floors/levels](https://i.imgur.com/ElGWEom.jpg)
