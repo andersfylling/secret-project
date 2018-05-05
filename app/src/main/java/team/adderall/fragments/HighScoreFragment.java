@@ -90,9 +90,10 @@ public class HighScoreFragment
     }
 
     private void newHighScoreAction() {
+        int id = adp.getIdFor(CurrentScore);
         MaterialStyledDialog dialog = new MaterialStyledDialog.Builder(getContext())
                 .setTitle(R.string.highscore_congrats)
-                .setDescription(getString(R.string.newHighscore) + "\n\n")
+                .setDescription(getString(R.string.newNotHighscore,Long.toString(id + 1)) + "\n\n")
                 .setStyle(Style.HEADER_WITH_TITLE)
                 .setHeaderColor(R.color.colorPrimary)
                 .withDialogAnimation(true)
@@ -101,11 +102,9 @@ public class HighScoreFragment
         dialog.show();
     }
     private void newBestHighScoreAction() {
-        int id = adp.getIdFor(CurrentScore);
-
         MaterialStyledDialog dialog = new MaterialStyledDialog.Builder(getContext())
                 .setTitle(R.string.highscore_congrats_best)
-                .setDescription(getString(R.string.newNotHighscore,Long.toString(id + 1)) + "\n\n")
+                .setDescription(getString(R.string.newHighscore) + "\n\n")
                 .setStyle(Style.HEADER_WITH_TITLE)
                 .setHeaderColor(R.color.md_material_blue_800)
                 .withDialogAnimation(true)
