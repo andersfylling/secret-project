@@ -10,11 +10,14 @@ previous repository: https://github.com/andersfylling/ntnu-imt3673-project
 
 
 ## About
-Game developed for android course at NTNU. Builds upon the previous project (lab 3).
+Game developed for android course at NTNU. Builds upon the previous project (lab 3). The game is developed by Anders Fylling and Cim Stordal.
 
 The game functionality works something like this: https://www.youtube.com/watch?v=gOtb5YnYrYk
 The objective is to survive for as long as possible and if you touch the bottom of your
 mobile screen you die.
+
+## Project Code Organisation
+The project code is organised as "Package by feature". For more information about this, please refer to Wiki/Architecture
 
 ## Features
 
