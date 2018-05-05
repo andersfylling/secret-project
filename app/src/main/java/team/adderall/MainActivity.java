@@ -233,12 +233,7 @@ public class MainActivity
 
         Games.getLeaderboardsClient(this, this.gplay)
                 .getLeaderboardIntent(getString(R.string.LeaderBoard))
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_LEADERBOARD_UI);
-                    }
-                });
+                .addOnSuccessListener(intent -> startActivityForResult(intent, RC_LEADERBOARD_UI));
     }
 
     /**

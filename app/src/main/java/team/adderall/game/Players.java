@@ -95,8 +95,6 @@ public class Players
         }
     }
     public void triggerListenersThreaded(final Player player, final int action) {
-        (new Thread(() -> {
-            this.triggerListeners(player, action);
-        })).start();
+        (new Thread(() -> this.triggerListeners(player, action))).start();
     }
 }

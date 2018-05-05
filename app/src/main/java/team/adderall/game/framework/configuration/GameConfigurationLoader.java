@@ -278,7 +278,7 @@ public class GameConfigurationLoader
         }
 
         // sort based on number of dependencies
-        Collections.sort(this.components, (left, right) -> {
+        this.components.sort((left, right) -> {
             int a = left.nrOfDependencies();
             int b = right.nrOfDependencies();
 
