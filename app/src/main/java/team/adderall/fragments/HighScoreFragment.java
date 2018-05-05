@@ -75,15 +75,15 @@ public class HighScoreFragment
         result.setTextColor(Color.GREEN);
 
         int id = adp.getIdFor(CurrentScore);
-        if(id == 0) {
-            newBestHighScoreAction();
-        }
-        else if(id == -1){
-            result.setVisibility(View.INVISIBLE);
-        }
-        else{
-            newHighScoreAction();
-
+        switch (id) {
+            case 0:
+                newBestHighScoreAction();
+                break;
+            case -1:
+                result.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                newHighScoreAction();
         }
 
         return view;

@@ -93,9 +93,7 @@ public class GameComponentData
                 Object value = null;
                 try {
                     value = m.invoke(a, (Object[])null);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
 
@@ -180,9 +178,7 @@ public class GameComponentData
             } else {
                 this.instance = this.method.invoke(this.classInstance, dependencies);
             }
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }
