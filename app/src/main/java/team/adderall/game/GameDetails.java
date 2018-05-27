@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team.adderall.GameActivity;
+import team.adderall.game.multiplayer.Multiplayer;
+import team.adderall.game.player.Player;
 
 /**
  * Populated from intent

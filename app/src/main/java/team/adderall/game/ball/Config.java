@@ -1,10 +1,9 @@
 package team.adderall.game.ball;
 
-import team.adderall.game.framework.component.GameComponents;
-import team.adderall.game.framework.configuration.GameConfiguration;
+import addy.annotations.*;
 
-@GameConfiguration
-@GameComponents({
+@Configuration
+@ServiceLinker({
         DrawBall.class,
         LogicBall.class,
         BallManager.class

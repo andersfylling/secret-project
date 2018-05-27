@@ -9,14 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team.adderall.game.GameDetails;
-import team.adderall.game.GameExtraObjects.Buff;
+import team.adderall.game.pickups.Buff;
 import team.adderall.game.GameState;
-import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
+import team.adderall.game.gameloop.GamePainter;
+import addy.annotations.*;
 
-@GameComponent("level")
+@Service("level")
 public class LevelManager
         implements
         GamePainter
@@ -47,7 +45,7 @@ public class LevelManager
      * @param gameDetails
      * @param gameState
      */
-    @GameDepWire
+    @DepWire
     public LevelManager(@Inject("canvasSize") Point canvasSize,
                         @Inject("GameDetails") GameDetails gameDetails,
                         @Inject("GameState") GameState gameState)

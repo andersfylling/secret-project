@@ -1,7 +1,7 @@
 package team.adderall.game.userinput;
 
 import team.adderall.game.physics.Gravity;
-import team.adderall.game.Player;
+import team.adderall.game.player.Player;
 
 public class Jumping
 {

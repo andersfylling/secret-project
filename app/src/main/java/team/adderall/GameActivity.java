@@ -11,15 +11,13 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
 
+import addy.InjectorManager;
+import addy.annotations.*;
+import addy.context.ServiceContext;
 import team.adderall.game.GameDetails;
-import team.adderall.game.UserInputHolder;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
-import team.adderall.game.framework.configuration.GameConfiguration;
-import team.adderall.game.framework.GameInitializer;
-import team.adderall.game.framework.component.GameComponent;
+import team.adderall.game.userinput.UserInputHolder;
 
-@GameConfiguration
+@Configuration
 public class GameActivity
         extends
         Activity
@@ -27,7 +25,7 @@ public class GameActivity
         SensorEventListener
 {
 
-    private GameInitializer gameSession;
+    private InjectorManager gameSession;
     private SensorManager sensorManager;
     private UserInputHolder userInputHolder;
     private static GameActivity self;
@@ -54,15 +52,14 @@ public class GameActivity
         // initialize device sensor capabilities
         this.sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-        this.gameSession = new GameInitializer(
+        this.gameSession = new InjectorManager(
                 team.adderall.game.Config.class,
                 team.adderall.game.highscore.Config.class,
                 team.adderall.game.ball.Config.class,
-                team.adderall.game.GameExtraObjects.Config.class,
+                team.adderall.game.pickups.Config.class,
                 team.adderall.game.level.Config.class
         );
-        this.gameSession.loadEssentials(); // add GameContext
-        this.gameSession.addGameConfigurationActivities(this); // link this instance
+        this.gameSession.addInstantiadedConfigurations(this); // link this instance
     }
 
     @Override
@@ -71,18 +68,21 @@ public class GameActivity
         super.onAttachedToWindow();
         this.gameSession.load(()-> {
             System.out.println("######### finished loading game");
-            this.gameSession.start();
+
+            ServiceContext srvCtx = this.gameSession.getSrvCtx();
+            Runnable gameLoop = (Runnable) srvCtx.getAssuredService("GameLoop");
+            (new Thread(gameLoop)).start();
         });
         System.out.println("######### loading game objects");
     }
 
-    @GameComponent("activity")
+    @Service("activity")
     public Activity activity()
     {
         return this;
     }
 
-    @GameComponent("display")
+    @Service("display")
     public Display display()
     {
         final WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
@@ -98,13 +98,13 @@ public class GameActivity
      *
      * @return
      */
-    @GameComponent("GameDetails")
+    @Service("GameDetails")
     public GameDetails gameDetails()
     {
         return this.details;
     }
 
-    @GameDepWire
+    @DepWire
     public void setUserInputHolder(@Inject("userInputHolder") UserInputHolder userInputHolder)
     {
         this.userInputHolder = userInputHolder;

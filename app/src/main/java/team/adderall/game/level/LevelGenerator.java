@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import team.adderall.game.GameExtraObjects.Buff;
+import team.adderall.game.pickups.Buff;
 import team.adderall.game.GameState;
 
 /**

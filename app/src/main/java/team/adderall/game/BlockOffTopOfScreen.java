@@ -1,13 +1,13 @@
 package team.adderall.game;
 
+import addy.annotations.*;
 import team.adderall.game.ball.BallManager;
-import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.GameLogic;
-import team.adderall.game.framework.component.Inject;
+import team.adderall.game.gameloop.GameLogic;
+import team.adderall.game.gameloop.GameLogicInterface;
+import team.adderall.game.player.Player;
+import team.adderall.game.player.Players;
 
-@GameComponent
+@Service
 @GameLogic(wave = 3)
 public class BlockOffTopOfScreen
         implements
@@ -20,7 +20,7 @@ public class BlockOffTopOfScreen
     private final Players players;
     private final GameState gameState;
 
-    @GameDepWire
+    @DepWire
     public BlockOffTopOfScreen(@Inject("players") Players p,
                                @Inject("GameState") GameState gs)
     {

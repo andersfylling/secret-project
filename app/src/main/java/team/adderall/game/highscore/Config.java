@@ -1,10 +1,10 @@
 package team.adderall.game.highscore;
 
-import team.adderall.game.framework.component.GameComponents;
-import team.adderall.game.framework.configuration.GameConfiguration;
+import addy.annotations.*;
 
-@GameConfiguration
-@GameComponents({
+@Configuration
+@ServiceLinker({
         DrawHighScore.class
 })
-public class Config{}
+public class Config
+{}

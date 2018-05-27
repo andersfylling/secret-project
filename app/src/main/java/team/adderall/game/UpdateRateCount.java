@@ -1,7 +1,5 @@
 package team.adderall.game;
 
-import team.adderall.game.framework.UpdateRateCounter;
-
 public class UpdateRateCount
         implements UpdateRateCounter
 {

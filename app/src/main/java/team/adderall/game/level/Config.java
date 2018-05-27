@@ -1,10 +1,9 @@
 package team.adderall.game.level;
 
-import team.adderall.game.framework.component.GameComponents;
-import team.adderall.game.framework.configuration.GameConfiguration;
+import addy.annotations.*;
 
-@GameConfiguration
-@GameComponents({
+@Configuration
+@ServiceLinker({
         LevelManager.class
 })
 public class Config

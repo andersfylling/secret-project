@@ -4,8 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.UpdateRateCounter;
+import team.adderall.game.gameloop.GamePainter;
 
 public class UpdateRateCountPainter
         implements GamePainter

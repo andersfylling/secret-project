@@ -3,14 +3,12 @@ package team.adderall.game.ball;
 import android.graphics.Canvas;
 
 import team.adderall.game.GameState;
-import team.adderall.game.Player;
-import team.adderall.game.Players;
-import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
+import team.adderall.game.player.Player;
+import team.adderall.game.player.Players;
+import team.adderall.game.gameloop.GamePainter;
+import addy.annotations.*;
 
-@GameComponent
+@Service
 public class DrawBall
         implements
         GamePainter
@@ -18,15 +16,12 @@ public class DrawBall
     private final Players players;
     private final GameState gameState;
 
-    @GameDepWire
-    public DrawBall(
-            @Inject("players") Players p,
-            @Inject("GameState") GameState gameState
-    )
+    @DepWire
+    public DrawBall(@Inject("players") Players p,
+                    @Inject("GameState") GameState gameState)
     {
         this.players = p;
         this.gameState = gameState;
-
     }
 
 
