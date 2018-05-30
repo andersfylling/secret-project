@@ -4,9 +4,9 @@ import android.app.Activity;
 
 import org.junit.Test;
 
-import team.adderall.game.framework.configuration.GameConfiguration;
+import addy.annotations.Configuration;
 
-@GameConfiguration
+@Configuration
 public class GameActivityTest extends Activity {
 
     @Test
