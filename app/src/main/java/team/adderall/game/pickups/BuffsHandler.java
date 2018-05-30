@@ -49,7 +49,6 @@ public class BuffsHandler
     }
 
 
-
     @Override
     public void run() {
         for (Player p : players.getAlivePlayers()) {
@@ -60,15 +59,16 @@ public class BuffsHandler
 
             for (Floor floor : level.getFloors()) {
                 int type = floor.aidColision((int) x, (int) y);
+                if (type == Floor.NOT_COLLIDING) {
+                    continue;
+                }
 
-                if (type != -1) {
-                    /**
-                     * Handle aid objectives here.
-                     */
-                    for (Buff buff : this.buffs) {
-                        if (buff.getType() == type) {
-                            buff.handleCollision(player);
-                        }
+                /*
+                 * Handle aid objectives here.
+                 */
+                for (Buff buff : this.buffs) {
+                    if (buff.getType() == type) {
+                        buff.handleCollision(player);
                     }
                 }
 

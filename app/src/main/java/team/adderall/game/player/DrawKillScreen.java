@@ -10,7 +10,10 @@ import team.adderall.game.ball.BallManager;
 import addy.annotations.*;
 
 @Service
-public class DrawKillScreen implements GamePainter {
+public class DrawKillScreen
+        implements
+        GamePainter
+{
 
     private final Players players;
     private final Paint painter;

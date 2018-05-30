@@ -88,6 +88,4 @@ public class DeltaTime
     public long getLastRun() {
         return last;
     }
-
-
 }

@@ -31,10 +31,10 @@ public class Collision
     }
 
     /**
-     * Given two rect, return the new value to rect x, such that they no longer intercect.
-     * This function assumes they do intercect.
+     * Given two rect, return the new value to rect x, such that they no longer intercept.
+     * This function assumes they do intercept.
      */
-    public Point getNoneIntercetCord(Rect x, Rect y)
+    public Point getNoneInterceptCord(Rect x, Rect y)
     {
         int newX = x.centerX();
         int newY = x.centerY();
@@ -94,10 +94,10 @@ public class Collision
             if (collide == null) {
                 continue;
             }
-            // getNoneIntercetCord sets the "hitOnTop" variable to true
+            // getNoneInterceptCord sets the "hitOnTop" variable to true
             // if a floor collision is detected (standing on top of a floor)
             hitOnTop = false;
-            Point p = getNoneIntercetCord(getRect(x1, y1), collide);
+            Point p = getNoneInterceptCord(getRect(x1, y1), collide);
             entity.setPos(p.x, p.y);
             entity.velocity(0);
 

@@ -57,10 +57,10 @@ public class GraphicsManager
          */
         int i = 0;
         for (GamePainter[] layerPainters : this.painters) {
-            if(i==0){
+            if(i==0) {
                 fixedPositionObjects.add(layerPainters);
             }
-            else{
+            else {
                 gameObjects.add(layerPainters);
             }
             i++;
@@ -83,7 +83,7 @@ public class GraphicsManager
     {
         super.onDraw(canvas);
         this.paint(canvas);
-        this.paint(canvas,this.getScrollY());
+        this.paint(canvas, this.getScrollY());
 
         this.updateScrollY();
     }
@@ -136,7 +136,7 @@ public class GraphicsManager
         double diff = (now - this.lastRun) / 10000000.0;
         double update = diff * SCROLLSPEED;
 
-        if(update>1) {
+        if(update > 1) {
             this.lastRun = now;
             this.scrollBy(0, (int) -update);
         }
