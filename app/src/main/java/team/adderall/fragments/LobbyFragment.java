@@ -33,7 +33,7 @@ import team.adderall.network.PlayerStatus;
 import team.adderall.R;
 import team.adderall.network.UserSession;
 import team.adderall.game.GameDetails;
-import team.adderall.game.Player;
+import team.adderall.game.player.Player;
 
 /**
  * TODO: separate view and controller

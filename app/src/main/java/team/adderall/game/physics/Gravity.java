@@ -2,14 +2,12 @@ package team.adderall.game.physics;
 
 import java.util.concurrent.TimeUnit;
 
-import team.adderall.game.Players;
-import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.GameLogic;
-import team.adderall.game.framework.component.Inject;
+import addy.annotations.*;
+import team.adderall.game.gameloop.GameLogic;
+import team.adderall.game.player.Players;
+import team.adderall.game.gameloop.GameLogicInterface;
 
-@GameComponent
+@Service
 @GameLogic(wave = 2)
 public class Gravity
     implements GameLogicInterface
@@ -20,7 +18,7 @@ public class Gravity
     private final Players players;
     private DeltaTime deltaTime;
 
-    @GameDepWire
+    @DepWire
     public Gravity(@Inject("deltaTime") DeltaTime deltaTime,
                    @Inject("players") Players p)
     {

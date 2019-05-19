@@ -1,13 +1,13 @@
 package team.adderall.game;
 
+import addy.annotations.*;
 import team.adderall.game.ball.BallManager;
-import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.GameLogic;
-import team.adderall.game.framework.component.Inject;
+import team.adderall.game.gameloop.GameLogic;
+import team.adderall.game.gameloop.GameLogicInterface;
+import team.adderall.game.player.Player;
+import team.adderall.game.player.Players;
 
-@GameComponent
+@Service
 @GameLogic(wave = 3)
 public class BlockOffTopOfScreen
         implements
@@ -20,7 +20,7 @@ public class BlockOffTopOfScreen
     private final Players players;
     private final GameState gameState;
 
-    @GameDepWire
+    @DepWire
     public BlockOffTopOfScreen(@Inject("players") Players p,
                                @Inject("GameState") GameState gs)
     {
@@ -28,17 +28,6 @@ public class BlockOffTopOfScreen
         gameState = gs;
     }
 
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
     @Override
     public void run() {
         double heightLimit = gameState.getYScrollValue();

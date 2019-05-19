@@ -40,4 +40,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
+    implementation 'com.github.andersfylling:addy:0.1.1'
+    //implementation files('addy-1.0.jar')
 }

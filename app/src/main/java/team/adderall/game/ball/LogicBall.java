@@ -1,15 +1,14 @@
 package team.adderall.game.ball;
 
-import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
+import addy.annotations.*;
+import team.adderall.game.gameloop.GameLogicInterface;
 
-@GameComponent
+
+@Service
 public class LogicBall implements GameLogicInterface{
-    BallManager ball;
+    private BallManager ball;
 
-    @GameDepWire
+    @DepWire
     public LogicBall(@Inject("ballManager") BallManager ball)
     {
         this.ball = ball;

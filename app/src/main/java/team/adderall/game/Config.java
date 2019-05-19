@@ -3,33 +3,39 @@ package team.adderall.game;
 import android.graphics.Point;
 import android.view.Display;
 
+import addy.annotations.*;
+import addy.context.ServiceContext;
+import addy.context.ServiceSetter;
 import team.adderall.game.ball.DrawBall;
-import team.adderall.game.easyLogicChecks.PlayerDeathListHandler;
-import team.adderall.game.easyLogicChecks.Side2SideTeleportation;
-import team.adderall.game.framework.GameLoop;
-import team.adderall.game.framework.GraphicsManager;
-import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.UpdateRateCounter;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameComponents;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.configuration.GameConfiguration;
-import team.adderall.game.framework.context.GameContext;
-import team.adderall.game.framework.component.Inject;
+import team.adderall.game.player.PlayerDeathListHandler;
+import team.adderall.game.player.Side2SideTeleportation;
+import team.adderall.game.gameloop.GameLogicManager;
+import team.adderall.game.gameloop.GameLoop;
+import team.adderall.game.gameloop.GamePainter;
+import team.adderall.game.gameloop.GraphicsManager;
 import team.adderall.game.highscore.DrawHighScore;
 import team.adderall.game.level.LevelManager;
+import team.adderall.game.multiplayer.Multiplayer;
+import team.adderall.game.physics.Collision;
 import team.adderall.game.physics.DeltaTime;
 import team.adderall.game.physics.Gravity;
+import team.adderall.game.player.DrawKillScreen;
+import team.adderall.game.player.KillPlayerWhenBelowScreen;
+import team.adderall.game.player.Players;
 import team.adderall.game.userinput.Jumping;
+import team.adderall.game.userinput.UserInputDelegator;
+import team.adderall.game.userinput.UserInputHolder;
 
 /**
  * Reference this class in the GameActivity when initializing the game.
  */
-@GameConfiguration
-@GameComponents({ // initialize these from their constructor
+@Configuration
+@ServiceLinker({
         Players.class,
         GameState.class,
         GraphicsManager.class,
+        GameLogicManager.class,
+        GameLoop.class,
         Gravity.class,
         Collision.class,
         DrawKillScreen.class,
@@ -51,7 +57,7 @@ public class Config
     // ### Game painters / renderer setup
     // ###
     // ########################################################################################
-    @GameComponent(GameContext.PAINT)
+    @Service(GraphicsManager.PAINTERS_NAME)
     public GamePainter[][] setPaintWaves(@Inject("FPSPainter") GamePainter fps,
                                          @Inject("LPSPainter") GamePainter lps,
                                          @Inject("level") LevelManager level,
@@ -88,7 +94,7 @@ public class Config
     // ### Other components
     // ###
     // ########################################################################################
-    @GameComponent("canvasSize")
+    @Service("canvasSize")
     public Point getCanvasSize(@Inject("display") Display display)
     {
         Point canvasSize = new Point();
@@ -98,14 +104,14 @@ public class Config
     }
 
     // FPS counter / draws per second
-    @GameComponent("FPS")
+    @Service("FPS")
     public UpdateRateCounter setFPSCounter()
     {
         return new UpdateRateCount();
     }
 
     // FPS painter
-    @GameComponent("FPSPainter")
+    @Service("FPSPainter")
     public GamePainter setFPSPainter(@Inject("FPS") UpdateRateCounter fps)
     {
         UpdateRateCountPainter painter = new UpdateRateCountPainter(fps);
@@ -116,14 +122,14 @@ public class Config
 
 
     // LPS counter / logic rounds per second
-    @GameComponent("LPS")
+    @Service("LPS")
     public UpdateRateCounter setLPSCounter()
     {
         return new UpdateRateCount();
     }
 
     // LPS painter
-    @GameComponent("LPSPainter")
+    @Service("LPSPainter")
     public GamePainter setLPSPainter(@Inject("LPS") UpdateRateCounter lps)
     {
         UpdateRateCountPainter painter = new UpdateRateCountPainter(lps);
@@ -141,7 +147,7 @@ public class Config
     // ########################################################################################
 
     // configure GameLoop counters
-    @GameDepWire
+    @DepWire
     public void setLPSAndFPSForGameLoop(@Inject("FPS") UpdateRateCounter fps,
                                         @Inject("LPS") UpdateRateCounter lps,
                                         @Inject("GameLoop") GameLoop gameLoop)
@@ -150,7 +156,7 @@ public class Config
         gameLoop.setFps(fps);
     }
 
-    @GameDepWire
+    @DepWire
     public void setInitialGameSpeed(@Inject("deltaTime") DeltaTime dt)
     {
         dt.setSpeed(1.75); // TODO: use GameDetails

@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import team.adderall.R;
 import team.adderall.game.GameDetails;
-import team.adderall.game.Player;
+import team.adderall.game.player.Player;
 
 public class SoloFragment
         extends Fragment

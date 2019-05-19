@@ -1,10 +1,9 @@
 package team.adderall.game;
 
 
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
+import addy.annotations.*;
 
-@GameComponent("GameState")
+@Service("GameState")
 public class GameState
 {
     /**
@@ -24,9 +23,9 @@ public class GameState
     private float yScale = 0;
 
 
-    @GameDepWire
-    public GameState() {
-    }
+    @DepWire
+    public GameState()
+    {}
 
     /**
      * Set Y value for how much the layers window have scrolled
@@ -75,5 +74,4 @@ public class GameState
     public void setXScale(float x){
         this.xScale = x;
     }
-
 }

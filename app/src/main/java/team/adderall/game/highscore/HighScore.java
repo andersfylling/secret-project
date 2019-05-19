@@ -5,7 +5,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 
-public class HighScore {
+public class HighScore
+{
     /**
      * Declare different values the person would be scored on
      */

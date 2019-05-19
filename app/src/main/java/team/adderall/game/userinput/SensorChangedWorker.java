@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
+import addy.annotations.*;
+
 
 @Deprecated
-@GameComponent("SensorChangedWorker")
+@Service("SensorChangedWorker")
 public class SensorChangedWorker
         extends Thread
 {
@@ -24,7 +23,7 @@ public class SensorChangedWorker
     private boolean notDeadYet;
     private int orientation;
 
-    @GameDepWire
+    @DepWire
     public SensorChangedWorker(
             @Inject("display") Display display
     ) {

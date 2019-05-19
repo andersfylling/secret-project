@@ -2,17 +2,15 @@ package team.adderall.game.physics;
 
 import java.util.concurrent.TimeUnit;
 
-import team.adderall.game.framework.GameLogicInterface;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.GameLogic;
-
-import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import addy.annotations.DepWire;
+import addy.annotations.Service;
+import team.adderall.game.gameloop.GameLogic;
+import team.adderall.game.gameloop.GameLogicInterface;
 
 /**
  * Delta time in _nano seconds_
  */
-@GameComponent
+@Service
 @GameLogic(wave = 1)
 public class DeltaTime
     implements
@@ -22,7 +20,7 @@ public class DeltaTime
     private long dT;
     private double speed;
 
-    @GameDepWire
+    @DepWire
     public DeltaTime() {
         last = System.nanoTime() - 1000000;
         dT = 0;
@@ -90,6 +88,4 @@ public class DeltaTime
     public long getLastRun() {
         return last;
     }
-
-
 }

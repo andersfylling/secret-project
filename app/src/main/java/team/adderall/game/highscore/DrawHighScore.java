@@ -2,16 +2,13 @@ package team.adderall.game.highscore;
 
 import android.graphics.Canvas;
 
+import addy.annotations.*;
 import team.adderall.game.GameState;
-import team.adderall.game.Player;
-import team.adderall.game.Players;
-import team.adderall.game.framework.GamePainter;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
-import team.adderall.game.framework.component.Inject;
+import team.adderall.game.player.Player;
+import team.adderall.game.player.Players;
+import team.adderall.game.gameloop.GamePainter;
 
-
-@GameComponent
+@Service
 public class DrawHighScore
         implements
         GamePainter
@@ -19,7 +16,7 @@ public class DrawHighScore
     private final Players players;
     private final GameState gameState;
 
-    @GameDepWire
+    @DepWire
     public DrawHighScore(@Inject("players") Players p,
                          @Inject("GameState") GameState gameState)
     {

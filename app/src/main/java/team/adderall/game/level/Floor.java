@@ -12,6 +12,7 @@ import team.adderall.game.GameState;
 
 public class Floor
 {
+    public final static int NOT_COLLIDING = -1;
     /**
      * Floor types
      */
@@ -146,7 +147,7 @@ public class Floor
                 return realtype;
             }
         }
-        return -1;
+        return NOT_COLLIDING;
     }
 
     /**

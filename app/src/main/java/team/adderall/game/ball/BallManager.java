@@ -6,10 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 
+import addy.annotations.*;
 import team.adderall.game.GameState;
 import team.adderall.game.PositionTracker;
-import team.adderall.game.framework.component.GameComponent;
-import team.adderall.game.framework.component.GameDepWire;
 
 /**
  * Handles rendering of the ball.
@@ -17,7 +16,7 @@ import team.adderall.game.framework.component.GameDepWire;
  * TODO: how do we deal with collision detection? perhaps use a class to bind BallManager
  * TODO: and LevelManager somehow.. beans + DI?
  */
-@GameComponent
+@Service
 public class BallManager
 {
     // defaults
@@ -60,7 +59,7 @@ public class BallManager
      * Constructor
      * Default player
      */
-    @GameDepWire
+    @DepWire
     public BallManager() {
 
         this.ball = new Ball(RADIUS);
